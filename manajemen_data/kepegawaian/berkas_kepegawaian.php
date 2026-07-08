@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'insert'
 
     if (!empty($_FILES['file_berkas']['name'])) {
         $fileName   = basename($_FILES['file_berkas']['name']);
-        $targetDir  = "/opt/lampp/htdocs/klinik-muhammadiyah-sumberpucung/webapps/penggajian/pages/berkaspegawai/berkas/";
+        $targetDir = __DIR__ . "/../../webapps/penggajian/pages/berkaspegawai/berkas/";
         $targetFile = $targetDir . $fileName;
 
         // pastikan folder ada
@@ -84,10 +84,22 @@ $totalPages  = $totalRows > 0 ? ceil($totalRows / $limit) : 1;
 
 // dropdown pegawai untuk tambah berkas
 $pegawaiArr = [];
-$res = mysqli_query($conn, "SELECT nik,nama,jk,pendidikan,jbtn,bidang,departemen,jnj_jabatan 
-                            FROM pegawai 
-                            WHERE stts_aktif='AKTIF' 
-                            ORDER BY nik");
+$res = mysqli_query($conn, "
+    SELECT 
+        p.nik,
+        p.nama,
+        p.jk,
+        p.pendidikan,
+        p.jbtn,
+        p.bidang,
+        d.nama AS departemen,       -- ambil nama departemen
+        j.nama AS jnj_jabatan       -- ambil nama jenjang jabatan
+    FROM pegawai p
+    LEFT JOIN departemen d ON p.departemen = d.dep_id
+    LEFT JOIN jnj_jabatan j ON p.jnj_jabatan = j.kode
+    WHERE p.stts_aktif IN ('AKTIF','CUTI','TENAGA LUAR')
+    ORDER BY p.nik
+");
 while($row = mysqli_fetch_assoc($res)) {
     $pegawaiArr[] = $row;
 }
@@ -118,6 +130,7 @@ if ($filter === '') {
             FROM berkas_pegawai b
             INNER JOIN pegawai p ON p.nik=b.nik
             INNER JOIN master_berkas_pegawai m ON m.kode=b.kode_berkas
+            WHERE p.stts_aktif IN ('AKTIF','CUTI','TENAGA LUAR')
             ORDER BY b.tgl_uploud ASC LIMIT $limit OFFSET $offset";
 } else {
     $sql = "SELECT b.nik,p.nama,b.tgl_uploud,m.kategori,m.nama_berkas,b.berkas,b.kode_berkas
@@ -125,8 +138,10 @@ if ($filter === '') {
             INNER JOIN pegawai p ON p.nik=b.nik
             INNER JOIN master_berkas_pegawai m ON m.kode=b.kode_berkas
             WHERE m.kategori='" . mysqli_real_escape_string($conn, $filter) . "'
+              AND p.stts_aktif IN ('AKTIF','CUTI','TENAGA LUAR')
             ORDER BY b.tgl_uploud ASC LIMIT $limit OFFSET $offset";
 }
+
 $result = mysqli_query($conn, $sql);
 
 // dropdown kategori

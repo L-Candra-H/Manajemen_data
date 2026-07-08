@@ -38,7 +38,7 @@ $offset = ($page - 1) * $limit;
 
 // filter
 $filter = isset($_GET['filter']) ? mysqli_real_escape_string($conn, $_GET['filter']) : '';
-$listPegawai = mysqli_query($conn, "SELECT nik, nama FROM pegawai ORDER BY nik");
+$listPegawai = mysqli_query($conn, "SELECT nik, nama FROM pegawai WHERE stts_aktif='AKTIF' ORDER BY nik");
 
 // default
 $totalPages = 0;
@@ -46,7 +46,7 @@ $sql = "";
 
 // query utama
 if($filter == 'ALL') {
-    $countRes = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pegawai");
+    $countRes = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pegawai WHERE stts_aktif='AKTIF'");
     $totalRows = mysqli_fetch_assoc($countRes)['total'];
     $totalPages = ceil($totalRows / $limit);
 
@@ -79,8 +79,10 @@ if($filter == 'ALL') {
                 SELECT id, COALESCE(SUM(dankes),0) AS total_dankes
                 FROM ambil_dankes GROUP BY id
             ) ad ON ad.id = p.id
+            WHERE p.stts_aktif='AKTIF'
             ORDER BY p.nik
             LIMIT $limit OFFSET $offset";
+
 } elseif($filter != '' && $filter != 'ALL') {
     $sql = "SELECT p.id, p.nik, p.nama, p.jbtn, p.pendidikan, p.mulai_kerja,
                    p.indek AS indek_struktural, p.pengurang, p.mulai_kontrak,
