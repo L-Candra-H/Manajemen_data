@@ -1,0 +1,29 @@
+.table-wrapper {
+  display: block;
+  overflow-x: auto;   /* paksa horizontal scroll */
+  overflow-y: auto;   /* vertikal sesuai isi */
+  max-height: 75vh;
+  width: 100%;
+}
+
+.table-master_berkas {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 1300px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-master_berkas th,
+.table-master_berkas td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-master_berkas thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}

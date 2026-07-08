@@ -138,6 +138,28 @@
   z-index: 2;
 }
 
+.table-berkas {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-berkas th,
+.table-berkas td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-berkas thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
 body.edit-pegawai {
   padding-bottom: 80px; /* ruang agar tombol tidak ketutup footer */
 }

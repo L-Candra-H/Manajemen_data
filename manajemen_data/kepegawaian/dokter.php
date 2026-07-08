@@ -273,7 +273,7 @@ $result = mysqli_query($conn, $sql);
     </div>
   </main>
 
-<?php include __DIR__ . '/../layout/footer.php'; ?>
+  <?php include __DIR__ . '/../layout/footer.php'; ?>
 
 <!-- Modal Tambah Dokter -->
 <div class="modal fade" id="modalTambah" tabindex="-1">

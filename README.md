@@ -4,5 +4,9 @@ HANYA PROGRAM BANTU UNTUK MEMUDAHKAN AKSES DI SIMRS TERUTAMA PADA MENU KEPEGAWAI
 
 Update terakhir :
 
-1\. Upload pertama, belum final. menu berkas kepegawaian belum selesai
+1\. Upload pertama
+
+2\. Update menu berkas kepegawaian
+
+
 
