@@ -1,0 +1,149 @@
+body {
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+.login-box {
+  position: absolute;
+  top: 40%;
+  right: 5%;              /* lebih rapat ke kanan */
+  background: rgba(0,0,0,0.6);
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;           /* lebar seragam */
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.login-box input,
+.login-box button {
+  display: block;
+  margin: 10px auto;      /* rata tengah di dalam kotak */
+  padding: 10px;
+  width: 95%;            /* penuh kotak */
+  border: none;
+  border-radius: 5px;
+}
+
+.login-box button {
+  background: #007BFF;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-info {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;            /* putih agar kontras dengan background */
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #ffd700; /* misalnya kuning emas agar lebih kontras */
+}
+
+.instansi-info {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 14px;
+  color: #222;              /* warna gelap */
+  text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 20px #ccc; /* efek glow terang */
+  line-height: 1.4;
+}
+
+.instansi-info p:first-child {
+  font-size: 22px;          /* perbesar nama instansi */
+  font-weight: bold;
+}
+
+/* Popup modal */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 1s ease; /* animasi fade-out */
+}
+
+.popup.fade-out {
+  opacity: 0;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.popup-content p {
+  margin: 0 0 15px;
+  color: red;
+  font-weight: bold;
+}
+
+.popup-content button {
+  padding: 6px 12px;
+  border: none;
+  background: #d33;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background: #a00;
+}
+
+/* Styling untuk logout */
+.logout-box {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.9);
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  font-family: Arial, sans-serif;
+}
+
+.logout-box h2 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.logout-box p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.logout-box a {
+  color: #d33;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.logout-box a:hover {
+  text-decoration: underline;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: 100% 100%;   /* penuh layar, bisa crop */
+}

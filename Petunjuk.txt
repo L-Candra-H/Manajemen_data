@@ -1,0 +1,11 @@
+Petunjuk :
+Letakkan di Server pada folder SIMRS Khanza berada (posisi sejajar dengan webapps dll)
+
+1. edit conf.php, isi yang sesuai dengan pengaturan conf.php yang ada di server masing-masing
+
+2. untuk buka : http://ip server/folder institusi (jika ada)/main_menu/ atau 
+http://ip server/main_menu/
+
+3. login menggunakan username dan password sesuai dengan yang telah diberikan dari SIMRS Khanza
+
+4. isi menu sesuai dengan hak akses yang diberikan kepada user (khususnya yang ada di menu C)

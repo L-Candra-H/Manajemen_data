@@ -1,0 +1,143 @@
+.table-wrapper {
+  display: block;
+  overflow-x: auto;   /* paksa horizontal scroll */
+  overflow-y: auto;   /* vertikal sesuai isi */
+  max-height: 75vh;
+  width: 100%;
+}
+
+.table-pegawai {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 2400px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-pegawai th,
+.table-pegawai td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-pegawai thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}
+
+.table-keanggotaan {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 1300px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-keanggotaan th,
+.table-keanggotaan td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-keanggotaan thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}
+
+.table-petugas {
+  width: max-content;
+  min-width: 1350px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-petugas th,
+.table-petugas td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-petugas thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-dokter {
+  width: max-content;
+  min-width: 1500px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-dokter th,
+.table-dokter td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-dokter thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-index-pegawai {
+  width: max-content;
+  min-width: 2400px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-index-pegawai th,
+.table-index-pegawai td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-index-pegawai thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-ambil-dankes {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-ambil-dankes th,
+.table-ambil-dankes td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-ambil-dankes thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+body.edit-pegawai {
+  padding-bottom: 80px; /* ruang agar tombol tidak ketutup footer */
+}
