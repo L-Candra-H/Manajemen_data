@@ -202,7 +202,7 @@ $kategoriRes = mysqli_query($conn, "SELECT DISTINCT kategori FROM master_berkas_
           </thead>
           <tbody>
             <?php if(mysqli_num_rows($result)===0): ?>
-              <tr><td colspan="8" class="text-center text-muted">Tidak ada data</td></tr>
+              <tr><td colspan="8" class="text-center text-muted">Silakan pilih kategori berkas untuk menampilkan data</td></tr>
             <?php else: $no=$offset+1; while($row=mysqli_fetch_assoc($result)): ?>
               <tr>
                 <td><?= $no++ ?></td>

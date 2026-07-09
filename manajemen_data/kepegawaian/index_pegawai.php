@@ -175,7 +175,7 @@ $result = ($sql != "") ? mysqli_query($conn, $sql) : null;
               <tbody>
               <?php
               if($sql == "") {
-                  echo "<tr><td colspan='27' class='text-center text-muted'>Silakan pilih pegawai terlebih dahulu</td></tr>";
+                  echo "<tr><td colspan='27' class='text-center text-muted'>Silakan pilih pegawai untuk menampilkan data</td></tr>";
               } else {
                   while($row = mysqli_fetch_assoc($result)) {
                       $now = new DateTime();

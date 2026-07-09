@@ -151,7 +151,7 @@ if ($filter !== '') {
               </thead>
               <tbody>
                 <?php if (!$q): ?>
-                  <tr><td colspan="33" class="text-center text-muted">Silakan pilih status untuk menampilkan data</td></tr>
+                  <tr><td colspan="33" class="text-center text-muted">Silakan pilih status aktif untuk menampilkan data</td></tr>
                 <?php elseif (mysqli_num_rows($q) === 0): ?>
                   <tr><td colspan="33" class="text-center text-muted">Tidak ada data pegawai</td></tr>
                 <?php else: ?>

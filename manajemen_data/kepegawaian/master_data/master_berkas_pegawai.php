@@ -139,7 +139,7 @@ $result = mysqli_query($conn,$sql);
           </thead>
           <tbody>
           <?php if(mysqli_num_rows($result) === 0): ?>
-            <tr><td colspan="5" class="text-center text-muted">Tidak ada data</td></tr>
+            <tr><td colspan="5" class="text-center text-muted">Silakan pilih kategori untuk menampilkan data</td></tr>
           <?php else: while($row=mysqli_fetch_assoc($result)): ?>
             <tr>
               <td><?= htmlspecialchars($row['kode']) ?></td>

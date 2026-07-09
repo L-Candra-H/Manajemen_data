@@ -194,7 +194,7 @@ while($row=mysqli_fetch_assoc($result)){
           </thead>
           <tbody>
           <?php if(empty($pegawaiData)): ?>
-            <tr><td colspan="4" class="text-center text-muted">Silakan pilih pegawai terlebih dahulu</td></tr>
+            <tr><td colspan="4" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
           <?php else: 
             foreach($pegawaiData as $pegId=>$data): ?>
               <tr>

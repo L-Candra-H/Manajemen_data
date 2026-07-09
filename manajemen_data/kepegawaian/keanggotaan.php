@@ -160,7 +160,7 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
               </thead>
               <tbody>
                 <?php if (mysqli_num_rows($result) === 0): ?>
-                  <tr><td colspan="6" class="text-center text-muted">Tidak ada data keanggotaan</td></tr>
+                  <tr><td colspan="6" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
                 <?php else: ?>
                   <?php while($row = mysqli_fetch_assoc($result)): ?>
                   <tr>

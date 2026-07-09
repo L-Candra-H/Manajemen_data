@@ -6,9 +6,9 @@ Update terakhir :
 
 1\. Upload pertama
 
-2\. Update menu Berkas kepegawaian
+2\. Update menu Berkas Kepegawaian
 
 3\. Perbaikan menu
 
-4\. Update menu Riwayat Jabatan
+4\. Update menu Riwayat Jabatan dan menu lain sebelumnya
 
