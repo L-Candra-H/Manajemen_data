@@ -140,7 +140,7 @@
 
 .table-berkas {
   width: max-content;
-  min-width: 1300px;
+  min-width: 1000px;
   border-collapse: collapse;
   font-size: 12px;
 }
@@ -153,6 +153,28 @@
 }
 
 .table-berkas thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-riwayat_jabatan {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-riwayat_jabatan th,
+.table-riwayat_jabatan td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-riwayat_jabatan thead th {
   position: sticky;
   top: 0;
   background: #343a40;
