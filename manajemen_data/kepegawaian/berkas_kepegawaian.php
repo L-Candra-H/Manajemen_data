@@ -175,7 +175,8 @@ $kategoriRes = mysqli_query($conn, "SELECT DISTINCT kategori FROM master_berkas_
       <form method="get" class="mb-3">
         <label for="filter" class="form-label">Filter Kategori Berkas:</label>
         <select name="filter" id="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
-          <option value="ALL" <?= $filter==='ALL'?'selected':'' ?>>-- Pilih Semua --</option>
+          <option value="">-- Pilih Kategori Berkas --</option>
+          <option value="ALL" <?= $filter==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
           <?php while($kat=mysqli_fetch_assoc($kategoriRes)): ?>
             <option value="<?= htmlspecialchars($kat['kategori']) ?>" <?= $filter==$kat['kategori']?'selected':'' ?>>
               <?= htmlspecialchars($kat['kategori']) ?>

@@ -116,7 +116,8 @@ $result = mysqli_query($conn,$sql);
         <form method="get" class="mb-3">
           <label for="filter" class="form-label">Filter Kategori :</label>
           <select name="filter" id="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
-            <option value="ALL" <?= $filter==='ALL'?'selected':'' ?>>-- Pilih Semua --</option>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="ALL" <?= $filter==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
             <option value="Tenaga klinis Dokter Umum" <?= $filter==='Tenaga klinis Dokter Umum'?'selected':'' ?>>Tenaga klinis Dokter Umum</option>
             <option value="Tenaga klinis Dokter Spesialis" <?= $filter==='Tenaga klinis Dokter Spesialis'?'selected':'' ?>>Tenaga klinis Dokter Spesialis</option>
             <option value="Tenaga klinis Perawat dan Bidan" <?= $filter==='Tenaga klinis Perawat dan Bidan'?'selected':'' ?>>Tenaga klinis Perawat dan Bidan</option>
