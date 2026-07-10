@@ -182,6 +182,72 @@
   z-index: 2;
 }
 
+.table-riwayat_pendidikan {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-riwayat_pendidikan th,
+.table-riwayat_pendidikan td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-riwayat_pendidikan thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-riwayat_naik_gaji {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-riwayat_naik_gaji th,
+.table-riwayat_naik_gaji td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-riwayat_naik_gaji thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-riwayat_seminar {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-riwayat_seminar th,
+.table-riwayat_seminar td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-riwayat_seminar thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
 body.edit-pegawai {
   padding-bottom: 80px; /* ruang agar tombol tidak ketutup footer */
 }

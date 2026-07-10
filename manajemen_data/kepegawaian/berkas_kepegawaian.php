@@ -32,6 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'insert'
             }
         }
 
+        // validasi ekstensi
+            $allowedExt = ['pdf','jpg','jpeg','png','gif'];
+            $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            if (!in_array($fileExt, $allowedExt)) {
+                die("Format file tidak diizinkan. Hanya PDF dan gambar (JPG, PNG, GIF).");
+            }
+
         // pindahkan file
         if (move_uploaded_file($_FILES['file_berkas']['tmp_name'], $targetFile)) {
             // path relatif untuk DB

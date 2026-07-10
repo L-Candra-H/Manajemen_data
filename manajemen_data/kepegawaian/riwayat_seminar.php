@@ -33,23 +33,22 @@ while($peg = mysqli_fetch_assoc($listPegawaiRes)){
     $listPegawai[] = $peg;
 }
 
-// proses tambah riwayat jabatan
+// proses tambah riwayat seminar
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'insert') {
     $id              = $_POST['id'] ?? '';
-    $jabatan         = $_POST['jabatan'] ?? '';
-    $tmt_pangkat     = $_POST['tmt_pangkat'] ?? date('Y-m-d');
-    $tmt_pangkat_yad = $_POST['tmt_pangkat_yad'] ?? date('Y-m-d');
-    $pejabat_penetap = $_POST['pejabat_penetap'] ?? '';
-    $nomor_sk        = $_POST['nomor_sk'] ?? '';
-    $tgl_sk          = $_POST['tgl_sk'] ?? date('Y-m-d');
-    $dasar_peraturan = $_POST['dasar_peraturan'] ?? '';
-    $masa_kerja      = (int)($_POST['masa_kerja'] ?? 0);
-    $bln_kerja       = (int)($_POST['bln_kerja'] ?? 0);
+    $tingkat         = $_POST['tingkat'] ?? '';
+    $jenis           = $_POST['jenis'] ?? '';
+    $nama_seminar    = $_POST['nama_seminar'] ?? '';
+    $peranan         = $_POST['peranan'] ?? '';
+    $mulai           = $_POST['mulai'] ?? '';
+    $selesai         = $_POST['selesai'] ?? '';
+    $penyelengara    = $_POST['penyelengara'] ?? '';
+    $tempat          = $_POST['tempat'] ?? '';
     $filePath        = "";
 
     if (!empty($_FILES['berkas']['name'])) {
         $fileName   = basename($_FILES['berkas']['name']);
-        $targetDir  = __DIR__ . "/../../webapps/penggajian/pages/riwayatpangkat/berkas/";
+        $targetDir  = __DIR__ . "/../../webapps/penggajian/pages/riwayatseminar/berkas/";
         $targetFile = $targetDir . $fileName;
 
         // pastikan folder ada
@@ -63,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'insert'
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if (in_array($ext, ['jpg','jpeg','png','gif','pdf'])) {
             if (move_uploaded_file($_FILES['berkas']['tmp_name'], $targetFile)) {
-                $filePath = "pages/riwayatpangkat/berkas/" . $fileName;
+                $filePath = "pages/riwayatseminar/berkas/" . $fileName;
             } else {
                 die("Upload berkas gagal, data tidak disimpan.");
             }
@@ -72,13 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'insert'
 
     // hanya insert kalau upload sukses
     if ($filePath !== "") {
-        $stmt = $conn->prepare("INSERT INTO riwayat_jabatan 
-            (id, jabatan, tmt_pangkat, tmt_pangkat_yad, pejabat_penetap, 
-             nomor_sk, tgl_sk, dasar_peraturan, masa_kerja, bln_kerja, berkas) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isssssssiis", $id, $jabatan, $tmt_pangkat, $tmt_pangkat_yad,
-                          $pejabat_penetap, $nomor_sk, $tgl_sk, $dasar_peraturan,
-                          $masa_kerja, $bln_kerja, $filePath);
+        $stmt = $conn->prepare("INSERT INTO riwayat_seminar
+            (id, tingkat, jenis, nama_seminar, peranan, mulai, 
+             selesai, penyelengara, tempat, berkas)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssss", $id, $tingkat, $jenis, $nama_seminar,
+                          $peranan, $mulai, $selesai, $penyelengara, $tempat, $filePath);
         $stmt->execute();
         $stmt->close();
     }
@@ -86,26 +84,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'insert'
 
 // query data pegawai + riwayat
 if($filter===''){
-    $sql = "SELECT p.id AS peg_id, p.nik, p.nama,
-                   r.jabatan, r.tmt_pangkat, r.tmt_pangkat_yad
+    $sql = "SELECT p.id AS peg_id, p.nik, p.nama, d.nama AS departemen, p.bidang,
+                   r.nama_seminar, r.mulai, r.penyelengara, r.tempat
             FROM pegawai p
-            LEFT JOIN riwayat_jabatan r ON r.id = p.id
+            LEFT JOIN departemen d ON p.departemen = d.dep_id
+            LEFT JOIN riwayat_seminar r ON r.id = p.id
             WHERE 1=0";
 } elseif($filter==='ALL'){
-    $sql = "SELECT p.id AS peg_id, p.nik, p.nama,
-                   r.jabatan, r.tmt_pangkat, r.tmt_pangkat_yad
+    $sql = "SELECT p.id AS peg_id, p.nik, p.nama, d.nama AS departemen, p.bidang,
+                   r.nama_seminar, r.mulai, r.penyelengara, r.tempat
             FROM pegawai p
-            LEFT JOIN riwayat_jabatan r ON r.id = p.id
+            LEFT JOIN departemen d ON p.departemen = d.dep_id
+            LEFT JOIN riwayat_seminar r ON r.id = p.id
             WHERE p.stts_aktif='AKTIF'
-            ORDER BY p.nik ASC, r.jabatan ASC
+            ORDER BY p.nik ASC, r.nama_seminar ASC
             LIMIT $limit OFFSET $offset";
 } else {
-    $sql = "SELECT p.id AS peg_id, p.nik, p.nama,
-                   r.jabatan, r.tmt_pangkat, r.tmt_pangkat_yad
+    $sql = "SELECT p.id AS peg_id, p.nik, p.nama, d.nama AS departemen, p.bidang,
+                   r.nama_seminar, r.mulai, r.penyelengara, r.tempat
             FROM pegawai p
-            LEFT JOIN riwayat_jabatan r ON r.id = p.id
+            LEFT JOIN departemen d ON p.departemen = d.dep_id
+            LEFT JOIN riwayat_seminar r ON r.id = p.id
             WHERE p.nik='".mysqli_real_escape_string($conn,$filter)."'
-            ORDER BY r.jabatan ASC
+            ORDER BY r.nama_seminar ASC
             LIMIT $limit OFFSET $offset";
 }
 $result = mysqli_query($conn,$sql);
@@ -130,14 +131,17 @@ while($row=mysqli_fetch_assoc($result)){
         $pegawaiData[$pegId] = [
             'nik'=>$row['nik'],
             'nama'=>$row['nama'],
+            'departemen'=>$row['departemen'],
+            'bidang'=>$row['bidang'],
             'riwayat'=>[]
         ];
     }
-    if($row['jabatan']!==null){
+    if($row['nama_seminar']!==null){
         $pegawaiData[$pegId]['riwayat'][] = [
-            'jabatan'=>$row['jabatan'],
-            'tmt_pangkat'=>$row['tmt_pangkat'],
-            'tmt_pangkat_yad'=>$row['tmt_pangkat_yad']
+            'nama_seminar'=>$row['nama_seminar'],
+            'mulai'=>$row['mulai'],
+            'penyelengara'=>$row['penyelengara'],
+            'tempat'=>$row['tempat']
         ];
     }
 }
@@ -147,7 +151,7 @@ while($row=mysqli_fetch_assoc($result)){
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Riwayat Jabatan</title>
+  <title>Riwayat Kegiatan Ilmiah & Pelatihan Pegawai</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../layout/header.css">
   <link rel="stylesheet" href="pegawai.css">
@@ -158,7 +162,7 @@ while($row=mysqli_fetch_assoc($result)){
 <main class="main-content container-fluid mt-4">
   <div class="card shadow">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Riwayat Jabatan</h5>
+      <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Riwayat Kegiatan Ilmiah & Pelatihan Pegawai</h5>
       <div class="d-flex gap-2">
         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
         <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
@@ -183,41 +187,47 @@ while($row=mysqli_fetch_assoc($result)){
 
       <!-- Tabel Pegawai -->
       <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-riwayat_jabatan align-middle">
+        <table class="table table-striped table-bordered table-riwayat_seminar align-middle">
           <thead class="table-dark text-center">
             <tr>
               <th>NIP</th>
               <th>Nama</th>
-              <th>Riwayat Jabatan Pegawai</th>
+              <th>Departemen</th>
+              <th>Bidang</th>
+              <th>Riwayat Kegiatan Ilmiah & Pelatihan Pegawai</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
           <?php if(empty($pegawaiData)): ?>
-            <tr><td colspan="4" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
+            <tr><td colspan="6" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
           <?php else: 
             foreach($pegawaiData as $pegId=>$data): ?>
               <tr>
                 <td><?= htmlspecialchars($data['nik']) ?></td>
                 <td><?= htmlspecialchars($data['nama']) ?></td>
+                <td><?= htmlspecialchars($data['departemen']) ?></td>
+                <td><?= htmlspecialchars($data['bidang']) ?></td>
                 <td>
                   <?php if(!empty($data['riwayat'])): ?>
                     <table class="table table-sm table-bordered mb-0">
                       <thead class="table-light">
                         <tr>
                           <th>No</th>
-                          <th>Jabatan</th>
-                          <th>TMT Jabatan</th>
-                          <th>TMT Jabatan YAD</th>
+                          <th>Nama Kegiatan</th>
+                          <th>Tanggal</th>
+                          <th>Penyelenggara</th>
+                          <th>Tempat</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php $no=1; foreach($data['riwayat'] as $rj): ?>
                           <tr>
                             <td><?= $no++ ?></td>
-                            <td><span class="badge bg-info"><?= htmlspecialchars($rj['jabatan']) ?></span></td>
-                            <td class="text-primary"><?= htmlspecialchars($rj['tmt_pangkat']) ?></td>
-                            <td class="text-success"><?= htmlspecialchars($rj['tmt_pangkat_yad']) ?></td>
+                            <td><span class="badge bg-info"><?= htmlspecialchars($rj['nama_seminar']) ?></span></td>
+                            <td class="text-primary"><?= htmlspecialchars($rj['mulai']) ?></td>
+                            <td class="text-success"><?= htmlspecialchars($rj['penyelengara']) ?></td>
+                            <td class="text-success"><?= htmlspecialchars($rj['tempat']) ?></td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>
@@ -225,7 +235,7 @@ while($row=mysqli_fetch_assoc($result)){
                   <?php endif; ?>
                 </td>
                 <td class="text-center">
-                  <a href="detail_riwayat_jabatan.php?id=<?= $pegId ?>" class="btn btn-info btn-sm">Detail</a>
+                  <a href="detail_riwayat_seminar.php?id=<?= $pegId ?>" class="btn btn-info btn-sm">Detail</a>
                 </td>
               </tr>
           <?php endforeach; endif; ?>
@@ -267,7 +277,7 @@ while($row=mysqli_fetch_assoc($result)){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header bg-success text-white">
-        <h5 class="modal-title">Tambah Riwayat Jabatan</h5>
+        <h5 class="modal-title">Tambah Riwayat Kegiatan Ilmiah & Pelatihan</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <form method="post" enctype="multipart/form-data" action="">
@@ -294,48 +304,48 @@ while($row=mysqli_fetch_assoc($result)){
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Jabatan</label>
-                <input type="text" name="jabatan" class="form-control">
+                <label>Level</label>
+                  <select name="tingkat" class="form-select">
+                    <option value="">-- Pilih Tingkat --</option>
+                    <option>Local</option><option>Regional</option><option>Nasional</option><option>Internasional</option>
+                  </select>
               </div>
 
               <div class="mb-3">
-                <label class="form-label">TMT Jabatan</label>
-                <input type="date" name="tmt_pangkat" class="form-control">
+                <label>Jenis Kegiatan</label>
+                  <select name="jenis" class="form-select">
+                    <option value="">-- Pilih Jenis --</option>
+                    <option>WORKSHOP</option><option>SIMPOSIUM</option><option>SEMINAR</option><option>FGD</option>
+                    <option>PELATIHAN</option><option>LAINNYA</option>
+                  </select>
               </div>
 
               <div class="mb-3">
-                <label class="form-label">TMT Jabatan YAD</label>
-                <input type="date" name="tmt_pangkat_yad" class="form-control">
+                <label class="form-label">Nama Kegiatan</label>
+                <input type="text" name="nama_seminar" class="form-control">
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Pejabat Penetap</label>
-                <input type="text" name="pejabat_penetap" class="form-control">
+                <label class="form-label">Peranan</label>
+                <input type="text" name="peranan" class="form-control">
               </div>
             </div>
 
             <!-- Kolom Kiri -->
             <div class="col-md-6">
-              <label>Nomor SK</label>
-              <input type="text" name="nomor_sk" class="form-control">
+              <label>Tanggal Mulai</label>
+              <input type="date" name="mulai" class="form-control">
 
-              <label>Tanggal SK</label>
-              <input type="date" name="tgl_sk" class="form-control">
+              <label>Sampai Dengan</label>
+              <input type="date" name="selesai" class="form-control">
 
-              <label>Dasar Peraturan</label>
-              <input type="text" name="dasar_peraturan" class="form-control">
+              <label>Penyelenggara</label>
+              <input type="text" name="penyelengara" class="form-control">
 
-              <div class="mb-3">
-                <label class="form-label">Masa Kerja</label>
-                <div class="input-group">
-                  <input type="number" name="masa_kerja" class="form-control" placeholder="Lama Tahun">
-                  <span class="input-group-text">Tahun</span>
-                  <input type="number" name="bln_kerja" class="form-control" placeholder="Lama Bulan">
-                  <span class="input-group-text">Bulan</span>
-                </div>
-              </div>
+              <label>Tempat</label>
+              <input type="text" name="tempat" class="form-control">
 
-              <label>Berkas Pengangkatan</label>
+              <label>Sertifikat</label>
               <input type="file" name="berkas" class="form-control" accept="image/*">
             </div>
           </div>

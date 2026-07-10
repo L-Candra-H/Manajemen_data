@@ -12,3 +12,5 @@ Update terakhir :
 
 4\. Update menu Riwayat Jabatan dan menu lain sebelumnya
 
+5\. Update menu Riwayat Pendidikan, Riwayat Naik Gaji dan Kegiatan Ilmiah \& Pelatihan
+

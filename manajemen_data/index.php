@@ -110,7 +110,7 @@ if(!isset($_SESSION['user_login'])) {
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["kegiatan_ilmiah"])): ?>
-                <a href="kepegawaian/kegiatan_ilmiah.php" class="btn btn-primary btn-sm mt-3">📋 Kegiatan Ilmiah & Pelatihan</a>
+                <a href="kepegawaian/riwayat_seminar.php" class="btn btn-primary btn-sm mt-3">📋 Kegiatan Ilmiah & Pelatihan</a>
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["riwayat_penghargaan"])): ?>
