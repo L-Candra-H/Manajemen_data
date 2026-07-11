@@ -198,11 +198,14 @@ if ($filter !== '') {
                           <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h5 class="modal-title">Foto Pegawai</h5>
+                                <!-- Tambahkan nama pegawai di judul modal -->
+                                <h5 class="modal-title">Foto Pegawai - <?= htmlspecialchars($row['nama']) ?></h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                               </div>
                               <div class="modal-body text-center">
                                 <img src="<?= $path ?>" alt="Foto Pegawai" class="img-fluid">
+                                <!-- Bisa juga tambahkan nama di bawah foto -->
+                                <p class="mt-2 fw-bold"><?= htmlspecialchars($row['nama']) ?></p>
                               </div>
                             </div>
                           </div>
