@@ -66,14 +66,28 @@ if($filter == 'ALL') {
             LEFT JOIN emergency_index e ON p.kode_emergency = e.kode_emergency
             LEFT JOIN pendidikan d ON p.pendidikan = d.tingkat
             LEFT JOIN (
-                SELECT ep.id, MAX(ep.kode_evaluasi) AS kode_evaluasi
-                FROM evaluasi_kinerja_pegawai ep GROUP BY ep.id
-            ) ep ON ep.id = p.nik
+                SELECT ep.id, ep.kode_evaluasi
+                FROM evaluasi_kinerja_pegawai ep
+                WHERE (ep.tahun, ep.bulan) = (
+                    SELECT e2.tahun, e2.bulan
+                    FROM evaluasi_kinerja_pegawai e2
+                    WHERE e2.id = ep.id
+                    ORDER BY e2.tahun DESC, e2.bulan DESC
+                    LIMIT 1
+                )
+            ) ep ON ep.id = p.id
             LEFT JOIN evaluasi_kinerja ev ON ep.kode_evaluasi = ev.kode_evaluasi
             LEFT JOIN (
-                SELECT pp.id, MAX(pp.kode_pencapaian) AS kode_pencapaian
-                FROM pencapaian_kinerja_pegawai pp GROUP BY pp.id
-            ) pp ON pp.id = p.nik
+                SELECT pp.id, pp.kode_pencapaian
+                FROM pencapaian_kinerja_pegawai pp
+                WHERE (pp.tahun, pp.bulan) = (
+                    SELECT p2.tahun, p2.bulan
+                    FROM pencapaian_kinerja_pegawai p2
+                    WHERE p2.id = pp.id
+                    ORDER BY p2.tahun DESC, p2.bulan DESC
+                    LIMIT 1
+                )
+            ) pp ON pp.id = p.id
             LEFT JOIN pencapaian_kinerja pc ON pp.kode_pencapaian = pc.kode_pencapaian
             LEFT JOIN (
                 SELECT id, COALESCE(SUM(dankes),0) AS total_dankes
@@ -100,14 +114,28 @@ if($filter == 'ALL') {
             LEFT JOIN emergency_index e ON p.kode_emergency = e.kode_emergency
             LEFT JOIN pendidikan d ON p.pendidikan = d.tingkat
             LEFT JOIN (
-                SELECT ep.id, MAX(ep.kode_evaluasi) AS kode_evaluasi
-                FROM evaluasi_kinerja_pegawai ep GROUP BY ep.id
-            ) ep ON ep.id = p.nik
+                SELECT ep.id, ep.kode_evaluasi
+                FROM evaluasi_kinerja_pegawai ep
+                WHERE (ep.tahun, ep.bulan) = (
+                    SELECT e2.tahun, e2.bulan
+                    FROM evaluasi_kinerja_pegawai e2
+                    WHERE e2.id = ep.id
+                    ORDER BY e2.tahun DESC, e2.bulan DESC
+                    LIMIT 1
+                )
+            ) ep ON ep.id = p.id
             LEFT JOIN evaluasi_kinerja ev ON ep.kode_evaluasi = ev.kode_evaluasi
             LEFT JOIN (
-                SELECT pp.id, MAX(pp.kode_pencapaian) AS kode_pencapaian
-                FROM pencapaian_kinerja_pegawai pp GROUP BY pp.id
-            ) pp ON pp.id = p.nik
+                SELECT pp.id, pp.kode_pencapaian
+                FROM pencapaian_kinerja_pegawai pp
+                WHERE (pp.tahun, pp.bulan) = (
+                    SELECT p2.tahun, p2.bulan
+                    FROM pencapaian_kinerja_pegawai p2
+                    WHERE p2.id = pp.id
+                    ORDER BY p2.tahun DESC, p2.bulan DESC
+                    LIMIT 1
+                )
+            ) pp ON pp.id = p.id
             LEFT JOIN pencapaian_kinerja pc ON pp.kode_pencapaian = pc.kode_pencapaian
             LEFT JOIN (
                 SELECT id, COALESCE(SUM(dankes),0) AS total_dankes
