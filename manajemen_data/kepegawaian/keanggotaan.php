@@ -248,7 +248,7 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label">Anggota Jamsostek</label>
+            <label class="form-label">Anggota BPJS Ketenagakerjaan</label>
             <select name="jamsostek" id="editJamsostek" class="form-select">
               <option value="">-- Pilih --</option>
               <?php foreach($jamsostekArr as $opt): ?>
@@ -257,7 +257,7 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label">Anggota BPJS</label>
+            <label class="form-label">Anggota BPJS Kesehatan</label>
             <select name="bpjs" id="editBpjs" class="form-select">
               <option value="">-- Pilih --</option>
               <?php foreach($bpjsArr as $opt): ?>

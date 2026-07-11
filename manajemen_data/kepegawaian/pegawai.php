@@ -189,7 +189,24 @@ if ($filter !== '') {
                           $appFolder = explode('/', trim($_SERVER['REQUEST_URI'], '/'))[0];
                           $path = "/" . $appFolder . "/webapps/penggajian/" . htmlspecialchars($row['photo']);
                         ?>
-                        <img src="<?= $path ?>" alt="Foto Pegawai" class="img-thumbnail" style="width:35px;height:35px;">
+                        <!-- Thumbnail -->
+                        <img src="<?= $path ?>" alt="Foto Pegawai" class="img-thumbnail" style="width:35px;height:35px;cursor:pointer"
+                             data-bs-toggle="modal" data-bs-target="#lihatFoto<?= $row['id'] ?>">
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="lihatFoto<?= $row['id'] ?>" tabindex="-1">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Foto Pegawai</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body text-center">
+                                <img src="<?= $path ?>" alt="Foto Pegawai" class="img-fluid">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       <?php else: ?>
                         <span class="text-muted">No Photo</span>
                       <?php endif; ?>
