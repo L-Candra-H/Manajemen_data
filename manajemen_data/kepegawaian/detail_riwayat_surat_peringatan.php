@@ -15,19 +15,19 @@ $conn = bukakoneksi();
 
 // --- LOGIKA HAPUS ---
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hapus_id'])){
-    $id         = mysqli_real_escape_string($conn, $_POST['hapus_id']);
-    $pendidikan = mysqli_real_escape_string($conn, $_POST['hapus_pendidikan']);
-    $thn_lulus  = mysqli_real_escape_string($conn, $_POST['hapus_thn_lulus']);
+    $id              = mysqli_real_escape_string($conn, $_POST['hapus_id']);
+    $nama_peringatan = mysqli_real_escape_string($conn, $_POST['hapus_nama_peringatan']);
+    $tanggal         = mysqli_real_escape_string($conn, $_POST['hapus_tanggal']);
 
-    $sqlDel = "DELETE FROM riwayat_pendidikan 
-               WHERE id='$id' 
-                  AND pendidikan='$pendidikan' 
-                  AND thn_lulus='$thn_lulus' 
+    $sqlDel = "DELETE FROM riwayat_surat_peringatan 
+               WHERE id='$id'
+                 AND nama_peringatan='$nama_peringatan' 
+                 AND tanggal='$tanggal' 
                LIMIT 1";
 
     if(mysqli_query($conn,$sqlDel)){
         $id = $_GET['id'] ?? '';
-        header("Location: detail_riwayat_pendidikan.php?id=".$id);
+        header("Location: detail_riwayat_surat_peringatan.php?id=".$id);
         exit;
     } else {
         die("Gagal menghapus: ".mysqli_error($conn)." | Query: ".$sqlDel);
@@ -36,11 +36,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hapus_id'])){
 
 // --- QUERY DATA RIWAYAT ---
 $id = $_GET['id'] ?? '';
-$sql = "SELECT r.*, p.nik, p.nama
-        FROM riwayat_pendidikan r
-        INNER JOIN pegawai p ON r.id=p.id
-        WHERE r.id='".mysqli_real_escape_string($conn,$id)."'
-        ORDER BY r.pendidikan ASC";
+$sql = "SELECT r.*, p.nik, p.nama 
+        FROM riwayat_surat_peringatan r 
+        INNER JOIN pegawai p ON r.id=p.id 
+        WHERE r.id='".mysqli_real_escape_string($conn,$id)."' 
+        ORDER BY r.nama_peringatan ASC";
 $res = mysqli_query($conn,$sql);
 
 $riwayat = [];
@@ -53,8 +53,8 @@ $dataPegawai = $riwayat[0] ?? null;
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-  <title>Detail Riwayat Pendidikan</title>
+  <meta charset="UTF-8">
+  <title>Detail Riwayat Surat Peringatan</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../layout/header.css">
   <link rel="stylesheet" href="pegawai.css">
@@ -67,61 +67,51 @@ $dataPegawai = $riwayat[0] ?? null;
   <div class="card shadow">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
       <h5 class="mb-0 text-uppercase text-center flex-grow-1">
-        Detail Riwayat Pendidikan - <?= htmlspecialchars($dataPegawai['nama'] ?? '') ?>
+        Detail Riwayat Surat Peringatan - <?= htmlspecialchars($dataPegawai['nama'] ?? '') ?>
       </h5>
       <div class="d-flex gap-2">
-        <a href="riwayat_pendidikan.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+        <a href="riwayat_surat_peringatan.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
       </div>
     </div>
     <div class="card-body">
 
-      <!-- Ringkasan Riwayat Pendidikan -->
+      <!-- Ringkasan Riwayat Surat Peringatan -->
       <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-riwayat_pendidikan align-middle">
+        <table class="table table-striped table-bordered table-riwayat_surat_peringatan align-middle">
           <thead class="table-dark text-center">
             <tr>
-              <th>Pendidikan</th>
-              <th>Sekolah/Kampus</th>
-              <th>Jurusan</th>
-              <th>Lulus</th>
-              <th>Kepala/Rektor</th>
-              <th>Asal Pendanaan</th>
-              <th>Keterangan</th>
-              <th>Status</th>
+              <th>Jenis Peringatan</th>
+              <th>Nama Peringatan</th>
+              <th>Tanggal</th>
               <th>Berkas</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <?php if(empty($riwayat)): ?>
-              <tr><td colspan="10" class="text-center text-muted">Tidak ada riwayat pendidikan</td></tr>
+              <tr><td colspan="10" class="text-center text-muted">Tidak ada riwayat surat peringatan</td></tr>
             <?php else: ?>
-              <?php foreach($riwayat as $rp): ?>
+              <?php foreach($riwayat as $rj): ?>
                 <tr>
-                  <td><?= $rp['pendidikan'] ?></td>
-                  <td><?= $rp['sekolah'] ?></td>
-                  <td><?= $rp['jurusan'] ?></td>
-                  <td><?= $rp['thn_lulus'] ?></td>
-                  <td><?= $rp['kepala'] ?></td>
-                  <td><?= $rp['pendanaan'] ?></td>
-                  <td><?= $rp['keterangan'] ?></td>
-                  <td><?= $rp['status'] ?></td>
+                  <td><?= $rj['jenis'] ?></td>
+                  <td><?= $rj['nama_peringatan'] ?></td>
+                  <td><?= $rj['tanggal'] ?></td>
                   <td class="text-center">
-                    <?php if($rp['berkas'] && !str_ends_with($rp['berkas'],'.pdf')): ?>
+                    <?php if($rj['berkas'] && !str_ends_with($rj['berkas'],'.pdf')): ?>
                       <?php 
                         $appFolder = explode('/', trim($_SERVER['REQUEST_URI'], '/'))[0];
-                        $path = "/" . $appFolder  . "/webapps/penggajian/pages/riwayatpendidikan/berkas/" . basename($rp['berkas']);
+                        $path = "/" . $appFolder . "/webapps/penggajian/pages/riwayatsuratperingatan/berkas/" . basename($rj['berkas']);
                       ?>
                       <!-- Thumbnail -->
                       <img src="<?= $path ?>" class="img-thumbnail" style="max-height:80px;cursor:pointer"
-                           data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rp['id'] ?>">
+                           data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rj['id_nama_peringatan'] ?>">
 
-                      <!-- Modal gambar -->                        
-                      <div class="modal fade" id="lihatBerkas<?= $rp['id'] ?>" tabindex="-1">
+                      <!-- Modal gambar -->
+                      <div class="modal fade" id="lihatBerkas<?= $rj['id_nama_peringatan'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title">Berkas Pendidikan</h5>
+                              <h5 class="modal-title">Berkas Surat Peringatan</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body text-center">
@@ -130,20 +120,20 @@ $dataPegawai = $riwayat[0] ?? null;
                           </div>
                         </div>
                       </div>
-                    <?php elseif($rp['berkas'] && str_ends_with($rp['berkas'],'.pdf')): ?>
-                      <?php
+                    <?php elseif($rj['berkas'] && str_ends_with($rj['berkas'],'.pdf')): ?>
+                      <?php 
                         $appFolder = explode('/', trim($_SERVER['REQUEST_URI'], '/'))[0];
-                        $path = "/" . $appFolder . "/webapps/penggajian/pages/riwayatpendidikan/berkas/" . basename($rp['berkas']);
+                        $path = "/" . $appFolder . "/webapps/penggajian/pages/riwayatsuratperingatan/berkas/" . basename($rj['berkas']);
                       ?>
                       <button type="button" class="btn btn-sm btn-info" 
-                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rp['id'] ?>">
+                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id_nama_peringatan'] ?>">
                         Lihat PDF
                       </button>
-                      <div class="modal fade" id="lihatPdf<?= $rp['id'] ?>" tabindex="-1">
+                      <div class="modal fade" id="lihatPdf<?= $rj['id_nama_peringatan'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-xl">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title">Berkas Pendidikan (PDF)</h5>
+                              <h5 class="modal-title">Berkas Surat Peringatan (PDF)</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
@@ -157,10 +147,10 @@ $dataPegawai = $riwayat[0] ?? null;
                     <?php endif; ?>
                   </td>
                   <td class="text-center">
-                    <form method="post" onsubmit="return confirm('Yakin hapus riwayat pendidikan ini?')">
-                      <input type="hidden" name="hapus_id" value="<?= $rp['id'] ?>">
-                      <input type="hidden" name="hapus_pendidikan" value="<?= $rp['pendidikan'] ?>">
-                      <input type="hidden" name="hapus_thn_lulus" value="<?= $rp['thn_lulus'] ?>">
+                    <form method="post" onsubmit="return confirm('Yakin hapus riwayat jabatan ini?')">
+                      <input type="hidden" name="hapus_id" value="<?= $rj['id'] ?>">
+                      <input type="hidden" name="hapus_nama_peringatan" value="<?= $rj['nama_peringatan'] ?>">
+                      <input type="hidden" name="hapus_tanggal" value="<?= $rj['tanggal'] ?>">
                       <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                     </form>
                   </td>

@@ -16,3 +16,7 @@ Daftar Update terakhir :
 
 6\. Perbaikan menu Keanggotaan dan penambahan untuk lihat photo pada menu Data Pegawai
 
+7\. Finalisasi menu C 
+
+
+

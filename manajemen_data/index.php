@@ -79,7 +79,9 @@ if(!isset($_SESSION['user_login'])) {
               <?php if (!empty($_SESSION["pegawai_admin"])): ?>
                 <a href="kepegawaian/pegawai.php" class="btn btn-primary btn-sm mt-3">📋 Data Pegawai</a>
                 <a href="kepegawaian/index_pegawai.php" class="btn btn-primary btn-sm mt-3">📋 Index Pegawai</a>
-              <?php endif; ?>
+                <a href="kepegawaian/riwayat_evaluasi.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Evaluasi</a>
+                <a href="kepegawaian/riwayat_pencapaian.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Pencapaian</a>
+                <?php endif; ?>
 
               <?php if (!empty($_SESSION["petugas"])): ?>
                 <a href="kepegawaian/petugas.php" class="btn btn-primary btn-sm mt-3">📋 Petugas</a>
@@ -124,6 +126,7 @@ if(!isset($_SESSION['user_login'])) {
               <?php if (!empty($_SESSION["riwayat_surat_peringatan"])): ?>
                 <a href="kepegawaian/riwayat_surat_peringatan.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Surat Peringatan</a>
               <?php endif; ?>
+
             </div>
           </div>
         </div>
