@@ -106,7 +106,7 @@ $dataPegawai = $riwayat[0] ?? null;
                   <td><?= $rj['judul_penelitian'] ?></td>
                   <td><?= $rj['judul_jurnal'] ?></td>
                   <td><?= $rj['tahun'] ?></td>
-                  <td><?= $rj['biaya'] ?></td>
+                  <td><?= $rj['biaya_penelitian'] ?></td>
                   <td><?= $rj['asal_dana'] ?></td>
                   <td class="text-center">
                     <?php if($rj['berkas'] && !str_ends_with($rj['berkas'],'.pdf')): ?>
@@ -116,7 +116,7 @@ $dataPegawai = $riwayat[0] ?? null;
                       ?>
                       <!-- Thumbnail -->
                       <img src="<?= $path ?>" class="img-thumbnail" style="max-height:80px;cursor:pointer"
-                           data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rj['id_jenis_penelitian'] ?>">
+                           data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rj['id'] ?>">
 
                       <!-- Modal gambar -->
                       <div class="modal fade" id="lihatBerkas<?= $rj['id_jenis_penelitian'] ?>" tabindex="-1">
@@ -138,7 +138,7 @@ $dataPegawai = $riwayat[0] ?? null;
                         $path = "/" . $appFolder . "/webapps/penggajian/pages/riwayatpenelitian/berkas/" . basename($rj['berkas']);
                       ?>
                       <button type="button" class="btn btn-sm btn-info" 
-                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id_jenis_penelitian'] ?>">
+                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id'] ?>">
                         Lihat PDF
                       </button>
                       <div class="modal fade" id="lihatPdf<?= $rj['id_jenis_penelitian'] ?>" tabindex="-1">

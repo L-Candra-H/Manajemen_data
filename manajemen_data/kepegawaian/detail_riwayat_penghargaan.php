@@ -110,7 +110,7 @@ $dataPegawai = $riwayat[0] ?? null;
                       ?>
                       <!-- Thumbnail -->
                       <img src="<?= $path ?>" class="img-thumbnail" style="max-height:80px;cursor:pointer"
-                           data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rj['id_nama_penghargaan'] ?>">
+                           data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rj['id'] ?>">
 
                       <!-- Modal gambar -->
                       <div class="modal fade" id="lihatBerkas<?= $rj['id_nama_penghargaan'] ?>" tabindex="-1">
@@ -132,7 +132,7 @@ $dataPegawai = $riwayat[0] ?? null;
                         $path = "/" . $appFolder . "/webapps/penggajian/pages/riwayatpenghargaan/berkas/" . basename($rj['berkas']);
                       ?>
                       <button type="button" class="btn btn-sm btn-info" 
-                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id_nama_penghargaan'] ?>">
+                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id'] ?>">
                         Lihat PDF
                       </button>
                       <div class="modal fade" id="lihatPdf<?= $rj['id_nama_penghargaan'] ?>" tabindex="-1">

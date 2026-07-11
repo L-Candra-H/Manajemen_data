@@ -70,7 +70,7 @@ $dataPegawai = $riwayat[0] ?? null;
         Detail Riwayat Kegiatan Ilmiah & Pelatihan Pegawai - <?= htmlspecialchars($dataPegawai['nama'] ?? '') ?>
       </h5>
       <div class="d-flex gap-2">
-        <a href="riwayat_jabatan.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+        <a href="riwayat_seminar.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
       </div>
     </div>
     <div class="card-body">
@@ -136,7 +136,7 @@ $dataPegawai = $riwayat[0] ?? null;
                         $path = "/" . $appFolder . "/webapps/penggajian/pages/riwayatpangkat/berkas/" . basename($rj['berkas']);
                       ?>
                       <button type="button" class="btn btn-sm btn-info" 
-                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id_jabatan'] ?>">
+                              data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id'] ?>">
                         Lihat PDF
                       </button>
                       <div class="modal fade" id="lihatPdf<?= $rj['id_jabatan'] ?>" tabindex="-1">
