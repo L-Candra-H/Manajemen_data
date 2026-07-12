@@ -119,11 +119,11 @@ $dataPegawai = $riwayat[0] ?? null;
                            data-bs-toggle="modal" data-bs-target="#lihatBerkas<?= $rj['id'] ?>">
 
                       <!-- Modal gambar -->
-                      <div class="modal fade" id="lihatBerkas<?= $rj['id_jenis_penelitian'] ?>" tabindex="-1">
+                      <div class="modal fade" id="lihatBerkas<?= $rj['id'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title">Berkas Penelitiann</h5>
+                              <h5 class="modal-title">Berkas Penelitian</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body text-center">
@@ -141,7 +141,7 @@ $dataPegawai = $riwayat[0] ?? null;
                               data-bs-toggle="modal" data-bs-target="#lihatPdf<?= $rj['id'] ?>">
                         Lihat PDF
                       </button>
-                      <div class="modal fade" id="lihatPdf<?= $rj['id_jenis_penelitian'] ?>" tabindex="-1">
+                      <div class="modal fade" id="lihatPdf<?= $rj['id'] ?>" tabindex="-1">
                         <div class="modal-dialog modal-xl">
                           <div class="modal-content">
                             <div class="modal-header">
