@@ -315,8 +315,18 @@ while($row=mysqli_fetch_assoc($result)){
               <label>Diterbitkan di Jurnal</label>
               <input type="text" name="judul_jurnal" class="form-control">
 
-              <label>Tahun Penelitian</label>
-              <input type="number" name="tahun" class="form-control" min="1960" max="<?= date('Y') ?>">
+              <div class="mb-3">              
+                <label>Tahun Penelitian</label>
+                <select name="tahun" class="form-select">
+                  <option value="">-- Pilih Tahun --</option>
+                  <?php
+                    $currentYear = date('Y');
+                    for ($i = $currentYear; $i >= 1960; $i--) {
+                      echo "<option value='$i'>$i</option>";
+                    }
+                  ?>
+                </select>
+              </div>
             
               <label>Biaya Penelitian</label>
               <input type="text" name="biaya_penelitian" class="form-control">
@@ -324,7 +334,7 @@ while($row=mysqli_fetch_assoc($result)){
               <label>Asal Dana</label>
               <input type="text" name="asal_dana" class="form-control">
 
-              <label>Makalah/Berkas Penelitian</label>
+              <label>Makalah/Berkas Penelitian (PDF/Gambar)</label>
               <input type="file" name="berkas" class="form-control" accept="image/*">
             </div>
           </div>

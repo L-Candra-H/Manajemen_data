@@ -295,7 +295,7 @@ while($row=mysqli_fetch_assoc($result)){
               <label>Jenis Peringatan</label>
               <input type="text" name="jenis_peringatan" class="form-control">
 
-              <label>Dokumen/Surat Peringatan</label>
+              <label>Dokumen/Surat Peringatan (PDF/Gambar)</label>
               <input type="file" name="berkas" class="form-control" accept="image/*">
             </div>
           </div>

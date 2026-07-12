@@ -84,7 +84,7 @@ if($filter===''){
             LIMIT $limit OFFSET $offset";
 } else {
     $sql = "SELECT p.id AS peg_id, p.nik, p.nama, d.nama AS departemen, p.bidang,
-                   r.tahun, r.bulan, r.kode_pencapaian, r.keterangan
+                   r.tahun, r.bulan, r.kode_pencapaian, r.keterangan,
                    e.nama_pencapaian
             FROM pegawai p
             LEFT JOIN departemen d ON p.departemen = d.dep_id
@@ -283,14 +283,43 @@ while($row=mysqli_fetch_assoc($result)){
             <input type="text" id="namaPegawai" class="form-control bg-danger text-white fw-bold" readonly>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3">              
             <label>Tahun Pencapaian</label>
-            <input type="number" name="tahun" class="form-control" min="1960" max="<?= date('Y') ?>">
+            <select name="tahun" class="form-select">
+              <option value="">-- Pilih Tahun --</option>
+              <?php
+                $currentYear = date('Y');
+                for ($i = $currentYear; $i >= 1960; $i--) {
+                  echo "<option value='$i'>$i</option>";
+                }
+              ?>
+            </select>
           </div>
 
           <div class="mb-3">
             <label>Bulan Pencapaian</label>
-            <input type="number" name="bulan" class="form-control" min="1" max="12">
+            <select name="bulan" class="form-select">
+              <option value="">-- Pilih Bulan --</option>
+              <?php
+                $bulanList = [
+                  1 => 'Januari',
+                  2 => 'Februari',
+                  3 => 'Maret',
+                  4 => 'April',
+                  5 => 'Mei',
+                  6 => 'Juni',
+                  7 => 'Juli',
+                  8 => 'Agustus',
+                  9 => 'September',
+                  10 => 'Oktober',
+                  11 => 'November',
+                  12 => 'Desember'
+                ];
+                foreach ($bulanList as $num => $nama) {
+                  echo "<option value='$num'>$nama</option>";
+                }
+              ?>
+            </select>
           </div>
 
           <div class="mb-3">

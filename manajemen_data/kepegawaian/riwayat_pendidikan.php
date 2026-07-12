@@ -313,7 +313,15 @@ while($row=mysqli_fetch_assoc($result)){
 
               <div class="mb-3">              
                 <label>Tahun Lulus</label>
-                <input type="number" name="thn_lulus" class="form-control" min="1960" max="<?= date('Y') ?>">
+                <select name="thn_lulus" class="form-select">
+                  <option value="">-- Pilih Tahun --</option>
+                  <?php
+                    $currentYear = date('Y');
+                    for ($i = $currentYear; $i >= 1960; $i--) {
+                      echo "<option value='$i'>$i</option>";
+                    }
+                  ?>
+                </select>
               </div>
             </div>
 
@@ -343,7 +351,7 @@ while($row=mysqli_fetch_assoc($result)){
               <label>Status Pendidikan</label>
               <input type="text" name="status" class="form-control">
 
-              <label>Berkas Ijazah</label>
+              <label>Berkas Ijazah (PDF/Gambar)</label>
               <input type="file" name="berkas" class="form-control" accept="image/*,.pdf">
             </div>
           </div>

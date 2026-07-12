@@ -312,7 +312,7 @@ while($row=mysqli_fetch_assoc($result)){
               <label>Pejabat Pemberi Penghargaan</label>
               <input type="text" name="pejabat_pemberi" class="form-control">
 
-              <label>Sertifikat</label>
+              <label>Sertifikat (PDF/Gambar)</label>
               <input type="file" name="berkas" class="form-control" accept="image/*">
             </div>
           </div>
