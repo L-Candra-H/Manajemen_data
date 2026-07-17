@@ -17,6 +17,11 @@ $propinsi      = $setting['propinsi'];
 $kontak        = $setting['kontak'];
 $email         = $setting['email'];
 
+if ($_SESSION['hak_akses'] !== 'user') {
+    echo "<div class='alert alert-danger'>Halaman ini hanya untuk user dengan data pegawai.</div>";
+    exit;
+}
+
 // ambil NIK dari session (id_user = nik hasil decrypt)
 $nikLogin = $_SESSION['id_user'] ?? '';
 

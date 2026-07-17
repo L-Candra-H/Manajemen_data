@@ -32,13 +32,15 @@ $email         = $setting['email'];
 
   <!-- Tombol kanan -->
   <div class="d-flex align-items-center">  
-    <!-- Tombol PROFIL PEGAWAI -->
-    <a href="javascript:void(0)" 
-       class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
-       style="border-radius: 0.75rem; min-width: 92px;"
-       onclick="openProfilPegawai();">
-       📄 Profil Pegawai
-    </a>  
+    <?php if ($_SESSION['hak_akses'] === 'user'): ?>
+      <!-- Tombol PROFIL PEGAWAI -->
+      <a href="javascript:void(0)" 
+         class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
+         style="border-radius: 0.75rem; min-width: 92px;"
+         onclick="openProfilPegawai();">
+         📄 Profil Pegawai
+      </a>  
+    <?php endif; ?>  
 
     <!-- Tombol Logout -->
     <?php
