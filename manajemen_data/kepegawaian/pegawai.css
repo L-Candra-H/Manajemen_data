@@ -361,3 +361,100 @@
 body.edit-pegawai {
   padding-bottom: 80px; /* ruang agar tombol tidak ketutup footer */
 }
+
+/* Aturan untuk cetak */
+@page {
+  margin: 15mm;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  /* Header khusus saat print */
+  .header img {
+    max-height: 60px;   /* perkecil logo */
+    max-width: 80px;
+  }
+
+  .header h1 {
+    font-size: 16px;    /* perkecil nama instansi */
+    margin: 0;
+  }
+
+  .header p {
+    font-size: 11px;    /* perkecil alamat/kontak */
+    margin: 2px 0;
+  }
+
+  .judul-biodata {
+    font-size: 16px;    /* judul biodata lebih proporsional */
+    margin: 8px 0 12px;
+  }
+}
+
+/* Body umum */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+/* Header garis bawah */
+.garis-header {
+  border-bottom: 2px solid #000;
+  margin: 5px 0 15px;
+}
+
+/* Judul biodata */
+.judul-biodata {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0 15px;
+}
+
+/* Subjudul */
+.subjudul {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 12px 0 8px;
+}
+
+/* Tabel dengan border */
+.tabel-bordered {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tabel-bordered th,
+.tabel-bordered td {
+  border: 1px solid #000;
+  padding: 5px;
+}
+
+.header {
+  width: 100%;
+  border-bottom: 2px solid #000;
+  margin-bottom: 20px;
+}
+
+.header .logo {
+  width: 120px;
+  text-align: center;
+}
+
+.header .logo img {
+  max-height: 60px;   /* logo mengecil */
+  max-width: 80px;
+}
+
+.header .instansi h1 {
+  font-size: 16px;    /* nama instansi lebih kecil */
+  margin: 0;
+}
+
+.header .instansi p {
+  font-size: 11px;    /* alamat/kontak lebih kecil */
+  margin: 2px 0;
+}

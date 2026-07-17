@@ -18,5 +18,7 @@ Daftar Update terakhir :
 
 7\. Update menu Riwayat Penghargaan, Riwayat Penelitian, Riwayat Surat Peringatan, Riwayat Evaluasi, Riwayat Pencapaian
 
+8\. Penambahan tombol Profil Pegawai (khusus bisa dibuka oleh user yang login)
+
 
 
