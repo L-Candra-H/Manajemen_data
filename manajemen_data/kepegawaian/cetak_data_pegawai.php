@@ -25,7 +25,7 @@ if (empty($nikLogin)) {
     exit;
 }
 
-// query data pegawai + keanggotaan + status nikah
+// query data pegawai + keanggotaan + status nikah + email + agama + no. telp
 $sqlPegawai = "SELECT p.*, 
                       kelompok_jabatan.nama_kelompok,
                       jnj_jabatan.nama AS nama_jenjang,
