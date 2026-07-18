@@ -425,7 +425,7 @@ while($peg = mysqli_fetch_assoc($resPeg)){
         <h5 class="modal-title">Edit Pengajuan Cuti</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <form method="post" action="pengajuan_cuti_user.php">
+      <form method="post" action="pengajuan_cuti.php">
         <input type="hidden" name="mode" value="update">
         <div class="modal-body">
           <div class="row">
@@ -442,15 +442,24 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                        class="form-control bg-danger text-white fw-bold" readonly>
               </div>
               <div class="mb-3">
-                <label>Jenis Cuti</label>
-                <select name="urgensi" id="edit_urgensi" class="form-select">
-                  <option value="Tahunan">Tahunan</option>
-                  <option value="Besar">Besar</option>
-                  <option value="Sakit">Sakit</option>
-                  <option value="Bersalin">Bersalin</option>
-                  <option value="Alasan Penting">Alasan Penting</option>
-                  <option value="Keterangan Lainnya">Keterangan Lainnya</option>
-                </select>
+                <label>NIK</label>
+                <input type="text" name="nik" id="edit_nik"
+                       class="form-control bg-danger text-white fw-bold" readonly>
+              </div>
+              <div class="mb-3">
+                <label>Nama Pegawai</label>
+                <input type="text" id="edit_namaPegawai"
+                       class="form-control bg-danger text-white fw-bold" readonly>
+              </div>
+              <div class="mb-3">
+                <label>Bidang</label>
+                <input type="text" id="edit_bidang"
+                       class="form-control bg-danger text-white fw-bold" readonly>
+              </div>
+              <div class="mb-3">
+                <label>Departemen</label>
+                <input type="text" id="edit_departemen"
+                       class="form-control bg-danger text-white fw-bold" readonly>
               </div>
             </div>
 
@@ -469,7 +478,8 @@ while($peg = mysqli_fetch_assoc($resPeg)){
               </div>
               <div class="mb-3">
                 <label>Nama P.J.</label>
-                <input type="text" id="edit_namaPJ" class="form-control bg-danger text-white fw-bold" readonly>
+                <input type="text" id="edit_namaPJ"
+                       class="form-control bg-danger text-white fw-bold" readonly>
               </div>
               <div class="mb-3">
                 <label>Alamat Tujuan</label>
@@ -492,17 +502,22 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                 </div>
               </div>
               <div class="mb-3">
-                <label>Status</label>
-                <select name="status" id="edit_status" class="form-select">
-                  <option value="Proses Pengajuan">Proses Pengajuan</option>
-                  <option value="Disetujui">Disetujui</option>
-                  <option value="Ditolak">Ditolak</option>
+                <label>Jenis Cuti</label>
+                <select name="urgensi" id="edit_urgensi" class="form-select">
+                  <option value="Tahunan">Tahunan</option>
+                  <option value="Besar">Besar</option>
+                  <option value="Sakit">Sakit</option>
+                  <option value="Bersalin">Bersalin</option>
+                  <option value="Alasan Penting">Alasan Penting</option>
+                  <option value="Keterangan Lainnya">Keterangan Lainnya</option>
                 </select>
               </div>
               <div class="mb-3">
                 <label>Kepentingan Cuti</label>
                 <textarea name="kepentingan" id="edit_kepentingan" class="form-control"></textarea>
               </div>
+              <!-- Status hidden default -->
+              <input type="hidden" name="status" value="Proses Pengajuan">
             </div>
           </div>
         </div>
@@ -611,7 +626,7 @@ document.getElementById('modalTambah').addEventListener('shown.bs.modal', genera
 // panggil lagi saat tanggal pengajuan diubah manual
 document.getElementById('tanggalPengajuan').addEventListener('change', generateNoPengajuan);
 
-function isiEditModal(no_pengajuan,tanggal,tgl_awal,tgl_akhir,nik,urgensi,alamat,jumlah,kepentingan,nik_pj,status,nama,bidang,departemen,namaPJ){
+function isiEditModal(no_pengajuan, tanggal, tgl_awal, tgl_akhir, nik, urgensi, alamat, jumlah, kepentingan, nik_pj, nama, bidang, departemen, namaPJ) {
   document.getElementById('edit_noPengajuan').value = no_pengajuan;
   document.getElementById('edit_tanggalPengajuan').value = tanggal;
   document.getElementById('edit_tglAwal').value = tgl_awal;
@@ -621,7 +636,6 @@ function isiEditModal(no_pengajuan,tanggal,tgl_awal,tgl_akhir,nik,urgensi,alamat
   document.getElementById('edit_alamat').value = alamat;
   document.getElementById('edit_jumlah').value = jumlah;
   document.getElementById('edit_kepentingan').value = kepentingan;
-  document.getElementById('edit_status').value = status;
   document.getElementById('edit_namaPegawai').value = nama;
   document.getElementById('edit_bidang').value = bidang;
   document.getElementById('edit_departemen').value = departemen;
@@ -630,9 +644,9 @@ function isiEditModal(no_pengajuan,tanggal,tgl_awal,tgl_akhir,nik,urgensi,alamat
   var pjSelect = document.getElementById('edit_pjSelect');
   pjSelect.value = nik_pj;
 
-  // sembunyikan NIK pegawai pengaju agar tidak bisa dipilih sebagai PJ
+  // sembunyikan NIK pengaju
   for (let i = 0; i < pjSelect.options.length; i++) {
-    if(pjSelect.options[i].value === nik){
+    if (pjSelect.options[i].value === nik) {
       pjSelect.options[i].style.display = 'none';
     }
   }
@@ -641,6 +655,12 @@ function isiEditModal(no_pengajuan,tanggal,tgl_awal,tgl_akhir,nik,urgensi,alamat
   var opt = pjSelect.querySelector('option[value="'+nik_pj+'"]');
   document.getElementById('edit_namaPJ').value = opt ? opt.getAttribute('data-nama') : namaPJ;
 }
+
+// sinkronisasi Nama PJ saat dropdown berubah
+document.getElementById('edit_pjSelect').addEventListener('change', function() {
+  var opt = this.options[this.selectedIndex];
+  document.getElementById('edit_namaPJ').value = opt ? opt.getAttribute('data-nama') : '';
+});
 
 // sinkronisasi NIK -> Nama PJ di modal Edit
 document.getElementById('edit_pjSelect').addEventListener('change', function() {
