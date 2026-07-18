@@ -11,6 +11,8 @@ $kabupaten     = $setting['kabupaten'];
 $propinsi      = $setting['propinsi'];
 $kontak        = $setting['kontak'];
 $email         = $setting['email'];
+
+$currentPage = basename($_SERVER['PHP_SELF']); // ambil nama file aktif
 ?>
 <header class="header d-flex align-items-center justify-content-between px-3 py-2 shadow-sm" 
         style="border-bottom:2px solid #000; padding-bottom:8px; margin-bottom:15px;">
@@ -32,7 +34,7 @@ $email         = $setting['email'];
 
   <!-- Tombol kanan -->
   <div class="d-flex align-items-center">  
-    <?php if ($_SESSION['hak_akses'] === 'user'): ?>
+    <?php if ($_SESSION['hak_akses'] === 'user' && $currentPage === 'index.php'): ?>
       <!-- Tombol PENGAJUAN CUTI -->
       <a href="../manajemen_data/kepegawaian/pengajuan_cuti_user.php" 
          class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
@@ -41,12 +43,12 @@ $email         = $setting['email'];
       </a>  
 
       <!-- Tombol PROFIL PEGAWAI -->
-      <a href="../manajemen_data/kepegawaian/cetak_data_pegawai.php" 
-         target="_blank"
+      <a href="javascript:void(0)" 
          class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
-         style="border-radius: 0.75rem; min-width: 120px;">
+         style="border-radius: 0.75rem; min-width: 120px;"
+         onclick="openProfilPegawai();">
          👤 Profil Pegawai
-      </a>  
+      </a>
     <?php endif; ?>  
 
     <!-- Tombol Logout -->
@@ -65,3 +67,14 @@ $email         = $setting['email'];
     </a>
   </div>
 </header>
+
+<script>
+function openProfilPegawai() {
+  // buka halaman cetak di tab baru
+  var w = window.open('../manajemen_data/kepegawaian/cetak_data_pegawai.php', '_blank');
+  // panggil print setelah halaman selesai dimuat
+  w.onload = function() {
+    w.print();
+  };
+}
+</script>

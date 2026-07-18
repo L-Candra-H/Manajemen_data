@@ -195,11 +195,11 @@ function purl($path){
 <div class="footer-info p-2" 
      style="border-top: 2px solid #ccc; font-size: 14px; background-color: #f9f9f9; text-align:left;">
   
-  <div style="font-weight:bold; color:#007bff; margin-bottom:6px;">
+  <div style="font-weight:bold; color:#007bff; margin-top:20px; margin-bottom:10px;">
     Jika ada kekeliruan/kesalahan agar menghubungi bagian Kepegawaian / petugas yang menangani Data Kepegawaian
   </div>
   
-  <div style="font-weight:bold; color:#333;">
+  <div style="font-weight:bold; color:#333; margin-top:10px;">
     <?php
       $now = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
       $formatter = new IntlDateFormatter(
