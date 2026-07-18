@@ -20,5 +20,7 @@ Daftar Update terakhir :
 
 8\. Penambahan tombol Profil Pegawai (khusus bisa dibuka oleh user yang login)
 
+9\. Penambahan security verifikasi tanggal lahir (khusus untuk user), untuk administrator bypass verifikasinya
+
 
 

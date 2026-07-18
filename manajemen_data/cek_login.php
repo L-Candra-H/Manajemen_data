@@ -69,33 +69,47 @@ if (isset($_POST['usere']) && isset($_POST['passworde'])) {
         header("Location: index.php");
         exit;
     } elseif ($rowUser) {
-        // user login → akses sesuai DB
-        $_SESSION["id_user"]      = $rowUser['id_user'];
-        $_SESSION["nama_pegawai"] = $rowUser['nama_pegawai'];
-        $_SESSION["user_login"]   = $rowUser["nama_pegawai"]." (".$rowUser["id_user"].")";
-        $_SESSION["hak_akses"]    = "user";
+    // ambil tanggal lahir dari tabel pegawai
+        $nikLogin = $rowUser['id_user'];
+        $sqlPegawai = "SELECT tgl_lahir FROM pegawai 
+                       WHERE nik='".mysqli_real_escape_string($conn,$nikLogin)."' 
+                       LIMIT 1";
+        $rowPegawai = mysqli_fetch_assoc(mysqli_query($conn, $sqlPegawai));
 
-        // hak akses dari DB tabel user
-        $_SESSION["pegawai_admin"]        = ($rowUser['pegawai_admin'] == "true");
-        $_SESSION["pegawai_user"]         = ($rowUser['pegawai_user'] == "true");
-        $_SESSION["master_berkas_pegawai"]= ($rowUser['master_berkas_pegawai'] == "true");
-        $_SESSION["berkas_kepegawaian"]   = ($rowUser['berkas_kepegawaian'] == "true");
-        $_SESSION["riwayat_jabatan"]      = ($rowUser['riwayat_jabatan'] == "true");
-        $_SESSION["riwayat_pendidikan"]   = ($rowUser['riwayat_pendidikan'] == "true");
-        $_SESSION["riwayat_naik_gaji"]    = ($rowUser['riwayat_naik_gaji'] == "true");
-        $_SESSION["kegiatan_ilmiah"]      = ($rowUser['kegiatan_ilmiah'] == "true");
-        $_SESSION["riwayat_penghargaan"]  = ($rowUser['riwayat_penghargaan'] == "true");
-        $_SESSION["riwayat_penelitian"]   = ($rowUser['riwayat_penelitian'] == "true");
-        $_SESSION["riwayat_surat_peringatan"] = ($rowUser['riwayat_surat_peringatan'] == "true");
-        $_SESSION["petugas"]              = ($rowUser['petugas'] == "true");
-        $_SESSION["dokter"]               = ($rowUser['dokter'] == "true");
+        // input dari form login
+        $tglInput = $_POST['tgl_lahir'] ?? '';
+        // normalisasi format ke yyyy-mm-dd
+        $tglInputFormatted = date('Y-m-d', strtotime(str_replace('/', '-', $tglInput)));
 
-        header("Location: index.php");
-        exit;
-    } else {
-        // gagal login
-        header("Location: login.php?error=1");
-        exit;
+        if ($rowPegawai && $tglInputFormatted === $rowPegawai['tgl_lahir']) {
+            // user login → akses sesuai DB
+            $_SESSION["id_user"]      = $rowUser['id_user'];
+            $_SESSION["nama_pegawai"] = $rowUser['nama_pegawai'];
+            $_SESSION["user_login"]   = $rowUser["nama_pegawai"]." (".$rowUser["id_user"].")";
+            $_SESSION["hak_akses"]    = "user";
+
+            // hak akses dari DB tabel user
+            $_SESSION["pegawai_admin"]        = ($rowUser['pegawai_admin'] == "true");
+            $_SESSION["pegawai_user"]         = ($rowUser['pegawai_user'] == "true");
+            $_SESSION["master_berkas_pegawai"]= ($rowUser['master_berkas_pegawai'] == "true");
+            $_SESSION["berkas_kepegawaian"]   = ($rowUser['berkas_kepegawaian'] == "true");
+            $_SESSION["riwayat_jabatan"]      = ($rowUser['riwayat_jabatan'] == "true");
+            $_SESSION["riwayat_pendidikan"]   = ($rowUser['riwayat_pendidikan'] == "true");
+            $_SESSION["riwayat_naik_gaji"]    = ($rowUser['riwayat_naik_gaji'] == "true");
+            $_SESSION["kegiatan_ilmiah"]      = ($rowUser['kegiatan_ilmiah'] == "true");
+            $_SESSION["riwayat_penghargaan"]  = ($rowUser['riwayat_penghargaan'] == "true");
+            $_SESSION["riwayat_penelitian"]   = ($rowUser['riwayat_penelitian'] == "true");
+            $_SESSION["riwayat_surat_peringatan"] = ($rowUser['riwayat_surat_peringatan'] == "true");
+            $_SESSION["petugas"]              = ($rowUser['petugas'] == "true");
+            $_SESSION["dokter"]               = ($rowUser['dokter'] == "true");
+
+            header("Location: index.php");
+            exit;
+        } else {
+            // captcha tanggal lahir salah
+            header("Location: login.php?error=2");
+            exit;
+        }
     }
 
     mysqli_close($conn);
