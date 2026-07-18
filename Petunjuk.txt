@@ -9,5 +9,6 @@ http://ip server/manajemen_data/
 3. login menggunakan username dan password sesuai dengan yang telah diberikan dari SIMRS Khanza
 
 4. Cek user akses pegawai terutama yang dibagian menu C harus TRUE, seperti : master_berkas_pegawai, berkas_kepegawaian, riwayat_jabatan, riwayat_pendidikan, riwayat_naik_gaji, kegiatan_ilmiah, riwayat_penghargaan, riwayat_penelitian, riwayat_surat_peringatan, petugas, dokter
+khusus untuk pengajuan_cuti kalau bisa yang diberi akses ini adalah yang bertanggungjawab dengan kepegawaian
 
 5. untuk pegawai_admin bisa di pilih jika pegawai yang bersangkutan diberi akses untuk menginput dan mengubah data pegawai, sedang pegawai_user tidak bisa melihat, menginput atau mengubah data pegawai

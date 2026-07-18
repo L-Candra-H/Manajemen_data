@@ -22,5 +22,7 @@ Daftar Update terakhir :
 
 9\. Penambahan security verifikasi tanggal lahir (khusus untuk user), untuk administrator bypass verifikasinya
 
+10\. Update menu Pengajuan Cuti Pegawai
+
 
 

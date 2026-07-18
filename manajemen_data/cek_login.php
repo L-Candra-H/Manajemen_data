@@ -35,7 +35,8 @@ if (isset($_POST['usere']) && isset($_POST['passworde'])) {
                     u.riwayat_penelitian,
                     u.riwayat_surat_peringatan,
                     u.petugas,
-                    u.dokter
+                    u.dokter,
+                    u.pengajuan_cuti
                 FROM user u
                 INNER JOIN pegawai p 
                         ON p.nik = TRIM(CAST(AES_DECRYPT(u.id_user,'nur') AS CHAR))
@@ -52,19 +53,20 @@ if (isset($_POST['usere']) && isset($_POST['passworde'])) {
         $_SESSION["hak_akses"]    = "administrator";
 
         // full akses ke semua menu
-        $_SESSION["pegawai_admin"]        = true;
-        $_SESSION["pegawai_user"]         = true;
-        $_SESSION["master_berkas_pegawai"]= true;
-        $_SESSION["berkas_kepegawaian"]   = true;
-        $_SESSION["riwayat_jabatan"]      = true;
-        $_SESSION["riwayat_pendidikan"]   = true;
-        $_SESSION["riwayat_naik_gaji"]    = true;
-        $_SESSION["kegiatan_ilmiah"]      = true;
-        $_SESSION["riwayat_penghargaan"]  = true;
-        $_SESSION["riwayat_penelitian"]   = true;
-        $_SESSION["riwayat_surat_peringatan"] = true;
-        $_SESSION["petugas"]              = true;
-        $_SESSION["dokter"]               = true;
+        $_SESSION["pegawai_admin"]              = true;
+        $_SESSION["pegawai_user"]               = true;
+        $_SESSION["master_berkas_pegawai"]      = true;
+        $_SESSION["berkas_kepegawaian"]         = true;
+        $_SESSION["riwayat_jabatan"]            = true;
+        $_SESSION["riwayat_pendidikan"]         = true;
+        $_SESSION["riwayat_naik_gaji"]          = true;
+        $_SESSION["kegiatan_ilmiah"]            = true;
+        $_SESSION["riwayat_penghargaan"]        = true;
+        $_SESSION["riwayat_penelitian"]         = true;
+        $_SESSION["riwayat_surat_peringatan"]   = true;
+        $_SESSION["petugas"]                    = true;
+        $_SESSION["dokter"]                     = true;
+        $_SESSION["pengajuan_cuti"]             = true;
 
         header("Location: index.php");
         exit;
@@ -102,6 +104,7 @@ if (isset($_POST['usere']) && isset($_POST['passworde'])) {
             $_SESSION["riwayat_surat_peringatan"] = ($rowUser['riwayat_surat_peringatan'] == "true");
             $_SESSION["petugas"]              = ($rowUser['petugas'] == "true");
             $_SESSION["dokter"]               = ($rowUser['dokter'] == "true");
+            $_SESSION["pengajuan_cuti"]       = ($rowUser['pengajuan_cuti'] == "true");
 
             header("Location: index.php");
             exit;

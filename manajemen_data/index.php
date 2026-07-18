@@ -127,6 +127,11 @@ if(!isset($_SESSION['user_login'])) {
                 <a href="kepegawaian/riwayat_surat_peringatan.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Surat Peringatan</a>
               <?php endif; ?>
 
+              <?php if (!empty($_SESSION["pengajuan_cuti"])): ?>
+                <a href="kepegawaian/pengajuan_cuti.php" class="btn btn-primary btn-sm mt-3">📋 Pengajuan Cuti</a>
+              <?php endif; ?>
+
+
             </div>
           </div>
         </div>

@@ -33,12 +33,19 @@ $email         = $setting['email'];
   <!-- Tombol kanan -->
   <div class="d-flex align-items-center">  
     <?php if ($_SESSION['hak_akses'] === 'user'): ?>
-      <!-- Tombol PROFIL PEGAWAI -->
-      <a href="javascript:void(0)" 
+      <!-- Tombol PENGAJUAN CUTI -->
+      <a href="../manajemen_data/kepegawaian/pengajuan_cuti_user.php" 
          class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
-         style="border-radius: 0.75rem; min-width: 92px;"
-         onclick="openProfilPegawai();">
-         📄 Profil Pegawai
+         style="border-radius: 0.75rem; min-width: 120px;">
+         📄 Pengajuan Cuti
+      </a>  
+
+      <!-- Tombol PROFIL PEGAWAI -->
+      <a href="../manajemen_data/kepegawaian/cetak_data_pegawai.php" 
+         target="_blank"
+         class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
+         style="border-radius: 0.75rem; min-width: 120px;">
+         👤 Profil Pegawai
       </a>  
     <?php endif; ?>  
 
@@ -58,14 +65,3 @@ $email         = $setting['email'];
     </a>
   </div>
 </header>
-
-<script>
-function openProfilPegawai() {
-  // buka halaman cetak di tab baru
-  var w = window.open("../manajemen_data/kepegawaian/cetak_data_pegawai.php", "_blank");
-  // otomatis panggil print setelah halaman selesai dimuat
-  w.onload = function() {
-    w.print();
-  };
-}
-</script>
