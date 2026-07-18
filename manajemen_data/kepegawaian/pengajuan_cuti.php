@@ -229,7 +229,15 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                 <td><?= htmlspecialchars($row['nama_pj']) ?></td>
                 <td><?= htmlspecialchars($row['bidang_pj']) ?></td>
                 <td><?= htmlspecialchars($row['departemen_pj']) ?></td>
-                <td><span class="badge bg-info"><?= htmlspecialchars($row['status']) ?></span></td>
+                <td class="text-center">
+                  <?php if ($row['status'] === 'Proses Pengajuan'): ?>
+                    <span class="badge bg-info"><?= htmlspecialchars($row['status']) ?></span>
+                  <?php elseif ($row['status'] === 'Disetujui'): ?>
+                    <span class="badge bg-success"><?= htmlspecialchars($row['status']) ?></span>
+                  <?php elseif ($row['status'] === 'Ditolak'): ?>
+                    <span class="badge bg-danger"><?= htmlspecialchars($row['status']) ?></span>
+                  <?php endif; ?>
+                </td>
                 <td class="text-center">
                   <button class="btn btn-warning btn-sm"
                           data-bs-toggle="modal"
@@ -245,10 +253,10 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                             '<?= $row['jumlah'] ?>',
                             '<?= $row['kepentingan'] ?>',
                             '<?= $row['nik_pj'] ?>',
-                            '<?= $row['status'] ?>',
                             '<?= htmlspecialchars($row['nama']) ?>',
                             '<?= htmlspecialchars($row['bidang']) ?>',
                             '<?= htmlspecialchars($row['departemen']) ?>',
+                            '<?= $row['status'] ?>',
                             '<?= htmlspecialchars($row['nama_pj']) ?>'
                           )">
                     Edit
@@ -442,6 +450,17 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                        class="form-control bg-danger text-white fw-bold" readonly>
               </div>
               <div class="mb-3">
+                <label>Jenis Cuti</label>
+                <select name="urgensi" id="edit_urgensi" class="form-select">
+                  <option value="Tahunan">Tahunan</option>
+                  <option value="Besar">Besar</option>
+                  <option value="Sakit">Sakit</option>
+                  <option value="Bersalin">Bersalin</option>
+                  <option value="Alasan Penting">Alasan Penting</option>
+                  <option value="Keterangan Lainnya">Keterangan Lainnya</option>
+                </select>
+              </div>
+              <div class="mb-3">
                 <label>NIK</label>
                 <input type="text" name="nik" id="edit_nik"
                        class="form-control bg-danger text-white fw-bold" readonly>
@@ -502,22 +521,17 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                 </div>
               </div>
               <div class="mb-3">
-                <label>Jenis Cuti</label>
-                <select name="urgensi" id="edit_urgensi" class="form-select">
-                  <option value="Tahunan">Tahunan</option>
-                  <option value="Besar">Besar</option>
-                  <option value="Sakit">Sakit</option>
-                  <option value="Bersalin">Bersalin</option>
-                  <option value="Alasan Penting">Alasan Penting</option>
-                  <option value="Keterangan Lainnya">Keterangan Lainnya</option>
-                </select>
-              </div>
-              <div class="mb-3">
                 <label>Kepentingan Cuti</label>
                 <textarea name="kepentingan" id="edit_kepentingan" class="form-control"></textarea>
               </div>
-              <!-- Status hidden default -->
-              <input type="hidden" name="status" value="Proses Pengajuan">
+              <div class="mb-3">
+                <label>Status</label>
+                <select name="status" id="edit_status" class="form-select">
+                  <option value="Proses Pengajuan">Proses Pengajuan</option>
+                  <option value="Disetujui">Disetujui</option>
+                  <option value="Ditolak">Ditolak</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -626,7 +640,9 @@ document.getElementById('modalTambah').addEventListener('shown.bs.modal', genera
 // panggil lagi saat tanggal pengajuan diubah manual
 document.getElementById('tanggalPengajuan').addEventListener('change', generateNoPengajuan);
 
-function isiEditModal(no_pengajuan, tanggal, tgl_awal, tgl_akhir, nik, urgensi, alamat, jumlah, kepentingan, nik_pj, nama, bidang, departemen, namaPJ) {
+function isiEditModal(no_pengajuan, tanggal, tgl_awal, tgl_akhir, nik, urgensi, alamat,
+  jumlah, kepentingan, nik_pj, nama, bidang, departemen, status, namaPJ) {
+  
   document.getElementById('edit_noPengajuan').value = no_pengajuan;
   document.getElementById('edit_tanggalPengajuan').value = tanggal;
   document.getElementById('edit_tglAwal').value = tgl_awal;
@@ -639,6 +655,7 @@ function isiEditModal(no_pengajuan, tanggal, tgl_awal, tgl_akhir, nik, urgensi, 
   document.getElementById('edit_namaPegawai').value = nama;
   document.getElementById('edit_bidang').value = bidang;
   document.getElementById('edit_departemen').value = departemen;
+  document.getElementById('edit_status').value = status;
 
   // set dropdown PJ sesuai data lama
   var pjSelect = document.getElementById('edit_pjSelect');

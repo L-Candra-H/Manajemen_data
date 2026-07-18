@@ -213,7 +213,15 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                 <td><?= htmlspecialchars($row['kepentingan']) ?></td>
                 <td><?= htmlspecialchars($row['nik_pj']) ?></td>
                 <td><?= htmlspecialchars($row['nama_pj']) ?></td>
-                <td><span class="badge bg-info"><?= htmlspecialchars($row['status']) ?></span></td>
+                <td class="text-center">
+                  <?php if ($row['status'] === 'Proses Pengajuan'): ?>
+                    <span class="badge bg-info"><?= htmlspecialchars($row['status']) ?></span>
+                  <?php elseif ($row['status'] === 'Disetujui'): ?>
+                    <span class="badge bg-success"><?= htmlspecialchars($row['status']) ?></span>
+                  <?php elseif ($row['status'] === 'Ditolak'): ?>
+                    <span class="badge bg-danger"><?= htmlspecialchars($row['status']) ?></span>
+                  <?php endif; ?>
+                </td>
                 <td class="text-center">
                   <button class="btn btn-warning btn-sm"
                           data-bs-toggle="modal"
