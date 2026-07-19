@@ -225,31 +225,33 @@ while($row=mysqli_fetch_assoc($result)){
         </table>
       </div>
 
-      <?php if($totalPages > 1): ?>
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center mt-3">
+      <?php if ($totalPages > 1): ?>
+      <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center">
           <!-- Tombol Prev -->
-          <li class="page-item <?= ($page<=1)?'disabled':'' ?>">
-            <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= max(1,$page-1) ?>">Prev</a>
+          <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
+            <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= max(1, $page - 1) ?>">« Prev</a>
           </li>
 
-          <!-- Nomor Halaman (hanya 3 sekitar halaman aktif) -->
+          <!-- Nomor Halaman (hanya 3 sekitar aktif) -->
           <?php
-            $start = max(1, $page-1);
-            $end   = min($totalPages, $page+1);
-            for($i=$start; $i<=$end; $i++): ?>
-              <li class="page-item <?= ($i==$page)?'active':'' ?>">
-                <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= $i ?>"><?= $i ?></a>
-              </li>
+            $start = max(1, $page - 1);
+            $end   = min($totalPages, $page + 1);
+            for ($i = $start; $i <= $end; $i++):
+          ?>
+            <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+              <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= $i ?>"><?= $i ?></a>
+            </li>
           <?php endfor; ?>
 
           <!-- Tombol Next -->
-          <li class="page-item <?= ($page>=$totalPages)?'disabled':'' ?>">
-            <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= min($totalPages,$page+1) ?>">Next</a>
+          <li class="page-item <?= ($page >= $totalPages) ? 'disabled' : '' ?>">
+            <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= min($totalPages, $page + 1) ?>">Next »</a>
           </li>
         </ul>
       </nav>
       <?php endif; ?>
+
     </div>
   </div>
 </main>

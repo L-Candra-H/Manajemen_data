@@ -227,26 +227,27 @@ if ($filter !== '') {
 
           <!-- Pagination ringkas -->
           <?php if ($filter !== '' && $totalPages > 1): ?>
-          <nav aria-label="Page navigation">
+          <nav aria-label="Page navigation" class="mt-3">
             <ul class="pagination justify-content-center">
-              <!-- Prev -->
+              <!-- Tombol Prev -->
               <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                <a class="page-link" href="?stts_aktif=<?= $filter ?>&page=<?= max(1, $page-1) ?>">Prev</a>
+                <a class="page-link" href="?stts_aktif=<?= urlencode($filter) ?>&page=<?= max(1, $page - 1) ?>">« Prev</a>
               </li>
 
+              <!-- Nomor Halaman (batasi 3 sekitar aktif) -->
               <?php
-              // tampilkan max 3 halaman terdekat
-              $start = max(1, $page - 1);
-              $end   = min($totalPages, $page + 1);
-              for ($i = $start; $i <= $end; $i++): ?>
+                $start = max(1, $page - 1);
+                $end   = min($totalPages, $page + 1);
+                for ($i = $start; $i <= $end; $i++):
+              ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                  <a class="page-link" href="?stts_aktif=<?= $filter ?>&page=<?= $i ?>"><?= $i ?></a>
+                  <a class="page-link" href="?stts_aktif=<?= urlencode($filter) ?>&page=<?= $i ?>"><?= $i ?></a>
                 </li>
               <?php endfor; ?>
 
-              <!-- Next -->
+              <!-- Tombol Next -->
               <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                <a class="page-link" href="?stts_aktif=<?= $filter ?>&page=<?= min($totalPages, $page+1) ?>">Next</a>
+                <a class="page-link" href="?stts_aktif=<?= urlencode($filter) ?>&page=<?= min($totalPages, $page + 1) ?>">Next »</a>
               </li>
             </ul>
           </nav>

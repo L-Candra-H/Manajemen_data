@@ -165,29 +165,28 @@ $result = mysqli_query($conn,$sql);
         </table>
 
         <!-- Pagination -->
-        <nav>
+        <nav aria-label="Page navigation" class="mt-3">
           <ul class="pagination justify-content-center">
-            <?php if($page > 1): ?>
-              <li class="page-item">
-                <a class="page-link" href="?page=<?= $page-1 ?>&filter=<?= urlencode($filter) ?>">« Prev</a>
-              </li>
-            <?php endif; ?>
+            <!-- Tombol Prev -->
+            <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+              <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=<?= urlencode($filter) ?>">« Prev</a>
+            </li>
 
+            <!-- Nomor Halaman (batasi 3 sekitar aktif) -->
             <?php
-            $start = max(1, $page - 1);
-            $end   = min($totalPages, $start + 2);
-            for($i = $start; $i <= $end; $i++):
+              $start = max(1, $page - 1);
+              $end   = min($totalPages, $page + 1);
+              for ($i = $start; $i <= $end; $i++):
             ?>
               <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
                 <a class="page-link" href="?page=<?= $i ?>&filter=<?= urlencode($filter) ?>"><?= $i ?></a>
               </li>
             <?php endfor; ?>
 
-            <?php if($page < $totalPages): ?>
-              <li class="page-item">
-                <a class="page-link" href="?page=<?= $page+1 ?>&filter=<?= urlencode($filter) ?>">Next »</a>
-              </li>
-            <?php endif; ?>
+            <!-- Tombol Next -->
+            <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+              <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=<?= urlencode($filter) ?>">Next »</a>
+            </li>
           </ul>
         </nav>
 

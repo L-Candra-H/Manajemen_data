@@ -314,17 +314,21 @@ $result = ($sql != "") ? mysqli_query($conn, $sql) : null;
         });
         </script>
 
-        <!-- FOOTER -->
+        <!-- FOOTER Pagination -->
         <?php if ($totalPages >= 1): ?>
         <nav aria-label="Page navigation" class="mt-3">
           <ul class="pagination justify-content-center">
             <!-- Tombol Prev -->
             <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=ALL">Prev</a>
+              <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=ALL">« Prev</a>
             </li>
 
-            <!-- Nomor Halaman (hanya 3: halaman aktif ±1) -->
-            <?php for ($i = max(1, $page - 1); $i <= min($totalPages, $page + 1); $i++): ?>
+            <!-- Nomor Halaman (hanya 3: aktif ±1) -->
+            <?php
+              $start = max(1, $page - 1);
+              $end   = min($totalPages, $page + 1);
+              for ($i = $start; $i <= $end; $i++):
+            ?>
               <li class="page-item <?= $i == $page ? 'active' : '' ?>">
                 <a class="page-link" href="?page=<?= $i ?>&filter=ALL"><?= $i ?></a>
               </li>
@@ -332,7 +336,7 @@ $result = ($sql != "") ? mysqli_query($conn, $sql) : null;
 
             <!-- Tombol Next -->
             <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=ALL">Next</a>
+              <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=ALL">Next »</a>
             </li>
           </ul>
         </nav>

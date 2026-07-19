@@ -110,20 +110,30 @@ $resRiwayat = mysqli_query($conn, $sqlRiwayat);
           <?php if ($totalPages >= 1): ?>
           <nav aria-label="Page navigation" class="mt-3">
             <ul class="pagination justify-content-center">
+              <!-- Tombol Prev -->
               <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                <a class="page-link" href="?nik=<?= $nik ?>&page=<?= max(1, $page - 1) ?>">Prev</a>
+                <a class="page-link" href="?nik=<?= $nik ?>&page=<?= max(1, $page - 1) ?>">« Prev</a>
               </li>
-              <?php for ($i = max(1, $page - 1); $i <= min($totalPages, $page + 1); $i++): ?>
+
+              <!-- Nomor Halaman (hanya 3: aktif ±1) -->
+              <?php
+               $start = max(1, $page - 1);
+                $end   = min($totalPages, $page + 1);
+                for ($i = $start; $i <= $end; $i++):
+              ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                  <a class="page-link" href="?nik=<?= $nik ?>&page=<?= $i ?>"><?= $i ?></a>
+                 <a class="page-link" href="?nik=<?= $nik ?>&page=<?= $i ?>"><?= $i ?></a>
                 </li>
               <?php endfor; ?>
+
+              <!-- Tombol Next -->
               <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                <a class="page-link" href="?nik=<?= $nik ?>&page=<?= min($totalPages, $page + 1) ?>">Next</a>
+                <a class="page-link" href="?nik=<?= $nik ?>&page=<?= min($totalPages, $page + 1) ?>">Next »</a>
               </li>
             </ul>
           </nav>
           <?php endif; ?>
+
         </div>
       </div>
     </div>

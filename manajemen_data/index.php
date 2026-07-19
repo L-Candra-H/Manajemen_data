@@ -135,6 +135,10 @@ if(!isset($_SESSION['user_login'])) {
                 <a href="kepegawaian/pengajuan_cuti.php" class="btn btn-primary btn-sm mt-3">📋 Pengajuan Cuti</a>
               <?php endif; ?>
 
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/set_tahun.php" class="btn btn-primary btn-sm mt-3">📋 Tahun & Bulan</a>
+              <?php endif; ?>
+
             </div>
           </div>
         </div>
