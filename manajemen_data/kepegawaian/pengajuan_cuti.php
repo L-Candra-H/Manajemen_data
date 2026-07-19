@@ -4,8 +4,8 @@ include __DIR__ . '/../conf/auth.php';
 include __DIR__ . '/../conf/conf.php';
 
 if(!isset($_SESSION['user_login'])) {
-  header("Location: ../../login.php");
-  exit;
+    header("Location: ../../login.php");
+    exit;
 }
 
 error_reporting(E_ALL);

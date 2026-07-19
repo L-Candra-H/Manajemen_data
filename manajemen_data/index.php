@@ -69,7 +69,11 @@ if(!isset($_SESSION['user_login'])) {
       <?php endif; ?>
 
       <!-- Modul Manajemen Data Pegawai -->
-      <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"]) || !empty($_SESSION["petugas"]) || !empty($_SESSION["dokter"])): ?>
+      <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"]) || !empty($_SESSION["petugas"]) || !empty($_SESSION["dokter"])
+              || !empty($_SESSION["berkas_kepegawaian"]) || !empty($_SESSION["riwayat_jabatan"]) || !empty($_SESSION["riwayat_pendidikan"])
+              || !empty($_SESSION["riwayat_naik_gaji"]) || !empty($_SESSION["kegiatan_ilmiah"]) || !empty($_SESSION["riwayat_penghargaan"])
+              || !empty($_SESSION["riwayat_penelitian"]) || !empty($_SESSION["riwayat_surat_peringatan"]) || !empty($_SESSION["pengajuan_cuti"])): ?>
+              
         <div class="col-md-6 mb-3">
           <div class="card shadow h-100 text-center">
             <div class="card-body">
@@ -81,7 +85,7 @@ if(!isset($_SESSION['user_login'])) {
                 <a href="kepegawaian/index_pegawai.php" class="btn btn-primary btn-sm mt-3">📋 Index Pegawai</a>
                 <a href="kepegawaian/riwayat_evaluasi.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Evaluasi</a>
                 <a href="kepegawaian/riwayat_pencapaian.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Pencapaian</a>
-                <?php endif; ?>
+              <?php endif; ?>
 
               <?php if (!empty($_SESSION["petugas"])): ?>
                 <a href="kepegawaian/petugas.php" class="btn btn-primary btn-sm mt-3">📋 Petugas</a>
@@ -130,7 +134,6 @@ if(!isset($_SESSION['user_login'])) {
               <?php if (!empty($_SESSION["pengajuan_cuti"])): ?>
                 <a href="kepegawaian/pengajuan_cuti.php" class="btn btn-primary btn-sm mt-3">📋 Pengajuan Cuti</a>
               <?php endif; ?>
-
 
             </div>
           </div>

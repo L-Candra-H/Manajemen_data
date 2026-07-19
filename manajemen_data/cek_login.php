@@ -91,20 +91,20 @@ if (isset($_POST['usere']) && isset($_POST['passworde'])) {
             $_SESSION["hak_akses"]    = "user";
 
             // hak akses dari DB tabel user
-            $_SESSION["pegawai_admin"]        = ($rowUser['pegawai_admin'] == "true");
-            $_SESSION["pegawai_user"]         = ($rowUser['pegawai_user'] == "true");
-            $_SESSION["master_berkas_pegawai"]= ($rowUser['master_berkas_pegawai'] == "true");
-            $_SESSION["berkas_kepegawaian"]   = ($rowUser['berkas_kepegawaian'] == "true");
-            $_SESSION["riwayat_jabatan"]      = ($rowUser['riwayat_jabatan'] == "true");
-            $_SESSION["riwayat_pendidikan"]   = ($rowUser['riwayat_pendidikan'] == "true");
-            $_SESSION["riwayat_naik_gaji"]    = ($rowUser['riwayat_naik_gaji'] == "true");
-            $_SESSION["kegiatan_ilmiah"]      = ($rowUser['kegiatan_ilmiah'] == "true");
-            $_SESSION["riwayat_penghargaan"]  = ($rowUser['riwayat_penghargaan'] == "true");
-            $_SESSION["riwayat_penelitian"]   = ($rowUser['riwayat_penelitian'] == "true");
-            $_SESSION["riwayat_surat_peringatan"] = ($rowUser['riwayat_surat_peringatan'] == "true");
-            $_SESSION["petugas"]              = ($rowUser['petugas'] == "true");
-            $_SESSION["dokter"]               = ($rowUser['dokter'] == "true");
-            $_SESSION["pengajuan_cuti"]       = ($rowUser['pengajuan_cuti'] == "true");
+            $_SESSION["pegawai_admin"]              = ($rowUser['pegawai_admin'] == "true");
+            $_SESSION["pegawai_user"]               = ($rowUser['pegawai_user'] == "true");
+            $_SESSION["master_berkas_pegawai"]      = ($rowUser['master_berkas_pegawai'] == "true");
+            $_SESSION["berkas_kepegawaian"]         = ($rowUser['berkas_kepegawaian'] == "true");
+            $_SESSION["riwayat_jabatan"]            = ($rowUser['riwayat_jabatan'] == "true");
+            $_SESSION["riwayat_pendidikan"]         = ($rowUser['riwayat_pendidikan'] == "true");
+            $_SESSION["riwayat_naik_gaji"]          = ($rowUser['riwayat_naik_gaji'] == "true");
+            $_SESSION["kegiatan_ilmiah"]            = ($rowUser['kegiatan_ilmiah'] == "true");
+            $_SESSION["riwayat_penghargaan"]        = ($rowUser['riwayat_penghargaan'] == "true");
+            $_SESSION["riwayat_penelitian"]         = ($rowUser['riwayat_penelitian'] == "true");
+            $_SESSION["riwayat_surat_peringatan"]   = ($rowUser['riwayat_surat_peringatan'] == "true");
+            $_SESSION["petugas"]                    = ($rowUser['petugas'] == "true");
+            $_SESSION["dokter"]                     = ($rowUser['dokter'] == "true");
+            $_SESSION["pengajuan_cuti"]             = ($rowUser['pengajuan_cuti'] == "true");
 
             header("Location: index.php");
             exit;
