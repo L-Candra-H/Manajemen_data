@@ -2,13 +2,14 @@
 include __DIR__ . '/../../conf/auth.php';
 include __DIR__ . '/../../conf/conf.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
     echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Bidang.</div>";
     exit;
 }
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 
 $conn = bukakoneksi();
 
@@ -45,11 +46,12 @@ $result = mysqli_query($conn, $sql);
   <title>Bidang</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../../layout/header.css">
+  <link rel="stylesheet" href="master.css">
 </head>
 <body>
   <?php include __DIR__ . '/../../layout/header.php'; ?>
 
-  <main class="container mt-4">
+  <main class="container-fluid mt-4">
     <div class="card shadow">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Bidang</h5>
@@ -60,7 +62,8 @@ $result = mysqli_query($conn, $sql);
       </div>
 
       <div class="card-body">
-        <table class="table table-bordered table-striped">
+      <div class="table-wrapper">
+        <table class="table table-striped table-bordered table-master align-middle">
           <thead class="table-dark text-center">
             <tr>
               <th>Nama Bidang</th>

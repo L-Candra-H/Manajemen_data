@@ -6,21 +6,21 @@
   width: 100%;
 }
 
-.table-master_berkas {
+.table-master {
   width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
   min-width: 1300px;    /* paksa lebar minimal */
   border-collapse: collapse;
   font-size: 12px;
 }
 
-.table-master_berkas th,
-.table-master_berkas td {
+.table-master th,
+.table-master td {
   border: 1px solid #ccc;
   padding: 4px 6px;
   white-space: nowrap; /* cegah teks membungkus */
 }
 
-.table-master_berkas thead th {
+.table-master thead th {
   position: sticky;
   top: 0;             /* kunci header di atas */
   background: #343a40; /* warna gelap */

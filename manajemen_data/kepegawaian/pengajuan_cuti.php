@@ -77,7 +77,7 @@ if (($_GET['mode'] ?? '') === 'delete' && isset($_GET['no_pengajuan'])) {
 }
 
 // pagination
-$limit = 5;
+$limit = 6;
 $page  = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset= ($page-1)*$limit;
 

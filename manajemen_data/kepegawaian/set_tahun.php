@@ -15,36 +15,48 @@ $conn = bukakoneksi();
 
 // pagination setup
 $page   = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$limit  = 6; // jumlah baris per halaman
+$limit  = 5; // jumlah baris per halaman
 $offset = ($page - 1) * $limit;
 
 // total rows
 $totalRows   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM set_tahun"))['cnt'];
 $totalPages  = ceil($totalRows / $limit);
 
+// array bulan
+$bulanArr = [
+    1 => "Januari", 2 => "Februari", 3 => "Maret", 4 => "April",
+    5 => "Mei", 6 => "Juni", 7 => "Juli", 8 => "Agustus",
+    9 => "September", 10 => "Oktober", 11 => "November", 12 => "Desember"
+];
+
 // simpan data
 if (isset($_POST['simpan'])) {
     $tahun = intval($_POST['tahun']);
     $bulan = intval($_POST['bulan']);
 
-    // hitung jumlah hari dalam bulan
-    $jmlhr = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-
-    // hitung jumlah hari libur (Minggu)
-    $jmllbr = 0;
-    for ($d = 1; $d <= $jmlhr; $d++) {
-        $tgl = mktime(0, 0, 0, $bulan, $d, $tahun);
-        if (date("w", $tgl) == 0) { // Minggu
-            $jmllbr++;
+    $cek = mysqli_query($conn, "SELECT 1 FROM set_tahun WHERE tahun='$tahun' AND bulan='$bulan'");
+    if (mysqli_num_rows($cek) > 0) {
+        // trigger modal popup
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  var myModal = new bootstrap.Modal(document.getElementById('warningModal'));
+                  myModal.show();
+                });
+              </script>";
+    } else {
+        $jmlhr = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
+        $jmllbr = 0;
+        for ($d = 1; $d <= $jmlhr; $d++) {
+            $tgl = mktime(0, 0, 0, $bulan, $d, $tahun);
+            if (date('w', $tgl) == 0) $jmllbr++;
         }
+        $normal = $jmlhr - $jmllbr;
+
+        mysqli_query($conn, "INSERT INTO set_tahun(tahun,bulan,jmlhr,jmllbr,normal) 
+                             VALUES('$tahun','$bulan','$jmlhr','$jmllbr','$normal')");
+        header("Location: set_tahun.php");
+        exit;
     }
-
-    $normal = $jmlhr - $jmllbr;
-
-    mysqli_query($conn, "INSERT INTO set_tahun(tahun,bulan,jmlhr,jmllbr,normal) 
-                         VALUES('$tahun','$bulan','$jmlhr','$jmllbr','$normal')");
-    header("Location: set_tahun.php");
-    exit;
 }
 
 // hapus data
@@ -152,7 +164,7 @@ $result = mysqli_query($conn, $sql);
                 <td><?= $totalMasuk ?></td>
                 <td class="text-center">
                   <a href="set_tahun.php?hapus_tahun=<?= $row['tahun'] ?>&hapus_bulan=<?= $row['bulan'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?')">Hapus</a>
-                  <a href="libur_nasional.php?tahun=<?= $row['tahun'] ?>&bulan=<?= $row['bulan'] ?>" class="btn btn-warning btn-sm">Libur Nasional</a>
+                  <a href="libur_nasional.php?tahun=<?= $row['tahun'] ?>&bulan=<?= $row['bulan'] ?>" class="btn btn-warning btn-sm">Isi Libur Nasional</a>
                 </td>
               </tr>
             <?php endwhile; ?>
@@ -182,6 +194,24 @@ $result = mysqli_query($conn, $sql);
         </ul>
       </nav>
       <?php endif; ?>
+
+      <!-- Modal Warning -->
+      <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-warning">
+            <div class="modal-header bg-warning">
+              <h5 class="modal-title" id="warningLabel">⚠️ Peringatan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body text-center">
+              Data Tahun & Bulan yang dipilih sudah ada sebelumnya!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

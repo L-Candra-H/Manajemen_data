@@ -24,3 +24,5 @@ Daftar Update terakhir :
 
 10\. Update menu Pengajuan Cuti Pegawai, Tahun \& Bulan
 
+11\. Update menu User (hanya khusus menu C)
+

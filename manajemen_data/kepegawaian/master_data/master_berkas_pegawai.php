@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // pagination setup
-$limit = 7;
+$limit = 6;
 $page  = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $limit;
 
@@ -128,7 +128,7 @@ $result = mysqli_query($conn,$sql);
         </form>
 
       <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-master_berkas align-middle">
+        <table class="table table-striped table-bordered table-master align-middle">
           <thead class="table-dark text-center">
             <tr>
               <th>Kode</th>

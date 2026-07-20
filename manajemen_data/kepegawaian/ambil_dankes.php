@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tanggal'])) {
 }
 
 // pagination riwayat
-$limit = 10;
+$limit = 6;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;

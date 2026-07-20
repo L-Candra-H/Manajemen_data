@@ -19,7 +19,7 @@ $bulan = isset($_GET['bulan']) ? (int)$_GET['bulan'] : (int)date("n");
 
 // pagination setup
 $page   = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$limit  = 6;
+$limit  = 5;
 $offset = ($page - 1) * $limit;
 
 // total rows sesuai bulan & tahun
@@ -43,9 +43,21 @@ if (isset($_POST['simpan'])) {
     $tanggal = $_POST['tanggal'];
     $ktg     = trim($_POST['ktg']);
 
-    mysqli_query($conn, "INSERT INTO set_hari_libur(tanggal, ktg) VALUES('$tanggal','$ktg')");
-    header("Location: libur_nasional.php?tahun=$tahun&bulan=$bulan");
-    exit;
+    // cek apakah tanggal libur sudah ada
+    $cek = mysqli_query($conn, "SELECT 1 FROM set_hari_libur WHERE tanggal='$tanggal'");
+    if (mysqli_num_rows($cek) > 0) {
+        // trigger modal popup warning
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  var myModal = new bootstrap.Modal(document.getElementById('warningModal'));
+                  myModal.show();
+                });
+              </script>";
+    } else {
+        mysqli_query($conn, "INSERT INTO set_hari_libur(tanggal, ktg) VALUES('$tanggal','$ktg')");
+        header("Location: libur_nasional.php?tahun=$tahun&bulan=$bulan");
+        exit;
+    }
 }
 
 // hapus data
@@ -77,7 +89,7 @@ $bulanArr = [
 
 <main class="main-content container-fluid mt-4">
   <div class="card shadow">
-    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
       <h5 class="mb-0 text-uppercase flex-grow-1 text-center">
         Libur Nasional - <?= $bulanArr[$bulan] ?> <?= $tahun ?>
       </h5>
@@ -157,6 +169,24 @@ $bulanArr = [
         </ul>
       </nav>
       <?php endif; ?>
+
+      <!-- Modal Warning -->
+      <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-warning">
+           <div class="modal-header bg-warning">
+              <h5 class="modal-title" id="warningLabel">⚠️ Peringatan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body text-center">
+              Tanggal libur nasional yang dipilih sudah ada sebelumnya!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

@@ -50,11 +50,12 @@ $result = mysqli_query($conn, $sql);
   <title>BPJS Kesehatan</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../../layout/header.css">
+  <link rel="stylesheet" href="master.css">
 </head>
 <body>
   <?php include __DIR__ . '/../../layout/header.php'; ?>
 
-  <main class="container mt-4">
+  <main class="container-fluid mt-4">
     <div class="card shadow">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0 text-uppercase flex-grow-1 text-center">BPJS Kesehatan</h5>
@@ -64,8 +65,9 @@ $result = mysqli_query($conn, $sql);
         </div>
       </div>
 
-      <div class="card-body">
-        <table class="table table-bordered table-striped">
+      <div class="card-body p-3">
+      <div class="table-wrapper">
+        <table class="table table-striped table-bordered table-master align-middle">
           <thead class="table-dark text-center">
             <tr>
               <th>Status</th>
