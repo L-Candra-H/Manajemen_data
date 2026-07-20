@@ -25,7 +25,7 @@ if(!isset($_SESSION['user_login'])) {
     <div class="row justify-content-center">
 
       <!-- Modul Master Data Pegawai -->
-      <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"]) || !empty($_SESSION["master_berkas_pegawai"]) || $_SESSION["hak_akses"]==="administrator"): ?>
+      <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["master_berkas_pegawai"]) || $_SESSION["hak_akses"]==="administrator"): ?>
         <div class="col-md-6 mb-3">
           <div class="card shadow h-100 text-center">
             <div class="card-body">
@@ -37,32 +37,28 @@ if(!isset($_SESSION['user_login'])) {
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["pegawai_admin"])): ?>
-                <a href="kepegawaian/master_data/bidang.php" class="btn btn-primary btn-sm mt-3">📋 Bidang</a>
-                <a href="kepegawaian/master_data/pendidikan.php" class="btn btn-primary btn-sm mt-3">📋 Pendidikan</a>
-                <a href="kepegawaian/master_data/stts_kerja.php" class="btn btn-primary btn-sm mt-3">📋 Status Kerja</a>
-                <a href="kepegawaian/master_data/stts_wp.php" class="btn btn-primary btn-sm mt-3">📋 Status Wajib Pajak</a>
-                <a href="kepegawaian/master_data/jnj_jabatan.php" class="btn btn-primary btn-sm mt-3">📋 Jenjang Jabatan</a>
-                <a href="kepegawaian/master_data/kelompok_jabatan.php" class="btn btn-primary btn-sm mt-3">📋 Kelompok Jabatan</a>
-                <a href="kepegawaian/master_data/resiko_kerja.php" class="btn btn-primary btn-sm mt-3">📋 Resiko Kerja</a>
-                <a href="kepegawaian/master_data/emergency_index.php" class="btn btn-primary btn-sm mt-3">📋 Emergency Index</a>
-                <a href="kepegawaian/master_data/pencapaian_kinerja.php" class="btn btn-primary btn-sm mt-3">📋 Pencapaian Kinerja</a>
-                <a href="kepegawaian/master_data/evaluasi_kinerja.php" class="btn btn-primary btn-sm mt-3">📋 Evaluasi Kinerja</a>
-                <a href="kepegawaian/master_data/departemen.php" class="btn btn-primary btn-sm mt-3">📋 Departemen</a>
-                <a href="kepegawaian/master_data/bank.php" class="btn btn-primary btn-sm mt-3">📋 Bank</a>
-              <?php endif; ?>
-
-              <!-- Koperasi, Jamsostek, BPJS -->
-              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
-                <a href="kepegawaian/master_data/koperasi.php" class="btn btn-outline-success btn-sm mt-3">📋 Koperasi</a>
-                <a href="kepegawaian/master_data/jamsostek.php" class="btn btn-outline-success btn-sm mt-3">📋 BPJS Ketenagakerjaan</a>
-                <a href="kepegawaian/master_data/bpjs.php" class="btn btn-outline-success btn-sm mt-3">📋 BPJS Kesehatan</a>
+                <a href="kepegawaian/master_data/bidang.php" class="btn btn-outline-success btn-sm mt-3">📋 Bidang</a>
+                <a href="kepegawaian/master_data/pendidikan.php" class="btn btn-outline-success btn-sm mt-3">📋 Pendidikan</a>
+                <a href="kepegawaian/master_data/stts_kerja.php" class="btn btn-outline-success btn-sm mt-3">📋 Status Kerja</a>
+                <a href="kepegawaian/master_data/stts_wp.php" class="btn btn-outline-success btn-sm mt-3">📋 Status Wajib Pajak</a>
+                <a href="kepegawaian/master_data/jnj_jabatan.php" class="btn btn-outline-success btn-sm mt-3">📋 Jenjang Jabatan</a>
+                <a href="kepegawaian/master_data/kelompok_jabatan.php" class="btn btn-outline-success btn-sm mt-3">📋 Kelompok Jabatan</a>
+                <a href="kepegawaian/master_data/resiko_kerja.php" class="btn btn-outline-success btn-sm mt-3">📋 Resiko Kerja</a>
+                <a href="kepegawaian/master_data/emergency_index.php" class="btn btn-outline-success btn-sm mt-3">📋 Emergency Index</a>
+                <a href="kepegawaian/master_data/pencapaian_kinerja.php" class="btn btn-outline-success btn-sm mt-3">📋 Pencapaian Kinerja</a>
+                <a href="kepegawaian/master_data/evaluasi_kinerja.php" class="btn btn-outline-success btn-sm mt-3">📋 Evaluasi Kinerja</a>
+                <a href="kepegawaian/master_data/departemen.php" class="btn btn-outline-success btn-sm mt-3">📋 Departemen</a>
+                <a href="kepegawaian/master_data/bank.php" class="btn btn-outline-success btn-sm mt-3">📋 Bank</a>
               <?php endif; ?>
 
               <!-- Jabatan & Spesialis khusus admin -->
               <?php if ($_SESSION["hak_akses"]==="administrator"): ?>
-                <a href="kepegawaian/master_data/jabatan.php" class="btn btn-outline-primary btn-sm mt-3">📋 Jabatan</a>
-                <a href="kepegawaian/master_data/spesialis.php" class="btn btn-outline-primary btn-sm mt-3">📋 Spesialis</a>
-                <a href="kepegawaian/master_data/user.php" class="btn btn-outline-dark btn-sm mt-3">👤 User Menu Kepegawaian</a>
+                <a href="kepegawaian/master_data/koperasi.php" class="btn btn-outline-dark btn-sm mt-3">📋 Koperasi</a>
+                <a href="kepegawaian/master_data/jamsostek.php" class="btn btn-outline-dark btn-sm mt-3">📋 BPJS Ketenagakerjaan</a>
+                <a href="kepegawaian/master_data/bpjs.php" class="btn btn-outline-dark btn-sm mt-3">📋 BPJS Kesehatan</a>
+                <a href="kepegawaian/master_data/jabatan.php" class="btn btn-outline-dark btn-sm mt-3">📋 Jabatan</a>
+                <a href="kepegawaian/master_data/spesialis.php" class="btn btn-outline-dark btn-sm mt-3">📋 Spesialis</a>
+                <a href="kepegawaian/master_data/user.php" class="btn btn-outline-danger btn-sm mt-3">👤 User Menu Kepegawaian</a>
               <?php endif; ?>
 
             </div>
@@ -95,18 +91,18 @@ if(!isset($_SESSION['user_login'])) {
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
-                <a href="kepegawaian/set_tahun.php" class="btn btn-primary btn-sm mt-3">📋 Tahun & Bulan</a>
+                <a href="kepegawaian/set_tahun.php" class="btn btn-outline-primary btn-sm mt-3">📋 Tahun & Bulan</a>
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["pegawai_admin"])): ?>
-                <a href="kepegawaian/pegawai.php" class="btn btn-outline-info btn-sm mt-3">📋 Data Pegawai</a>
-                <a href="kepegawaian/index_pegawai.php" class="btn btn-outline-info btn-sm mt-3">📋 Index Pegawai</a>
-                <a href="kepegawaian/riwayat_evaluasi.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Evaluasi</a>
-                <a href="kepegawaian/riwayat_pencapaian.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Pencapaian</a>
+                <a href="kepegawaian/pegawai.php" class="btn btn-outline-success btn-sm mt-3">📋 Data Pegawai</a>
+                <a href="kepegawaian/index_pegawai.php" class="btn btn-outline-success btn-sm mt-3">📋 Index Pegawai</a>
+                <a href="kepegawaian/riwayat_evaluasi.php" class="btn btn-outline-success btn-sm mt-3">📋 Riwayat Evaluasi</a>
+                <a href="kepegawaian/riwayat_pencapaian.php" class="btn btn-outline-success btn-sm mt-3">📋 Riwayat Pencapaian</a>
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
-                <a href="kepegawaian/keanggotaan.php" class="btn btn-outline-success btn-sm mt-3">📋 Keanggotaan</a>
+                <a href="kepegawaian/keanggotaan.php" class="btn btn-outline-primary btn-sm mt-3">📋 Keanggotaan</a>
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["berkas_kepegawaian"])): ?>

@@ -113,6 +113,10 @@ if (isset($_POST['usere']) && isset($_POST['passworde'])) {
             header("Location: login.php?error=2");
             exit;
         }
+    } else {
+        // username / password salah
+        header("Location: login.php?error=1");
+        exit;
     }
 
     mysqli_close($conn);

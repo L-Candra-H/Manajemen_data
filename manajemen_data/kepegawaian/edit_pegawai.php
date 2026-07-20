@@ -76,7 +76,7 @@ $bank        = mysqli_query($conn, "SELECT namabank FROM bank ORDER BY namabank"
     <div class="card">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0 text-uppercase flex-grow-1 text-center">EDIT DATA PEGAWAI</h5>
-        <a href="pegawai.php" class="btn btn-light btn-sm">← Kembali</a>
+        <a href="pegawai.php" class="btn btn-light btn-sm">⬅️  Kembali</a>
       </div>
 
       <div class="card-body">

@@ -68,8 +68,8 @@ $resRiwayat = mysqli_query($conn, $sqlRiwayat);
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0 text-uppercase text-center flex-grow-1">Riwayat Ambil Dana Kesehatan - Atas Nama : <?= htmlspecialchars($pegawai['nik'] ?? '') ?> - <?= htmlspecialchars($pegawai['nama'] ?? '') ?></h5>
           <div class="d-flex gap-2">
-            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#tambahModal">➕ Tambah</button>
-            <a href="index_pegawai.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+            <button type="button" class="btn btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#tambahModal">➕ Tambah</button>
+            <a href="index_pegawai.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
         </div>
         </div>
 

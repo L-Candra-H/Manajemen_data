@@ -84,20 +84,24 @@ if (!empty($setting['wallpaper'])) {
 
   <!-- Popup error -->
   <?php if(isset($_GET['error'])): ?>
-  <div id="popup" class="popup" style="display:flex;">
-    <div class="popup-content">
-      <p>⚠️ Login gagal! Username atau password salah.</p>
-      <button onclick="closePopup()">Tutup</button>
+    <div id="popup" class="popup" style="display:flex;">
+      <div class="popup-content">
+        <?php if($_GET['error']==1): ?>
+          <p>⚠️ Login gagal! Username atau password salah.</p>
+        <?php elseif($_GET['error']==2): ?>
+          <p>⚠️ Verifikasi tanggal lahir tidak sesuai.</p>
+        <?php endif; ?>
+        <button onclick="closePopup()">Tutup</button>
+      </div>
     </div>
-  </div>
-  <script>
-    function closePopup() {
-      const popup = document.getElementById('popup');
-      popup.classList.add('fade-out');
-      setTimeout(() => { popup.style.display = 'none'; }, 1000);
-    }
-    setTimeout(closePopup, 5000);
-  </script>
+    <script>
+      function closePopup() {
+        const popup = document.getElementById('popup');
+        popup.classList.add('fade-out');
+        setTimeout(() => { popup.style.display = 'none'; }, 1000);
+      }
+      setTimeout(closePopup, 5000);
+    </script>
   <?php endif; ?>
 
   <!-- Script untuk autoformat tanggal lahir & sembunyikan captcha jika admin -->
