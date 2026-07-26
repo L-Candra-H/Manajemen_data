@@ -33,6 +33,23 @@ while($peg = mysqli_fetch_assoc($listPegawaiRes)){
     $listPegawai[] = $peg;
 }
 
+// hitung jumlah pegawai sesuai filter
+$jmlPegawai = 0;
+if ($filter === 'ALL') {
+    $countRes = $conn->query("SELECT COUNT(*) AS total FROM pegawai WHERE stts_aktif='AKTIF'");
+} elseif ($filter !== '') {
+    $safeFilter = $conn->real_escape_string($filter);
+    $countRes = $conn->query("SELECT COUNT(*) AS total FROM pegawai WHERE nik='$safeFilter' AND stts_aktif='AKTIF'");
+} else {
+    // default kalau filter kosong
+    $countRes = $conn->query("SELECT COUNT(*) AS total FROM pegawai WHERE stts_aktif='AKTIF'");
+}
+
+if ($countRes) {
+    $rowCount   = $countRes->fetch_assoc();
+    $jmlPegawai = $rowCount['total'];
+}
+
 // ambil daftar evaluasi kinerja untuk dropdown
 $listEvaluasiRes = mysqli_query($conn,"
     SELECT kode_evaluasi, nama_evaluasi, indek
@@ -223,6 +240,11 @@ while($row=mysqli_fetch_assoc($result)){
           <?php endforeach; endif; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlPegawai ?>,
+        </div>
+        
       </div>
 
       <?php if ($totalPages > 1): ?>

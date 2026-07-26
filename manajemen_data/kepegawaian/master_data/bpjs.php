@@ -39,6 +39,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah bpjs untuk ditampilkan
+$jmlBpjs = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT stts, biaya FROM bpjs ORDER BY stts LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
@@ -61,7 +64,7 @@ $result = mysqli_query($conn, $sql);
         <h5 class="mb-0 text-uppercase flex-grow-1 text-center">BPJS Kesehatan</h5>
         <div class="d-flex gap-2">
           <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
-          <a href="../../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+          <a href="../keanggotaan.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
         </div>
       </div>
 
@@ -93,6 +96,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlBpjs ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

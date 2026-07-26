@@ -39,6 +39,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah status wajib pajak untuk ditampilkan
+$jmlStatus = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT stts, ktg FROM stts_wp ORDER BY stts LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
@@ -93,6 +96,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlStatus ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

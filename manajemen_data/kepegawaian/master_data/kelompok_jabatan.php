@@ -42,6 +42,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah kelompok jabatan untuk ditampilkan
+$jmlKelompok = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT kode_kelompok, nama_kelompok, indek 
          FROM kelompok_jabatan 
@@ -102,6 +105,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlKelompok ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

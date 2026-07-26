@@ -6,6 +6,26 @@ if(!isset($_SESSION['user_login'])) {
     header("Location: login.php");
     exit;
 }
+
+// Flag modul A & B
+$modulA = (!empty($_SESSION["pegawai_admin"]) 
+           || !empty($_SESSION["master_berkas_pegawai"]) 
+           || $_SESSION["hak_akses"]==="administrator");
+
+$modulB = (!empty($_SESSION["pegawai_admin"]) 
+           || !empty($_SESSION["pegawai_user"]) 
+           || !empty($_SESSION["petugas"]) 
+           || !empty($_SESSION["dokter"])
+           || !empty($_SESSION["berkas_kepegawaian"]) 
+           || !empty($_SESSION["riwayat_jabatan"]) 
+           || !empty($_SESSION["riwayat_pendidikan"])
+           || !empty($_SESSION["riwayat_naik_gaji"]) 
+           || !empty($_SESSION["kegiatan_ilmiah"]) 
+           || !empty($_SESSION["riwayat_penghargaan"])
+           || !empty($_SESSION["riwayat_penelitian"]) 
+           || !empty($_SESSION["riwayat_surat_peringatan"]) 
+           || !empty($_SESSION["pengajuan_cuti"]));
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -49,13 +69,11 @@ if(!isset($_SESSION['user_login'])) {
                 <a href="kepegawaian/master_data/evaluasi_kinerja.php" class="btn btn-outline-success btn-sm mt-3">📋 Evaluasi Kinerja</a>
                 <a href="kepegawaian/master_data/departemen.php" class="btn btn-outline-success btn-sm mt-3">📋 Departemen</a>
                 <a href="kepegawaian/master_data/bank.php" class="btn btn-outline-success btn-sm mt-3">📋 Bank</a>
-              <?php endif; ?>
+                <a href="kepegawaian/master_data/jam_jaga.php" class="btn btn-outline-success btn-sm mt-3">📋 Jam Jaga Departemen</a>
+                <?php endif; ?>
 
               <!-- Jabatan & Spesialis khusus admin -->
               <?php if ($_SESSION["hak_akses"]==="administrator"): ?>
-                <a href="kepegawaian/master_data/koperasi.php" class="btn btn-outline-dark btn-sm mt-3">📋 Koperasi</a>
-                <a href="kepegawaian/master_data/jamsostek.php" class="btn btn-outline-dark btn-sm mt-3">📋 BPJS Ketenagakerjaan</a>
-                <a href="kepegawaian/master_data/bpjs.php" class="btn btn-outline-dark btn-sm mt-3">📋 BPJS Kesehatan</a>
                 <a href="kepegawaian/master_data/jabatan.php" class="btn btn-outline-dark btn-sm mt-3">📋 Jabatan</a>
                 <a href="kepegawaian/master_data/spesialis.php" class="btn btn-outline-dark btn-sm mt-3">📋 Spesialis</a>
                 <a href="kepegawaian/master_data/user.php" class="btn btn-outline-danger btn-sm mt-3">👤 User Menu Kepegawaian</a>
@@ -94,14 +112,34 @@ if(!isset($_SESSION['user_login'])) {
                 <a href="kepegawaian/set_tahun.php" class="btn btn-outline-primary btn-sm mt-3">📋 Tahun & Bulan</a>
               <?php endif; ?>
 
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/insentif.php" class="btn btn-outline-primary btn-sm mt-3">📋 Insentif</a>
+              <?php endif; ?>
+
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/pendapatan_akte.php" class="btn btn-outline-primary btn-sm mt-3">📋 Pendapatan Akte</a>
+              <?php endif; ?>
+
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/pendapatan_resume.php" class="btn btn-outline-primary btn-sm mt-3">📋 Pendapatan Resume</a>
+              <?php endif; ?>
+
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/pendapatan_tuslah.php" class="btn btn-outline-primary btn-sm mt-3">📋 Pendapatan Tuslah</a>
+              <?php endif; ?>
+
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/pendapatan_warung.php" class="btn btn-outline-primary btn-sm mt-3">📋 Pendapatan Warung</a>
+              <?php endif; ?>
+
               <?php if (!empty($_SESSION["pegawai_admin"])): ?>
                 <a href="kepegawaian/pegawai.php" class="btn btn-outline-success btn-sm mt-3">📋 Data Pegawai</a>
-                <a href="kepegawaian/index_pegawai.php" class="btn btn-outline-success btn-sm mt-3">📋 Index Pegawai</a>
                 <a href="kepegawaian/riwayat_evaluasi.php" class="btn btn-outline-success btn-sm mt-3">📋 Riwayat Evaluasi</a>
                 <a href="kepegawaian/riwayat_pencapaian.php" class="btn btn-outline-success btn-sm mt-3">📋 Riwayat Pencapaian</a>
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/lembur_pegawai.php" class="btn btn-outline-primary btn-sm mt-3">📋 Lembur Pegawai</a>
                 <a href="kepegawaian/keanggotaan.php" class="btn btn-outline-primary btn-sm mt-3">📋 Keanggotaan</a>
               <?php endif; ?>
 
@@ -143,7 +181,30 @@ if(!isset($_SESSION['user_login'])) {
       <?php endif; ?>
 
     </div>
+
   </main>
+
+  <!-- Card fallback -->
+  <?php if (!$modulA && !$modulB): ?>
+    <div class="col-12 mb-5"> <!-- tambahkan mb-5 -->
+      <div class="card shadow mt-4 no-access-card">
+        <div class="card-body text-center">
+          <!-- Ikon ilustrasi ukuran besar -->
+          <img src="https://copilot.microsoft.com/th/id/BCO.284a7b6c-bdbd-4b6f-ae95-895b2fdc344e.png" 
+               alt="Ikon akses ditolak" 
+               class="mb-3" 
+               style="max-width:250px;">
+
+          <!-- Judul + pesan -->
+          <h5 class="card-title fw-bold">⚠️ Tidak ada menu tersedia</h5>
+          <p class="card-text" style="color:#cfcfcf;">
+            Akun Anda belum memiliki akses ke menu apa pun.<br>
+            Silakan hubungi administrator untuk pengaturan hak akses.
+          </p>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
 
   <?php include __DIR__ . '/layout/footer.php'; ?>
 

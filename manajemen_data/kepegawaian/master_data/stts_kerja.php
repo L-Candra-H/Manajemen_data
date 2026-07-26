@@ -43,6 +43,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah status kerja untuk ditampilkan
+$jmlStatus = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT stts, ktg, indek, hakcuti 
          FROM stts_kerja 
@@ -106,6 +109,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlStatus ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

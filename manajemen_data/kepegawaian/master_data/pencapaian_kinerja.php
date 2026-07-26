@@ -40,6 +40,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah pencapaian kinerja untuk ditampilkan
+$jmlPencapaian = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT kode_pencapaian, nama_pencapaian, indek 
          FROM pencapaian_kinerja 
@@ -100,6 +103,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlPencapaian ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

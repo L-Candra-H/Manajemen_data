@@ -161,9 +161,12 @@ $result = mysqli_query($conn,$sql);
             </tr>
           <?php endwhile; endif; ?>
           </tbody>
-
         </table>
 
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $totalRows ?>,
+        </div>
+        
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">
           <ul class="pagination justify-content-center">

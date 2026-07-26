@@ -2,31 +2,32 @@
 include __DIR__ . '/../../conf/auth.php';
 include __DIR__ . '/../../conf/conf.php';
 
-// tampilkan error agar mudah debug
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// cek hak akses
 if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
-    echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Resiko Kerja.</div>";
+    echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Bagian Akte.</div>";
     exit;
 }
 
 $conn = bukakoneksi();
 
-// handler insert/update
+// handler insert/update/delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $kode  = $_POST['kode_resiko'] ?? null;
-    $nama  = $_POST['nama_resiko'] ?? null;
-    $indek = (isset($_POST['indek']) && is_numeric($_POST['indek'])) ? (int)$_POST['indek'] : 0;
+    $kode   = $_POST['id'] ?? null;
+    $persen = $_POST['persen'] ?? null;
 
     if (isset($_POST['mode']) && $_POST['mode'] === 'update') {
-        $stmt = $conn->prepare("UPDATE resiko_kerja SET nama_resiko=?, indek=? WHERE kode_resiko=?");
-        $stmt->bind_param("sis", $nama, $indek, $kode);
+        $stmt = $conn->prepare("UPDATE pembagian_akte SET persen=? WHERE id=?");
+        $stmt->bind_param("ss", $persen, $kode);
         $stmt->execute();
     } elseif (isset($_POST['mode']) && $_POST['mode'] === 'insert') {
-        $stmt = $conn->prepare("INSERT INTO resiko_kerja (kode_resiko, nama_resiko, indek) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $kode, $nama, $indek);
+        $stmt = $conn->prepare("INSERT INTO pembagian_akte (id, persen) VALUES (?, ?)");
+        $stmt->bind_param("ss", $kode, $persen);
+        $stmt->execute();
+    } elseif (isset($_POST['mode']) && $_POST['mode'] === 'delete') {
+        $stmt = $conn->prepare("DELETE FROM pembagian_akte WHERE id=?");
+        $stmt->bind_param("s", $kode);
         $stmt->execute();
     }
 }
@@ -37,26 +38,35 @@ $page  = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $limit;
 
 // hitung total data
-$totalResult = mysqli_query($conn, "SELECT COUNT(*) AS total FROM resiko_kerja");
+$totalResult = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pembagian_akte");
 $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
-// simpan jumlah resiko kerja untuk ditampilkan
-$jmlResiko = $totalData;
-
 // ambil data sesuai halaman
-$sql  = "SELECT kode_resiko, nama_resiko, indek 
-         FROM resiko_kerja 
-         ORDER BY indek 
+$sql  = "SELECT i.id, d.nik, d.nama, i.persen
+         FROM pembagian_akte i
+         JOIN pegawai d ON i.id = d.id
+         ORDER BY i.id
          LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
+
+// daftar pegawai yang belum punya pembagian_akte (untuk dropdown tambah)
+$listDep = $conn->query("
+    SELECT d.id, d.nik, d.nama
+    FROM pegawai d
+    LEFT JOIN pembagian_akte i ON d.id = i.id
+    WHERE i.id IS NULL
+      AND d.stts_aktif = 'AKTIF'
+    ORDER BY d.nik ASC
+");
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Resiko Kerja</title>
+  <title>Pembagian Akte</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../../layout/header.css">
   <link rel="stylesheet" href="master.css">
@@ -67,7 +77,7 @@ $result = mysqli_query($conn, $sql);
   <main class="container-fluid mt-4">
     <div class="card shadow">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Resiko Kerja</h5>
+        <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Pembagian Akte</h5>
         <div class="d-flex gap-2">
           <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
           <a href="../../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
@@ -75,50 +85,50 @@ $result = mysqli_query($conn, $sql);
       </div>
 
       <div class="card-body p-3">
-      <div class="table-wrapper">      
+      <div class="table-wrapper">
         <table class="table table-striped table-bordered table-master align-middle">
           <thead class="table-dark text-center">
             <tr>
-              <th>Kode Resiko</th>
-              <th>Nama Resiko</th>
-              <th>Indeks</th>
+              <th>NIK</th>
+              <th>Nama</th>
+              <th>Porsi Akte</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <?php while($row = mysqli_fetch_assoc($result)): ?>
             <tr>
-              <td><?= htmlspecialchars($row['kode_resiko']) ?></td>
-              <td><?= htmlspecialchars($row['nama_resiko']) ?></td>
-              <td><?= htmlspecialchars($row['indek']) ?></td>
+              <td><?= htmlspecialchars($row['nik']) ?></td>
+              <td><?= htmlspecialchars($row['nama']) ?></td>
+              <td><?= htmlspecialchars($row['persen']) ?>%</td>
               <td class="text-center">
                 <button class="btn btn-warning btn-sm"
                         data-bs-toggle="modal"
                         data-bs-target="#modalEdit"
-                        data-kode="<?= htmlspecialchars($row['kode_resiko']) ?>"
-                        data-nama="<?= htmlspecialchars($row['nama_resiko']) ?>"
-                        data-indek="<?= htmlspecialchars($row['indek']) ?>">
+                        data-kode="<?= htmlspecialchars($row['id']) ?>"
+                        data-nik="<?= htmlspecialchars($row['nik']) ?>"
+                        data-nama="<?= htmlspecialchars($row['nama']) ?>"
+                        data-persen="<?= htmlspecialchars($row['persen']) ?>">
                   ✏️ Edit
                 </button>
+                <form action="" method="post" style="display:inline">
+                  <input type="hidden" name="mode" value="delete">
+                  <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                  <button type="submit" class="btn btn-danger btn-sm"
+                          onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</button>
+                </form>
               </td>
             </tr>
             <?php endwhile; ?>
           </tbody>
         </table>
 
-        <div class="mt-2 small text-start text-muted">
-          Data : <?= $jmlResiko ?>,
-        </div>
-
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">
           <ul class="pagination justify-content-center">
-            <!-- Tombol Prev -->
             <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
               <a class="page-link" href="?page=<?= max(1, $page - 1) ?>">« Prev</a>
             </li>
-
-            <!-- Nomor Halaman (batasi 3 sekitar aktif) -->
             <?php
               $start = max(1, $page - 1);
               $end   = min($totalPages, $page + 1);
@@ -128,8 +138,6 @@ $result = mysqli_query($conn, $sql);
                 <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
               </li>
             <?php endfor; ?>
-
-            <!-- Tombol Next -->
             <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
               <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>">Next »</a>
             </li>
@@ -148,13 +156,37 @@ $result = mysqli_query($conn, $sql);
       <form action="" method="post" class="modal-content">
         <input type="hidden" name="mode" value="insert">
         <div class="modal-header bg-success text-white">
-          <h5 class="modal-title">Tambah Resiko Kerja</h5>
+          <h5 class="modal-title">Tambah Pembagian Akte</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3"><label class="form-label">Kode Resiko</label><input type="text" name="kode_resiko" class="form-control" required></div>
-          <div class="mb-3"><label class="form-label">Nama Resiko</label><input type="text" name="nama_resiko" class="form-control" required></div>
-          <div class="mb-3"><label class="form-label">Indeks</label><input type="number" min="0" name="indek" class="form-control" required></div>
+          <div class="mb-3">
+            <label class="form-label">NIK</label>
+            <select name="id" id="nikSelect" class="form-select" required>
+              <option value="">-- Pilih Pegawai --</option>
+              <?php while($d = $listDep->fetch_assoc()): ?>
+                <option value="<?= $d['id'] ?>" data-nama="<?= $d['nama'] ?>">
+                  <?= $d['nik'] ?> - <?= $d['nama'] ?>
+                </option>
+              <?php endwhile; ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama Pegawai</label>
+            <input type="text" id="namaPegawai" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Porsi Akte (%)</label>
+            <input type="number" name="persen" class="form-control" required>
+          </div>
+
+          <script>
+            document.getElementById('nikSelect').addEventListener('change', function() {
+              var nama = this.options[this.selectedIndex].getAttribute('data-nama');
+              document.getElementById('namaPegawai').value = nama || '';
+            });
+          </script>
+
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">💾 Simpan</button>
@@ -170,19 +202,35 @@ $result = mysqli_query($conn, $sql);
       <form action="" method="post" class="modal-content">
         <input type="hidden" name="mode" value="update">
         <div class="modal-header bg-warning">
-          <h5 class="modal-title">Edit Resiko Kerja</h5>
+          <h5 class="modal-title">Edit Pembagian Akte</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3"><label class="form-label">Kode Resiko</label>
-            <input type="text" name="kode_resiko" id="editKode" class="form-control bg-danger text-white fw-bold" readonly>
+          <div class="mb-3">
+            <label class="form-label">NIK</label>
+            <input type="text" id="editNik" class="form-control bg-danger text-white fw-bold" readonly>
+            <input type="hidden" name="id" id="editKode">
           </div>
-          <div class="mb-3"><label class="form-label">Nama Resiko</label>
-            <input type="text" name="nama_resiko" id="editNama" class="form-control" required>
+          <div class="mb-3">
+            <label class="form-label">Nama Pegawai</label>
+            <input type="text" id="editNama" class="form-control bg-danger text-white fw-bold" readonly>
           </div>
-          <div class="mb-3"><label class="form-label">Indeks</label>
-            <input type="number" min="0" name="indek" id="editIndek" class="form-control" required>
+          <div class="mb-3">
+            <label class="form-label">Porsi Akte (%)</label>
+            <input type="number" name="persen" id="editPersen" class="form-control" required>
           </div>
+
+          <script>
+            var modalEdit = document.getElementById('modalEdit');
+            modalEdit.addEventListener('show.bs.modal', function (event) {
+              var button = event.relatedTarget;
+              document.getElementById('editKode').value   = button.getAttribute('data-kode'); // id
+              document.getElementById('editNik').value    = button.getAttribute('data-nik');  // nik
+              document.getElementById('editNama').value   = button.getAttribute('data-nama');
+              document.getElementById('editPersen').value = button.getAttribute('data-persen');
+            });
+          </script>
+
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">🔄 Update</button>
@@ -193,14 +241,6 @@ $result = mysqli_query($conn, $sql);
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    var modalEdit = document.getElementById('modalEdit');
-    modalEdit.addEventListener('show.bs.modal', function (event) {
-      var button = event.relatedTarget;
-      document.getElementById('editKode').value  = button.getAttribute('data-kode');
-      document.getElementById('editNama').value  = button.getAttribute('data-nama');
-      document.getElementById('editIndek').value = button.getAttribute('data-indek');
-    });
-  </script>
+
 </body>
 </html>

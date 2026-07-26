@@ -10,7 +10,7 @@ if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
 // ambil filter dari query string
 $filter = isset($_GET['stts_aktif']) ? $_GET['stts_aktif'] : '';
 $page   = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit  = 6; // jumlah baris per halaman
+$limit  = 5; // jumlah baris per halaman
 $offset = ($page - 1) * $limit;
 
 $q = null;
@@ -62,11 +62,15 @@ if ($filter !== '') {
     }
     $resultCount = mysqli_query($conn, $sqlCount);
     if ($resultCount) {
-        $totalRows  = mysqli_fetch_assoc($resultCount)['total'];
+        $rowCount = mysqli_fetch_assoc($resultCount);
+        $jmlPegawai = $rowCount['total'];   // inilah yang dipakai di <div>
+        $totalRows  = $rowCount['total'];
         $totalPages = ceil($totalRows / $limit);
     }
+
     $q = mysqli_query($conn, $sqlData);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -89,6 +93,7 @@ if ($filter !== '') {
           <div class="d-flex gap-2">
             <?php if(cekAkses('pegawai_admin')): ?>
               <a href="tambah_pegawai.php" class="btn btn-light btn-sm">➕ Tambah Pegawai</a>
+              <a href="index_pegawai.php" class="btn btn-outline-dark btn-sm">📊 Index Pegawai</a>
             <?php endif; ?>
             <a href="../index.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
           </div>
@@ -223,6 +228,10 @@ if ($filter !== '') {
                 <?php endif; ?>
               </tbody>
             </table>
+
+            <div class="mt-2 small text-start text-muted">
+              Data : <?= $jmlPegawai ?>,
+            </div>
           </div>
 
           <!-- Pagination ringkas -->

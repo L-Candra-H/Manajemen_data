@@ -35,6 +35,15 @@ $currentPage = basename($_SERVER['PHP_SELF']); // ambil nama file aktif
   <!-- Tombol kanan -->
   <div class="d-flex align-items-center">  
     <?php if ($_SESSION['hak_akses'] === 'user' && $currentPage === 'index.php'): ?>
+
+      <!-- Tombol UBAH PASSWORD -->
+      <a href="#" 
+         class="btn btn-outline-warning btn-sm px-3 py-2 shadow-sm me-2" 
+         style="border-radius: 0.75rem; min-width: 140px;"
+         data-bs-toggle="modal" data-bs-target="#ubahPasswordModal">
+         🔑 Ubah Password
+      </a>
+
       <!-- Tombol PENGAJUAN CUTI -->
       <a href="../manajemen_data/kepegawaian/pengajuan_cuti_user.php" 
          class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
@@ -43,12 +52,13 @@ $currentPage = basename($_SERVER['PHP_SELF']); // ambil nama file aktif
       </a>  
 
       <!-- Tombol PROFIL PEGAWAI -->
-      <a href="javascript:void(0)" 
+      <a href="../manajemen_data/kepegawaian/cetak_data_pegawai.php" 
+         target="_blank"
          class="btn btn-outline-primary btn-sm px-3 py-2 shadow-sm me-2" 
-         style="border-radius: 0.75rem; min-width: 120px;"
-         onclick="openProfilPegawai();">
+         style="border-radius: 0.75rem; min-width: 120px;">
          👤 Profil Pegawai
       </a>
+
     <?php endif; ?>  
 
     <!-- Tombol Logout -->
@@ -68,13 +78,38 @@ $currentPage = basename($_SERVER['PHP_SELF']); // ambil nama file aktif
   </div>
 </header>
 
-<script>
-function openProfilPegawai() {
-  // buka halaman cetak di tab baru
-  var w = window.open('../manajemen_data/kepegawaian/cetak_data_pegawai.php', '_blank');
-  // panggil print setelah halaman selesai dimuat
-  w.onload = function() {
-    w.print();
-  };
-}
-</script>
+<!-- Modal Ubah Password -->
+<div class="modal fade" id="ubahPasswordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <!-- Tambahkan bg-dark + text-light untuk modal gelap -->
+    <div class="modal-content bg-dark text-light">
+      <form method="post" action="ubah_password.php">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">🔑 Ubah Password</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="old_password" class="form-label">🔒 Password Lama</label>
+            <input type="password" name="passworde" id="old_password" 
+                   class="form-control bg-secondary text-white" required>
+          </div>
+          <div class="mb-3">
+            <label for="new_password" class="form-label">🆕 Password Baru</label>
+            <input type="password" name="new_password" id="new_password" 
+                   class="form-control bg-secondary text-white" required>
+          </div>
+          <div class="mb-3">
+            <label for="confirm_password" class="form-label">✅ Konfirmasi Password Baru</label>
+            <input type="password" name="confirm_password" id="confirm_password" 
+                   class="form-control bg-secondary text-white" required>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

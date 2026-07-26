@@ -39,6 +39,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah departemen untuk ditampilkan
+$jmlDepartemen = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT dep_id, nama FROM departemen ORDER BY dep_id LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
@@ -93,6 +96,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlDepartemen ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

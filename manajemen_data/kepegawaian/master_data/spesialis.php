@@ -41,6 +41,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah spesialis untuk ditampilkan
+$jmlSpesialis = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT kd_sps, nm_sps FROM spesialis ORDER BY kd_sps LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
@@ -95,6 +98,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlSpesialis ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

@@ -43,6 +43,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah jenjang jabatan untuk ditampilkan
+$jmlJenjang = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT kode, nama, tnj, indek FROM jnj_jabatan ORDER BY indek LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
@@ -103,6 +106,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlJenjang ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

@@ -44,6 +44,9 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $totalData   = $totalRow['total'];
 $totalPages  = ceil($totalData / $limit);
 
+// simpan jumlah pendidikan untuk ditampilkan
+$jmlPendidikan = $totalData;
+
 // ambil data sesuai halaman
 $sql  = "SELECT tingkat, indek, gapok1, kenaikan, maksimal 
          FROM pendidikan 
@@ -110,6 +113,10 @@ $result = mysqli_query($conn, $sql);
             <?php endwhile; ?>
           </tbody>
         </table>
+
+        <div class="mt-2 small text-start text-muted">
+          Data : <?= $jmlPendidikan ?>,
+        </div>
 
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-3">

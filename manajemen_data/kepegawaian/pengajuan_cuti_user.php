@@ -222,29 +222,37 @@ while($peg = mysqli_fetch_assoc($resPeg)){
                     <span class="badge bg-danger"><?= htmlspecialchars($row['status']) ?></span>
                   <?php endif; ?>
                 </td>
+
                 <td class="text-center">
-                  <button class="btn btn-warning btn-sm"
-                          data-bs-toggle="modal"
-                          data-bs-target="#modalEdit"
-                          onclick="isiEditModal(
-                            '<?= $row['no_pengajuan'] ?>',
-                            '<?= $row['tanggal'] ?>',
-                            '<?= $row['tanggal_awal'] ?>',
-                            '<?= $row['tanggal_akhir'] ?>',
-                            '<?= $row['nik'] ?>',
-                            '<?= $row['urgensi'] ?>',
-                            '<?= $row['alamat'] ?>',
-                            '<?= $row['jumlah'] ?>',
-                            '<?= $row['kepentingan'] ?>',
-                            '<?= $row['nik_pj'] ?>',
-                            '<?= $row['status'] ?>',
-                            '<?= htmlspecialchars($row['nama_pj']) ?>'
-                          )">
-                    Edit
-                  </button>
-                  <a href="pengajuan_cuti_user.php?mode=delete&no_pengajuan=<?= htmlspecialchars($row['no_pengajuan'] ?? '') ?>" 
-                     onclick="return confirm('Yakin hapus data ini?')" 
-                     class="btn btn-danger btn-sm">Hapus</a>
+                  <?php if ($row['status'] === 'Disetujui' || $row['status'] === 'Ditolak'): ?>
+                    <!-- Jika sudah disetujui atau ditolak, tombol disabled -->
+                    <button class="btn btn-warning btn-sm" disabled>Edit</button>
+                    <button class="btn btn-danger btn-sm" disabled>Hapus</button>
+                  <?php else: ?>
+                    <!-- Jika masih proses pengajuan, tombol aktif -->
+                    <button class="btn btn-warning btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEdit"
+                            onclick="isiEditModal(
+                              '<?= $row['no_pengajuan'] ?>',
+                              '<?= $row['tanggal'] ?>',
+                              '<?= $row['tanggal_awal'] ?>',
+                              '<?= $row['tanggal_akhir'] ?>',
+                              '<?= $row['nik'] ?>',
+                              '<?= $row['urgensi'] ?>',
+                              '<?= $row['alamat'] ?>',
+                              '<?= $row['jumlah'] ?>',
+                              '<?= $row['kepentingan'] ?>',
+                              '<?= $row['nik_pj'] ?>',
+                              '<?= $row['status'] ?>',
+                              '<?= htmlspecialchars($row['nama_pj']) ?>'
+                            )">
+                      Edit
+                    </button>
+                    <a href="pengajuan_cuti_user.php?mode=delete&no_pengajuan=<?= htmlspecialchars($row['no_pengajuan'] ?? '') ?>" 
+                       onclick="return confirm('Yakin hapus data ini?')" 
+                       class="btn btn-danger btn-sm">Hapus</a>
+                  <?php endif; ?>
                 </td>
               </tr>
             <?php endforeach; endif; ?>

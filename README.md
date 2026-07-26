@@ -26,3 +26,5 @@ Daftar Update terakhir :
 
 11\. Update menu User (hanya khusus menu C)
 
+12\. Penambahan Menu 
+

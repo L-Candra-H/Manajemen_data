@@ -84,25 +84,34 @@ if (!empty($setting['wallpaper'])) {
 
   <!-- Popup error -->
   <?php if(isset($_GET['error'])): ?>
-    <div id="popup" class="popup" style="display:flex;">
+    <div class="popup" style="display:flex;">
       <div class="popup-content">
         <?php if($_GET['error']==1): ?>
           <p>⚠️ Login gagal! Username atau password salah.</p>
         <?php elseif($_GET['error']==2): ?>
           <p>⚠️ Verifikasi tanggal lahir tidak sesuai.</p>
         <?php endif; ?>
-        <button onclick="closePopup()">Tutup</button>
+        <button onclick="this.closest('.popup').style.display='none'">Tutup</button>
       </div>
     </div>
-    <script>
-      function closePopup() {
-        const popup = document.getElementById('popup');
-        popup.classList.add('fade-out');
-        setTimeout(() => { popup.style.display = 'none'; }, 1000);
-      }
-      setTimeout(closePopup, 5000);
-    </script>
   <?php endif; ?>
+
+  <!-- Popup info sukses -->
+  <?php if(isset($_GET['info']) && $_GET['info']==='PasswordBerhasilDiubahSilakanLogin'): ?>
+    <div class="popup" style="display:flex;">
+      <div class="popup-content" style="background:#e0ffe0; color:#2c3e50;">
+        <p>✅ Password berhasil diubah. Silakan login kembali dengan password baru.</p>
+        <button onclick="this.closest('.popup').style.display='none'">Tutup</button>
+      </div>
+    </div>
+  <?php endif; ?>
+
+  <script>
+    // auto-close semua popup setelah 5 detik
+    document.querySelectorAll('.popup').forEach(p => {
+      setTimeout(() => { p.style.display = 'none'; }, 5000);
+    });
+  </script>
 
   <!-- Script untuk autoformat tanggal lahir & sembunyikan captcha jika admin -->
   <script>
@@ -131,5 +140,6 @@ if (!empty($setting['wallpaper'])) {
       }
     });
   </script>
+
 </body>
 </html>

@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['mode'] ?? '') === 'update'
 
 // pagination
 $page   = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$limit  = 6;
+$limit  = 5;
 $offset = ($page - 1) * $limit;
 
 // filter
@@ -68,6 +68,9 @@ if ($filter === 'ALL') {
 $countResult = mysqli_query($conn, $countSql);
 $totalRows = $countResult ? (int) mysqli_fetch_assoc($countResult)['total'] : 0;
 $totalPages = $totalRows > 0 ? (int) ceil($totalRows / $limit) : 1;
+
+// hitung jumlah pegawai sesuai filter untuk ditampilkan
+$jmlPegawai = $totalRows;
 
 // ambil data sesuai filter
 if ($filter === 'ALL') {
@@ -123,6 +126,9 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0 text-uppercase text-center flex-grow-1">Keanggotaan Pegawai</h5>
           <div class="d-flex gap-2">
+            <a href="master_data/bpjs.php" class="btn btn-outline-dark btn-sm">📄 Stts BPJS Kesehatan</a>
+            <a href="master_data/jamsostek.php" class="btn btn-outline-dark btn-sm">📄 Stts BPJS Ketenagakerjaan</a>
+            <a href="master_data/koperasi.php" class="btn btn-outline-dark btn-sm">📄 Stts Koperasi</a>
             <a href="../index.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
           </div>
         </div>
@@ -187,6 +193,11 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
                 <?php endif; ?>
               </tbody>
             </table>
+
+            <div class="mt-2 small text-start text-muted">
+              Data : <?= $jmlPegawai ?>,
+            </div>
+
           </div>
 
           <?php if ($totalPages >= 1): ?>

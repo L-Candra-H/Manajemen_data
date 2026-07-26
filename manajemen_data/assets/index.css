@@ -52,3 +52,12 @@ body {
   text-align: center;
   padding: 10px;
 }
+
+.no-access-card {
+  background: linear-gradient(135deg, #1e1e2f, #2b2b3d);
+  color: #f1f1f1;
+}
+.no-access-card .card-text {
+  color: #cfcfcf;
+}
+
