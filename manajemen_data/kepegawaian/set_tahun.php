@@ -100,40 +100,40 @@ $result = mysqli_query($conn, $sql);
   <link rel="stylesheet" href="pegawai.css">
 </head>
 <body>
-<?php include __DIR__ . '/../layout/header.php'; ?>
+  <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<main class="main-content container-fluid mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Tahun & Bulan</h5>
-      <div class="d-flex gap-2">
-        <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+  <main class="container-fluid mt-4">
+    <div class="card shadow">
+      <!-- HEADER -->      
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Tahun & Bulan</h5>
+          <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
       </div>
-    </div>
 
-    <div class="card-body">
+      <div class="card-body">
       <!-- Form Input -->
-      <form method="post" class="row g-3 mb-4">
-        <div class="col-md-4">
-          <label class="form-label">Tahun Gaji</label>
-          <select name="tahun" class="form-select text-center" required>
-            <option value="">-- Pilih Tahun --</option>
-            <?php for ($t = date("Y"); $t >= 1960; $t--): ?>
-              <option value="<?= $t ?>"><?= $t ?></option>
-            <?php endfor; ?>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Bulan</label>
-          <select name="bulan" class="form-select text-center" required>
-            <option value="">-- Pilih Bulan --</option>
-            <?php foreach ($bulanArr as $num => $nama): ?>
-              <option value="<?= $num ?>"><?= $nama ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="col-md-4 d-flex align-items-end justify-content-center">
-          <button type="submit" name="simpan" class="btn btn-success me-2">Simpan</button>
+      <form method="post" class="d-flex flex-wrap align-items-center mb-2">
+        <!-- Tahun -->
+        <label for="tahun" class="form-label mb-0 me-2">Tahun Gaji :</label>
+        <select name="tahun" id="tahun" class="form-select text-center me-3" style="width:auto;" required>
+          <option value="">-- Pilih Tahun --</option>
+          <?php for ($t = date("Y"); $t >= 1960; $t--): ?>
+            <option value="<?= $t ?>"><?= $t ?></option>
+          <?php endfor; ?>
+        </select>
+
+        <!-- Bulan -->
+        <label for="bulan" class="form-label mb-0 me-2">Bulan :</label>
+        <select name="bulan" id="bulan" class="form-select text-center me-3" style="width:auto;" required>
+          <option value="">-- Pilih Bulan --</option>
+          <?php foreach ($bulanArr as $num => $nama): ?>
+            <option value="<?= $num ?>"><?= $nama ?></option>
+          <?php endforeach; ?>
+        </select>
+
+        <!-- Tombol di kanan -->
+        <div class="ms-auto d-flex gap-2">
+          <button type="submit" name="simpan" class="btn btn-success">💾 Simpan</button>
           <a href="set_tahun.php" class="btn btn-secondary">Batal</a>
         </div>
       </form>
@@ -163,8 +163,8 @@ $result = mysqli_query($conn, $sql);
                 <td><?= $row['normal'] ?></td>
                 <td><?= $totalMasuk ?></td>
                 <td class="text-center">
-                  <a href="set_tahun.php?hapus_tahun=<?= $row['tahun'] ?>&hapus_bulan=<?= $row['bulan'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?')">Hapus</a>
-                  <a href="libur_nasional.php?tahun=<?= $row['tahun'] ?>&bulan=<?= $row['bulan'] ?>" class="btn btn-warning btn-sm">Isi Libur Nasional</a>
+                  <a href="set_tahun.php?hapus_tahun=<?= $row['tahun'] ?>&hapus_bulan=<?= $row['bulan'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data ini?')">🗑️ Hapus</a>
+                  <a href="libur_nasional.php?tahun=<?= $row['tahun'] ?>&bulan=<?= $row['bulan'] ?>" class="btn btn-warning btn-sm">📅❌ Isi Libur Nasional</a>
                 </td>
               </tr>
             <?php endwhile; ?>
@@ -212,12 +212,11 @@ $result = mysqli_query($conn, $sql);
           </div>
         </div>
       </div>
-
     </div>
-  </div>
-</main>
+  </main>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

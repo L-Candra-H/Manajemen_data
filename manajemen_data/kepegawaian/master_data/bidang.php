@@ -9,9 +9,18 @@ if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
-
 $conn = bukakoneksi();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mode']) && $_POST['mode'] === 'edit') {
+    $nama_lama = $_POST['nama_lama'] ?? null;
+    $nama_baru = $_POST['nama'] ?? null;
+
+    if ($nama_lama && $nama_baru) {
+        $stmt = $conn->prepare("UPDATE bidang SET nama=? WHERE nama=?");
+        $stmt->bind_param("ss", $nama_baru, $nama_lama);
+        $stmt->execute();
+    }
+}
 
 // handler insert saja
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -70,12 +79,22 @@ $result = mysqli_query($conn, $sql);
           <thead class="table-dark text-center">
             <tr>
               <th>Nama Bidang</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <?php while($row = mysqli_fetch_assoc($result)): ?>
             <tr>
               <td><?= htmlspecialchars($row['nama']) ?></td>
+              <td class="text-center">
+                <button class="btn btn-warning btn-sm"
+                  data-bs-toggle="modal" data-bs-target="#modalEdit"
+                  data-nama-lama="<?= htmlspecialchars($row['nama']) ?>"
+                  data-nama="<?= htmlspecialchars($row['nama']) ?>"
+                  onclick="isiEditModal(this)">
+                  ✏️ Edit
+                </button>
+              </td>
             </tr>
             <?php endwhile; ?>
           </tbody>
@@ -137,6 +156,42 @@ $result = mysqli_query($conn, $sql);
     </div>
   </div>
 
+  <!-- Modal Edit -->
+  <div class="modal fade" id="modalEdit" tabindex="-1">
+    <div class="modal-dialog">
+      <form action="" method="post" class="modal-content">
+        <!-- hidden untuk mode dan nama lama -->
+        <input type="hidden" name="mode" value="edit">
+        <input type="hidden" name="nama_lama" id="editNamaLama">
+
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title">Edit Bidang</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nama Bidang</label>
+            <input type="text" name="nama" id="editNama" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">💾 Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  function isiEditModal(btn) {
+    document.getElementById('editNamaLama').value = btn.getAttribute('data-nama-lama');
+    document.getElementById('editNama').value     = btn.getAttribute('data-nama');
+  }
+  </script>
+
 </body>
 </html>

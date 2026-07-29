@@ -95,7 +95,7 @@ if ($filter !== '') {
               <a href="tambah_pegawai.php" class="btn btn-light btn-sm">➕ Tambah Pegawai</a>
               <a href="index_pegawai.php" class="btn btn-outline-dark btn-sm">📊 Index Pegawai</a>
             <?php endif; ?>
-            <a href="../index.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+            <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
           </div>
         </div>
 
@@ -269,5 +269,6 @@ if ($filter !== '') {
 
   <?php include __DIR__ . '/../layout/footer.php'; ?>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

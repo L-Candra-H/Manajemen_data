@@ -50,6 +50,28 @@
   z-index: 2;         /* pastikan header di atas isi tabel */
 }
 
+.table-potongan {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 2400px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-potongan th,
+.table-potongan td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-potongan thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}
+
 .table-petugas {
   width: max-content;
   min-width: 1350px;
@@ -417,6 +439,116 @@
 }
 
 .table-lembur thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-dansos {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-dansos th,
+.table-dansos td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-dansos thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-tunjangan {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-tunjangan th,
+.table-tunjangan td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-tunjangan thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-jasa_lain {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-jasa_lain th,
+.table-jasa_lain td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-jasa_lain thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-kasift {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-kasift th,
+.table-kasift td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-kasift thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  color: #fff;
+  z-index: 2;
+}
+
+.table-koperasi {
+  width: max-content;
+  min-width: 1300px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-koperasi th,
+.table-koperasi td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.table-koperasi thead th {
   position: sticky;
   top: 0;
   background: #343a40;

@@ -275,304 +275,305 @@ $result = mysqli_query($conn, $sql);
 
   <?php include __DIR__ . '/../layout/footer.php'; ?>
 
-<!-- Modal Tambah Dokter -->
-<div class="modal fade" id="modalTambah" tabindex="-1">
-  <div class="modal-dialog">
-    <form action="" method="post" class="modal-content">
-      <input type="hidden" name="mode" value="insert">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title">Tambah Dokter</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Kode Dokter (NIP Pegawai)</label>
-          <select name="kd_dokter" id="addKdDokter" class="form-select" required>
-            <option value="">-- Pilih Dokter --</option>
-            <?php foreach($pegawaiArr as $pg): ?>
-              <option value="<?= htmlspecialchars($pg['nik']) ?>"
-                      data-nama="<?= htmlspecialchars($pg['nama']) ?>"
-                      data-jk="<?= ($pg['jk']=='Pria'?'L':'P') ?>"
-                      data-tmp="<?= htmlspecialchars($pg['tmp_lahir']) ?>"
-                      data-tgl="<?= htmlspecialchars($pg['tgl_lahir']) ?>"
-                      data-alamat="<?= htmlspecialchars($pg['alamat']) ?>">
-                <?= htmlspecialchars($pg['nik']) ?> - <?= htmlspecialchars($pg['nama']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
+  <!-- Modal Tambah Dokter -->
+  <div class="modal fade" id="modalTambah" tabindex="-1">
+    <div class="modal-dialog">
+      <form action="" method="post" class="modal-content">
+        <input type="hidden" name="mode" value="insert">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Tambah Dokter</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="mb-3">
-          <label>Nama Dokter</label>
-          <input type="text" id="addNama" class="form-control bg-danger text-white fw-bold" readonly>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Kode Dokter (NIP Pegawai)</label>
+            <select name="kd_dokter" id="addKdDokter" class="form-select" required>
+              <option value="">-- Pilih Dokter --</option>
+              <?php foreach($pegawaiArr as $pg): ?>
+                <option value="<?= htmlspecialchars($pg['nik']) ?>"
+                        data-nama="<?= htmlspecialchars($pg['nama']) ?>"
+                        data-jk="<?= ($pg['jk']=='Pria'?'L':'P') ?>"
+                        data-tmp="<?= htmlspecialchars($pg['tmp_lahir']) ?>"
+                        data-tgl="<?= htmlspecialchars($pg['tgl_lahir']) ?>"
+                        data-alamat="<?= htmlspecialchars($pg['alamat']) ?>">
+                  <?= htmlspecialchars($pg['nik']) ?> - <?= htmlspecialchars($pg['nama']) ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Nama Dokter</label>
+            <input type="text" id="addNama" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Jenis Kelamin</label>
+            <input type="text" id="addJk" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Tmp/Tgl. Lahir</label>
+            <input type="text" id="addTmpTgl" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Gol. Darah</label>
+            <select name="gol_drh" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option>A</option><option>B</option><option>O</option><option>AB</option><option>-</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Agama</label>
+            <select name="agama" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option>ISLAM</option><option>KRISTEN</option><option>KATOLIK</option>
+              <option>HINDU</option><option>BUDHA</option><option>KONG HU CHU</option><option>-</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Status Nikah</label>
+            <select name="stts_nikah" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option>BELUM MENIKAH</option><option>MENIKAH</option><option>JANDA</option>
+              <option>DUDHA</option><option>JOMBLO</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Alamat Tinggal</label>
+            <input type="text" id="addAlamat" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>No. Telp</label>
+            <input type="text" name="no_telp" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label>Spesialis</label>
+            <select name="kd_sps" class="form-select" required>
+              <option value="">-- Pilih Spesialis --</option>
+              <?php foreach($spsArr as $sps): ?>
+                <option value="<?= htmlspecialchars($sps['kd_sps']) ?>"><?= htmlspecialchars($sps['nm_sps']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Alumni</label>
+            <input type="text" name="alumni" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label>No. Ijin Praktek</label>
+            <input type="text" name="no_ijn_praktek" class="form-control">
+          </div>
         </div>
-        <div class="mb-3">
-          <label>Jenis Kelamin</label>
-          <input type="text" id="addJk" class="form-control bg-danger text-white fw-bold" readonly>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">💾 Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
-        <div class="mb-3">
-          <label>Tmp/Tgl. Lahir</label>
-          <input type="text" id="addTmpTgl" class="form-control bg-danger text-white fw-bold" readonly>
-        </div>
-        <div class="mb-3">
-          <label>Gol. Darah</label>
-          <select name="gol_drh" class="form-select" required>
-            <option value="">-- Pilih --</option>
-            <option>A</option><option>B</option><option>O</option><option>AB</option><option>-</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Agama</label>
-          <select name="agama" class="form-select" required>
-            <option value="">-- Pilih --</option>
-            <option>ISLAM</option><option>KRISTEN</option><option>KATOLIK</option>
-            <option>HINDU</option><option>BUDHA</option><option>KONG HU CHU</option><option>-</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Status Nikah</label>
-          <select name="stts_nikah" class="form-select" required>
-            <option value="">-- Pilih --</option>
-            <option>BELUM MENIKAH</option><option>MENIKAH</option><option>JANDA</option>
-            <option>DUDHA</option><option>JOMBLO</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Alamat Tinggal</label>
-          <input type="text" id="addAlamat" class="form-control bg-danger text-white fw-bold" readonly>
-        </div>
-        <div class="mb-3">
-          <label>No. Telp</label>
-          <input type="text" name="no_telp" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label>Email</label>
-          <input type="email" name="email" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label>Spesialis</label>
-          <select name="kd_sps" class="form-select" required>
-            <option value="">-- Pilih Spesialis --</option>
-            <?php foreach($spsArr as $sps): ?>
-              <option value="<?= htmlspecialchars($sps['kd_sps']) ?>"><?= htmlspecialchars($sps['nm_sps']) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Alumni</label>
-          <input type="text" name="alumni" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label>No. Ijin Praktek</label>
-          <input type="text" name="no_ijn_praktek" class="form-control">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">💾 Simpan</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- Modal Edit Dokter -->
-<div class="modal fade" id="modalEdit" tabindex="-1">
-  <div class="modal-dialog">
-    <form action="" method="post" class="modal-content">
-      <input type="hidden" name="mode" value="update">
-      <input type="hidden" name="kd_dokter" id="editKdDokter">
-      <div class="modal-header bg-warning">
-        <h5 class="modal-title">Update Dokter</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label>Kode Dokter</label>
-          <input type="text" id="editKdDokterText" class="form-control bg-danger text-white fw-bold" readonly>
+  <!-- Modal Edit Dokter -->
+  <div class="modal fade" id="modalEdit" tabindex="-1">
+    <div class="modal-dialog">
+      <form action="" method="post" class="modal-content">
+        <input type="hidden" name="mode" value="update">
+        <input type="hidden" name="kd_dokter" id="editKdDokter">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title">Update Dokter</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="mb-3">
-          <label>Nama Dokter</label>
-          <input type="text" id="editNama" class="form-control bg-danger text-white fw-bold" readonly>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Kode Dokter</label>
+            <input type="text" id="editKdDokterText" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Nama Dokter</label>
+            <input type="text" id="editNama" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Jenis Kelamin</label>
+            <input type="text" id="editJk" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Tmp/Tgl. Lahir</label>
+            <input type="text" id="editTmpTgl" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>Gol. Darah</label>
+            <select name="gol_drh" id="editGol" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option>A</option><option>B</option><option>O</option><option>AB</option><option>-</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Agama</label>
+            <select name="agama" id="editAgama" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option>ISLAM</option><option>KRISTEN</option><option>KATOLIK</option>
+              <option>HINDU</option><option>BUDHA</option><option>KONG HU CHU</option><option>-</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Status Nikah</label>
+            <select name="stts_nikah" id="editNikah" class="form-select" required>
+              <option value="">-- Pilih --</option>
+              <option>BELUM MENIKAH</option><option>MENIKAH</option><option>JANDA</option>
+              <option>DUDHA</option><option>JOMBLO</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Alamat Tinggal</label>
+            <input type="text" id="editAlamat" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label>No. Telp</label>
+            <input type="text" name="no_telp" id="editTelp" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" id="editEmail" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label>Spesialis</label>
+            <select name="kd_sps" id="editSps" class="form-select" required>
+              <option value="">-- Pilih Spesialis --</option>
+              <?php foreach($spsArr as $sps): ?>
+                <option value="<?= htmlspecialchars($sps['kd_sps']) ?>"><?= htmlspecialchars($sps['nm_sps']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Alumni</label>
+            <input type="text" name="alumni" id="editAlumni" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label>No. Ijin Praktek</label>
+            <input type="text" name="no_ijn_praktek" id="editIjin" class="form-control">
+          </div>
         </div>
-        <div class="mb-3">
-          <label>Jenis Kelamin</label>
-          <input type="text" id="editJk" class="form-control bg-danger text-white fw-bold" readonly>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">💾 Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
-        <div class="mb-3">
-          <label>Tmp/Tgl. Lahir</label>
-          <input type="text" id="editTmpTgl" class="form-control bg-danger text-white fw-bold" readonly>
-        </div>
-        <div class="mb-3">
-          <label>Gol. Darah</label>
-          <select name="gol_drh" id="editGol" class="form-select" required>
-            <option value="">-- Pilih --</option>
-            <option>A</option><option>B</option><option>O</option><option>AB</option><option>-</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Agama</label>
-          <select name="agama" id="editAgama" class="form-select" required>
-            <option value="">-- Pilih --</option>
-            <option>ISLAM</option><option>KRISTEN</option><option>KATOLIK</option>
-            <option>HINDU</option><option>BUDHA</option><option>KONG HU CHU</option><option>-</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Status Nikah</label>
-          <select name="stts_nikah" id="editNikah" class="form-select" required>
-            <option value="">-- Pilih --</option>
-            <option>BELUM MENIKAH</option><option>MENIKAH</option><option>JANDA</option>
-            <option>DUDHA</option><option>JOMBLO</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Alamat Tinggal</label>
-          <input type="text" id="editAlamat" class="form-control bg-danger text-white fw-bold" readonly>
-        </div>
-        <div class="mb-3">
-          <label>No. Telp</label>
-          <input type="text" name="no_telp" id="editTelp" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label>Email</label>
-          <input type="email" name="email" id="editEmail" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label>Spesialis</label>
-          <select name="kd_sps" id="editSps" class="form-select" required>
-            <option value="">-- Pilih Spesialis --</option>
-            <?php foreach($spsArr as $sps): ?>
-              <option value="<?= htmlspecialchars($sps['kd_sps']) ?>"><?= htmlspecialchars($sps['nm_sps']) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label>Alumni</label>
-          <input type="text" name="alumni" id="editAlumni" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label>No. Ijin Praktek</label>
-          <input type="text" name="no_ijn_praktek" id="editIjin" class="form-control">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">💾 Simpan</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- Modal Reaktivasi Dokter -->
-<div class="modal fade" id="modalReaktivasi" tabindex="-1">
-  <div class="modal-dialog">
-    <form action="" method="post" class="modal-content">
-      <input type="hidden" name="mode" value="reactivate">
-      <div class="modal-header bg-info text-white">
-        <h5 class="modal-title">Reaktivasi Dokter</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Pilih Dokter</label>
-          <select name="kd_dokter" id="reactivateKdDokter" class="form-select" required>
-            <option value="">-- Pilih Dokter --</option>
-            <?php foreach($reactivateArr as $rt): ?>
-              <option value="<?= htmlspecialchars($rt['kd_dokter']) ?>"
-                      data-nama="<?= htmlspecialchars($rt['nm_dokter']) ?>"
-                      data-jk="<?= htmlspecialchars($rt['jk']) ?>"
-                      data-tmp="<?= htmlspecialchars($rt['tmp_lahir']) ?>"
-                      data-tgl="<?= htmlspecialchars($rt['tgl_lahir']) ?>"
-                      data-gol="<?= htmlspecialchars($rt['gol_drh']) ?>"
-                      data-agama="<?= htmlspecialchars($rt['agama']) ?>"
-                      data-alamat="<?= htmlspecialchars($rt['almt_tgl']) ?>"
-                      data-telp="<?= htmlspecialchars($rt['no_telp']) ?>"
-                      data-email="<?= htmlspecialchars($rt['email']) ?>"
-                      data-nikah="<?= htmlspecialchars($rt['stts_nikah']) ?>"
-                      data-sps="<?= htmlspecialchars($rt['nm_sps']) ?>"
-                      data-alumni="<?= htmlspecialchars($rt['alumni']) ?>"
-                      data-ijin="<?= htmlspecialchars($rt['no_ijn_praktek']) ?>">
-                <?= htmlspecialchars($rt['kd_dokter']) ?> - <?= htmlspecialchars($rt['nm_dokter']) ?> - <?= htmlspecialchars($rt['nm_sps']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
+  <!-- Modal Reaktivasi Dokter -->
+  <div class="modal fade" id="modalReaktivasi" tabindex="-1">
+    <div class="modal-dialog">
+      <form action="" method="post" class="modal-content">
+        <input type="hidden" name="mode" value="reactivate">
+        <div class="modal-header bg-info text-white">
+          <h5 class="modal-title">Reaktivasi Dokter</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <div class="mb-3"><label>Nama Dokter</label><input type="text" id="reactivateNama" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Jenis Kelamin</label><input type="text" id="reactivateJk" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Tmp/Tgl. Lahir</label><input type="text" id="reactivateTmpTgl" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Gol. Darah</label><input type="text" id="reactivateGol" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Agama</label><input type="text" id="reactivateAgama" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Status Nikah</label><input type="text" id="reactivateNikah" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Alamat</label><input type="text" id="reactivateAlamat" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>No. Telp</label><input type="text" id="reactivateTelp" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Email</label><input type="text" id="reactivateEmail" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Spesialis</label><input type="text" id="reactivateSps" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>Alumni</label><input type="text" id="reactivateAlumni" class="form-control bg-danger text-white fw-bold" readonly></div>
-        <div class="mb-3"><label>No. Ijin Praktek</label><input type="text" id="reactivateIjin" class="form-control bg-danger text-white fw-bold" readonly></div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">🔄 Reaktivasi</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-      </div>
-    </form>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Pilih Dokter</label>
+            <select name="kd_dokter" id="reactivateKdDokter" class="form-select" required>
+              <option value="">-- Pilih Dokter --</option>
+              <?php foreach($reactivateArr as $rt): ?>
+                <option value="<?= htmlspecialchars($rt['kd_dokter']) ?>"
+                        data-nama="<?= htmlspecialchars($rt['nm_dokter']) ?>"
+                        data-jk="<?= htmlspecialchars($rt['jk']) ?>"
+                        data-tmp="<?= htmlspecialchars($rt['tmp_lahir']) ?>"
+                        data-tgl="<?= htmlspecialchars($rt['tgl_lahir']) ?>"
+                        data-gol="<?= htmlspecialchars($rt['gol_drh']) ?>"
+                        data-agama="<?= htmlspecialchars($rt['agama']) ?>"
+                        data-alamat="<?= htmlspecialchars($rt['almt_tgl']) ?>"
+                        data-telp="<?= htmlspecialchars($rt['no_telp']) ?>"
+                        data-email="<?= htmlspecialchars($rt['email']) ?>"
+                        data-nikah="<?= htmlspecialchars($rt['stts_nikah']) ?>"
+                        data-sps="<?= htmlspecialchars($rt['nm_sps']) ?>"
+                        data-alumni="<?= htmlspecialchars($rt['alumni']) ?>"
+                        data-ijin="<?= htmlspecialchars($rt['no_ijn_praktek']) ?>">
+                  <?= htmlspecialchars($rt['kd_dokter']) ?> - <?= htmlspecialchars($rt['nm_dokter']) ?> - <?= htmlspecialchars($rt['nm_sps']) ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="mb-3"><label>Nama Dokter</label><input type="text" id="reactivateNama" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Jenis Kelamin</label><input type="text" id="reactivateJk" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Tmp/Tgl. Lahir</label><input type="text" id="reactivateTmpTgl" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Gol. Darah</label><input type="text" id="reactivateGol" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Agama</label><input type="text" id="reactivateAgama" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Status Nikah</label><input type="text" id="reactivateNikah" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Alamat</label><input type="text" id="reactivateAlamat" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>No. Telp</label><input type="text" id="reactivateTelp" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Email</label><input type="text" id="reactivateEmail" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Spesialis</label><input type="text" id="reactivateSps" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>Alumni</label><input type="text" id="reactivateAlumni" class="form-control bg-danger text-white fw-bold" readonly></div>
+          <div class="mb-3"><label>No. Ijin Praktek</label><input type="text" id="reactivateIjin" class="form-control bg-danger text-white fw-bold" readonly></div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">🔄 Reaktivasi</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
-<script>
-  // Auto-fill Tambah Dokter
-  var addKdDokter = document.getElementById('addKdDokter');
-  if (addKdDokter) {
-    addKdDokter.addEventListener('change', function() {
-      var opt = this.options[this.selectedIndex];
-      document.getElementById('addNama').value   = opt.getAttribute('data-nama') || '';
-      document.getElementById('addJk').value     = opt.getAttribute('data-jk') || '';
-      document.getElementById('addTmpTgl').value = (opt.getAttribute('data-tmp') || '') + ' / ' + (opt.getAttribute('data-tgl') || '');
-      document.getElementById('addAlamat').value = opt.getAttribute('data-alamat') || '';
-    });
-  }
+  <script>
+    // Auto-fill Tambah Dokter
+    var addKdDokter = document.getElementById('addKdDokter');
+    if (addKdDokter) {
+      addKdDokter.addEventListener('change', function() {
+        var opt = this.options[this.selectedIndex];
+        document.getElementById('addNama').value   = opt.getAttribute('data-nama') || '';
+        document.getElementById('addJk').value     = opt.getAttribute('data-jk') || '';
+        document.getElementById('addTmpTgl').value = (opt.getAttribute('data-tmp') || '') + ' / ' + (opt.getAttribute('data-tgl') || '');
+        document.getElementById('addAlamat').value = opt.getAttribute('data-alamat') || '';
+      });
+    }
 
-  // Auto-fill Reaktivasi Dokter
-  var reactivateKdDokter = document.getElementById('reactivateKdDokter');
-  if (reactivateKdDokter) {
-    reactivateKdDokter.addEventListener('change', function() {
-      var opt = this.options[this.selectedIndex];
-      document.getElementById('reactivateNama').value   = opt.getAttribute('data-nama') || '';
-      document.getElementById('reactivateJk').value     = opt.getAttribute('data-jk') || '';
-      document.getElementById('reactivateTmpTgl').value = (opt.getAttribute('data-tmp') || '') + ' / ' + (opt.getAttribute('data-tgl') || '');
-      document.getElementById('reactivateGol').value    = opt.getAttribute('data-gol') || '';
-      document.getElementById('reactivateAgama').value  = opt.getAttribute('data-agama') || '';
-      document.getElementById('reactivateNikah').value  = opt.getAttribute('data-nikah') || '';
-      document.getElementById('reactivateAlamat').value = opt.getAttribute('data-alamat') || '';
-      document.getElementById('reactivateTelp').value   = opt.getAttribute('data-telp') || '';
-      document.getElementById('reactivateEmail').value  = opt.getAttribute('data-email') || '';
-      document.getElementById('reactivateSps').value    = opt.getAttribute('data-sps') || '';
-      document.getElementById('reactivateAlumni').value = opt.getAttribute('data-alumni') || '';
-      document.getElementById('reactivateIjin').value   = opt.getAttribute('data-ijin') || '';
-    });
-  }
+    // Auto-fill Reaktivasi Dokter
+    var reactivateKdDokter = document.getElementById('reactivateKdDokter');
+    if (reactivateKdDokter) {
+      reactivateKdDokter.addEventListener('change', function() {
+        var opt = this.options[this.selectedIndex];
+        document.getElementById('reactivateNama').value   = opt.getAttribute('data-nama') || '';
+        document.getElementById('reactivateJk').value     = opt.getAttribute('data-jk') || '';
+        document.getElementById('reactivateTmpTgl').value = (opt.getAttribute('data-tmp') || '') + ' / ' + (opt.getAttribute('data-tgl') || '');
+        document.getElementById('reactivateGol').value    = opt.getAttribute('data-gol') || '';
+        document.getElementById('reactivateAgama').value  = opt.getAttribute('data-agama') || '';
+        document.getElementById('reactivateNikah').value  = opt.getAttribute('data-nikah') || '';
+        document.getElementById('reactivateAlamat').value = opt.getAttribute('data-alamat') || '';
+        document.getElementById('reactivateTelp').value   = opt.getAttribute('data-telp') || '';
+        document.getElementById('reactivateEmail').value  = opt.getAttribute('data-email') || '';
+        document.getElementById('reactivateSps').value    = opt.getAttribute('data-sps') || '';
+        document.getElementById('reactivateAlumni').value = opt.getAttribute('data-alumni') || '';
+        document.getElementById('reactivateIjin').value   = opt.getAttribute('data-ijin') || '';
+      });
+    }
 
-  // Auto-fill Edit Dokter
-  var modalEdit = document.getElementById('modalEdit');
-  if (modalEdit) {
-    modalEdit.addEventListener('show.bs.modal', function (event) {
-      var button = event.relatedTarget;
-      document.getElementById('editKdDokter').value = button.getAttribute('data-kd_dokter') || '';
-      document.getElementById('editKdDokterText').value = button.getAttribute('data-kd_dokter') || '';
-      document.getElementById('editNama').value = button.getAttribute('data-nama') || '';
-      document.getElementById('editJk').value = button.getAttribute('data-jk') || '';
-      document.getElementById('editTmpTgl').value = (button.getAttribute('data-tmp') || '') + ' / ' + (button.getAttribute('data-tgl') || '');
-      document.getElementById('editGol').value = button.getAttribute('data-gol') || '';
-      document.getElementById('editAgama').value = button.getAttribute('data-agama') || '';
-      document.getElementById('editNikah').value = button.getAttribute('data-nikah') || '';
-      document.getElementById('editAlamat').value = button.getAttribute('data-alamat') || '';
-      document.getElementById('editTelp').value = button.getAttribute('data-telp') || '';
-      document.getElementById('editEmail').value = button.getAttribute('data-email') || '';
-      document.getElementById('editSps').value = button.getAttribute('data-sps') || '';
-      document.getElementById('editAlumni').value = button.getAttribute('data-alumni') || '';
-      document.getElementById('editIjin').value   = button.getAttribute('data-ijin') || '';
-    });
-  }
-</script>
+    // Auto-fill Edit Dokter
+    var modalEdit = document.getElementById('modalEdit');
+    if (modalEdit) {
+      modalEdit.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('editKdDokter').value = button.getAttribute('data-kd_dokter') || '';
+        document.getElementById('editKdDokterText').value = button.getAttribute('data-kd_dokter') || '';
+        document.getElementById('editNama').value = button.getAttribute('data-nama') || '';
+        document.getElementById('editJk').value = button.getAttribute('data-jk') || '';
+        document.getElementById('editTmpTgl').value = (button.getAttribute('data-tmp') || '') + ' / ' + (button.getAttribute('data-tgl') || '');
+        document.getElementById('editGol').value = button.getAttribute('data-gol') || '';
+        document.getElementById('editAgama').value = button.getAttribute('data-agama') || '';
+        document.getElementById('editNikah').value = button.getAttribute('data-nikah') || '';
+        document.getElementById('editAlamat').value = button.getAttribute('data-alamat') || '';
+        document.getElementById('editTelp').value = button.getAttribute('data-telp') || '';
+        document.getElementById('editEmail').value = button.getAttribute('data-email') || '';
+        document.getElementById('editSps').value = button.getAttribute('data-sps') || '';
+        document.getElementById('editAlumni').value = button.getAttribute('data-alumni') || '';
+        document.getElementById('editIjin').value   = button.getAttribute('data-ijin') || '';
+      });
+    }
+  </script>
+
 </body>
 </html>

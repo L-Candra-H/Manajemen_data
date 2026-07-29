@@ -153,211 +153,212 @@ while($row=mysqli_fetch_assoc($result)){
   <link rel="stylesheet" href="pegawai.css">
 </head>
 <body>
-<?php include __DIR__ . '/../layout/header.php'; ?>
+  <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<main class="main-content container-fluid mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Riwayat Jabatan</h5>
-      <div class="d-flex gap-2">
-        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
-        <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+  <main class="main-content container-fluid mt-4">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Riwayat Jabatan</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
+          <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+        </div>
       </div>
-    </div>
 
-    <div class="card-body">
-      <!-- FILTER -->
-      <form method="get" class="mb-3">
-        <label for="filter" class="form-label">Filter Pegawai:</label>
-        <select name="filter" id="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
-          <option value="">-- Pilih Pegawai --</option>
-          <option value="ALL" <?= $filter==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
-          <?php foreach($listPegawai as $peg): ?>
-            <option value="<?= $peg['nik'] ?>" <?= ($filter==$peg['nik'])?'selected':'' ?>>
-              <?= $peg['nik'] ?> - <?= $peg['nama'] ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
-        <button type="submit" class="btn btn-secondary btn-sm">Terapkan</button>
-      </form>
+      <div class="card-body">
+        <!-- FILTER -->
+        <form method="get" class="mb-3">
+          <label for="filter" class="form-label">Filter Pegawai:</label>
+          <select name="filter" id="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
+            <option value="">-- Pilih Pegawai --</option>
+            <option value="ALL" <?= $filter==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
+            <?php foreach($listPegawai as $peg): ?>
+              <option value="<?= $peg['nik'] ?>" <?= ($filter==$peg['nik'])?'selected':'' ?>>
+                <?= $peg['nik'] ?> - <?= $peg['nama'] ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+          <button type="submit" class="btn btn-secondary btn-sm">Terapkan</button>
+        </form>
 
-      <!-- Tabel Pegawai -->
-      <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-riwayat_jabatan align-middle">
-          <thead class="table-dark text-center">
-            <tr>
-              <th>NIP</th>
-              <th>Nama</th>
-              <th>Riwayat Jabatan Pegawai</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php if(empty($pegawaiData)): ?>
-            <tr><td colspan="4" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
-          <?php else: 
-            foreach($pegawaiData as $pegId=>$data): ?>
+        <!-- Tabel Pegawai -->
+        <div class="table-wrapper">
+          <table class="table table-striped table-bordered table-riwayat_jabatan align-middle">
+            <thead class="table-dark text-center">
               <tr>
-                <td><?= htmlspecialchars($data['nik']) ?></td>
-                <td><?= htmlspecialchars($data['nama']) ?></td>
-                <td>
-                  <?php if(!empty($data['riwayat'])): ?>
-                    <table class="table table-sm table-bordered mb-0">
-                      <thead class="table-light">
-                        <tr>
-                          <th>No</th>
-                          <th>Jabatan</th>
-                          <th>TMT Jabatan</th>
-                          <th>TMT Jabatan YAD</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php $no=1; foreach($data['riwayat'] as $rj): ?>
-                          <tr>
-                            <td><?= $no++ ?></td>
-                            <td><span class="badge bg-info"><?= htmlspecialchars($rj['jabatan']) ?></span></td>
-                            <td class="text-primary"><?= htmlspecialchars($rj['tmt_pangkat']) ?></td>
-                            <td class="text-success"><?= htmlspecialchars($rj['tmt_pangkat_yad']) ?></td>
-                          </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                    </table>
-                  <?php endif; ?>
-                </td>
-                <td class="text-center">
-                  <a href="detail_riwayat_jabatan.php?id=<?= $pegId ?>" class="btn btn-info btn-sm">Detail</a>
-                </td>
+                <th>NIP</th>
+                <th>Nama</th>
+                <th>Riwayat Jabatan Pegawai</th>
+                <th>Aksi</th>
               </tr>
-          <?php endforeach; endif; ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+            <?php if(empty($pegawaiData)): ?>
+              <tr><td colspan="4" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
+            <?php else: 
+              foreach($pegawaiData as $pegId=>$data): ?>
+                <tr>
+                  <td><?= htmlspecialchars($data['nik']) ?></td>
+                  <td><?= htmlspecialchars($data['nama']) ?></td>
+                  <td>
+                    <?php if(!empty($data['riwayat'])): ?>
+                      <table class="table table-sm table-bordered mb-0">
+                        <thead class="table-light">
+                          <tr>
+                            <th>No</th>
+                            <th>Jabatan</th>
+                            <th>TMT Jabatan</th>
+                            <th>TMT Jabatan YAD</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php $no=1; foreach($data['riwayat'] as $rj): ?>
+                            <tr>
+                              <td><?= $no++ ?></td>
+                              <td><span class="badge bg-info"><?= htmlspecialchars($rj['jabatan']) ?></span></td>
+                              <td class="text-primary"><?= htmlspecialchars($rj['tmt_pangkat']) ?></td>
+                              <td class="text-success"><?= htmlspecialchars($rj['tmt_pangkat_yad']) ?></td>
+                            </tr>
+                          <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <?php endif; ?>
+                  </td>
+                  <td class="text-center">
+                    <a href="detail_riwayat_jabatan.php?id=<?= $pegId ?>" class="btn btn-info btn-sm">Detail</a>
+                  </td>
+                </tr>
+            <?php endforeach; endif; ?>
+            </tbody>
+          </table>
+        </div>
+
+        <?php if($totalPages > 1): ?>
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center mt-3">
+            <!-- Tombol Prev -->
+            <li class="page-item <?= ($page<=1)?'disabled':'' ?>">
+              <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= max(1,$page-1) ?>">Prev</a>
+            </li>
+
+            <!-- Nomor Halaman (hanya 3 sekitar halaman aktif) -->
+            <?php
+              $start = max(1, $page-1);
+              $end   = min($totalPages, $page+1);
+              for($i=$start; $i<=$end; $i++): ?>
+                <li class="page-item <?= ($i==$page)?'active':'' ?>">
+                  <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= $i ?>"><?= $i ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <!-- Tombol Next -->
+            <li class="page-item <?= ($page>=$totalPages)?'disabled':'' ?>">
+              <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= min($totalPages,$page+1) ?>">Next</a>
+            </li>
+          </ul>
+        </nav>
+        <?php endif; ?>
       </div>
-
-      <?php if($totalPages > 1): ?>
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center mt-3">
-          <!-- Tombol Prev -->
-          <li class="page-item <?= ($page<=1)?'disabled':'' ?>">
-            <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= max(1,$page-1) ?>">Prev</a>
-          </li>
-
-          <!-- Nomor Halaman (hanya 3 sekitar halaman aktif) -->
-          <?php
-            $start = max(1, $page-1);
-            $end   = min($totalPages, $page+1);
-            for($i=$start; $i<=$end; $i++): ?>
-              <li class="page-item <?= ($i==$page)?'active':'' ?>">
-                <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= $i ?>"><?= $i ?></a>
-              </li>
-          <?php endfor; ?>
-
-          <!-- Tombol Next -->
-          <li class="page-item <?= ($page>=$totalPages)?'disabled':'' ?>">
-            <a class="page-link" href="?filter=<?= urlencode($filter) ?>&page=<?= min($totalPages,$page+1) ?>">Next</a>
-          </li>
-        </ul>
-      </nav>
-      <?php endif; ?>
     </div>
-  </div>
-</main>
+  </main>
 
-<!-- Modal Tambah -->
-<div class="modal fade" id="modalTambah" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title">Tambah Riwayat Jabatan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <form method="post" enctype="multipart/form-data" action="">
-        <input type="hidden" name="mode" value="insert">
-        <div class="modal-body">
-          <div class="row">
-            <!-- Kolom Kanan -->
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label for="nipSelect" class="form-label">NIP</label>
-                <select name="id" id="nipSelect" class="form-select">
-                  <option value="">-- Pilih Pegawai --</option>
-                  <?php foreach($listPegawai as $peg): ?>
-                    <option value="<?= $peg['id'] ?>" data-nama="<?= htmlspecialchars($peg['nama']) ?>">
-                      <?= $peg['nik'] ?> - <?= $peg['nama'] ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+  <!-- Modal Tambah -->
+  <div class="modal fade" id="modalTambah" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Tambah Riwayat Jabatan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="post" enctype="multipart/form-data" action="">
+          <input type="hidden" name="mode" value="insert">
+          <div class="modal-body">
+            <div class="row">
+              <!-- Kolom Kanan -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="nipSelect" class="form-label">NIP</label>
+                  <select name="id" id="nipSelect" class="form-select">
+                    <option value="">-- Pilih Pegawai --</option>
+                    <?php foreach($listPegawai as $peg): ?>
+                      <option value="<?= $peg['id'] ?>" data-nama="<?= htmlspecialchars($peg['nama']) ?>">
+                        <?= $peg['nik'] ?> - <?= $peg['nama'] ?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
 
-              <div class="mb-3">
-                <label for="namaPegawai" class="form-label">Nama</label>
-                <input type="text" id="namaPegawai" class="form-control bg-danger text-white fw-bold" readonly>
-              </div>
+                <div class="mb-3">
+                  <label for="namaPegawai" class="form-label">Nama</label>
+                  <input type="text" id="namaPegawai" class="form-control bg-danger text-white fw-bold" readonly>
+                </div>
 
-              <div class="mb-3">
-                <label class="form-label">Jabatan</label>
-                <input type="text" name="jabatan" class="form-control">
-              </div>
+                <div class="mb-3">
+                  <label class="form-label">Jabatan</label>
+                  <input type="text" name="jabatan" class="form-control">
+                </div>
 
-              <div class="mb-3">
-                <label class="form-label">TMT Jabatan</label>
-                <input type="date" name="tmt_pangkat" class="form-control">
-              </div>
+                <div class="mb-3">
+                  <label class="form-label">TMT Jabatan</label>
+                  <input type="date" name="tmt_pangkat" class="form-control">
+                </div>
 
-              <div class="mb-3">
-                <label class="form-label">TMT Jabatan YAD</label>
-                <input type="date" name="tmt_pangkat_yad" class="form-control">
-              </div>
+                <div class="mb-3">
+                  <label class="form-label">TMT Jabatan YAD</label>
+                  <input type="date" name="tmt_pangkat_yad" class="form-control">
+                </div>
 
-              <div class="mb-3">
-                <label class="form-label">Pejabat Penetap</label>
-                <input type="text" name="pejabat_penetap" class="form-control">
-              </div>
-            </div>
-
-            <!-- Kolom Kiri -->
-            <div class="col-md-6">
-              <label>Nomor SK</label>
-              <input type="text" name="nomor_sk" class="form-control">
-
-              <label>Tanggal SK</label>
-              <input type="date" name="tgl_sk" class="form-control">
-
-              <label>Dasar Peraturan</label>
-              <input type="text" name="dasar_peraturan" class="form-control">
-
-              <div class="mb-3">
-                <label class="form-label">Masa Kerja</label>
-                <div class="input-group">
-                  <input type="number" name="masa_kerja" class="form-control" placeholder="Lama Tahun">
-                  <span class="input-group-text">Tahun</span>
-                  <input type="number" name="bln_kerja" class="form-control" placeholder="Lama Bulan">
-                  <span class="input-group-text">Bulan</span>
+                <div class="mb-3">
+                  <label class="form-label">Pejabat Penetap</label>
+                  <input type="text" name="pejabat_penetap" class="form-control">
                 </div>
               </div>
 
-              <label>Berkas Pengangkatan (PDF/Gambar)</label>
-              <input type="file" name="berkas" class="form-control" accept="image/*">
+              <!-- Kolom Kiri -->
+              <div class="col-md-6">
+                <label>Nomor SK</label>
+                <input type="text" name="nomor_sk" class="form-control">
+
+                <label>Tanggal SK</label>
+                <input type="date" name="tgl_sk" class="form-control">
+
+                <label>Dasar Peraturan</label>
+                <input type="text" name="dasar_peraturan" class="form-control">
+
+                <div class="mb-3">
+                  <label class="form-label">Masa Kerja</label>
+                  <div class="input-group">
+                    <input type="number" name="masa_kerja" class="form-control" placeholder="Lama Tahun">
+                    <span class="input-group-text">Tahun</span>
+                    <input type="number" name="bln_kerja" class="form-control" placeholder="Lama Bulan">
+                    <span class="input-group-text">Bulan</span>
+                  </div>
+                </div>
+
+                <label>Berkas Pengangkatan (PDF/Gambar)</label>
+                <input type="file" name="berkas" class="form-control" accept="image/*">
+              </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Simpan</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        </div>
-      </form>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">💾 Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-// sinkronisasi NIP -> Nama
-document.getElementById('nipSelect').addEventListener('change', function() {
-  var nama = this.options[this.selectedIndex].getAttribute('data-nama');
-  document.getElementById('namaPegawai').value = nama ? nama : '';
-});
-</script>
+  <script>
+  // sinkronisasi NIP -> Nama
+  document.getElementById('nipSelect').addEventListener('change', function() {
+    var nama = this.options[this.selectedIndex].getAttribute('data-nama');
+    document.getElementById('namaPegawai').value = nama ? nama : '';
+  });
+  </script>
 
-<?php include __DIR__ . '/../layout/footer.php'; ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <?php include __DIR__ . '/../layout/footer.php'; ?>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

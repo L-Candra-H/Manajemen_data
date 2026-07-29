@@ -663,106 +663,104 @@ function badgeBool($val) {
             <?php endif; ?>
           </tbody>
         </table>
+      </div>
 
-        <!-- Pagination -->
-        <?php if ($totalPages >= 1 && !empty($filter)): ?>
-        <nav aria-label="Page navigation" class="mt-3">
-          <ul class="pagination justify-content-center">
-            <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=<?= urlencode($filter) ?>">Prev</a>
+      <!-- Pagination -->
+      <?php if ($totalPages >= 1 && !empty($filter)): ?>
+      <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center">
+          <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+            <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=<?= urlencode($filter) ?>">Prev</a>
+          </li>
+          <?php
+            $start = max(1, $page - 1);
+            $end   = min($totalPages, $page + 1);
+            for ($i = $start; $i <= $end; $i++):
+          ?>
+            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+              <a class="page-link" href="?page=<?= $i ?>&filter=<?= urlencode($filter) ?>"><?= $i ?></a>
             </li>
-            <?php
-              $start = max(1, $page - 1);
-              $end   = min($totalPages, $page + 1);
-              for ($i = $start; $i <= $end; $i++):
-            ?>
-              <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>&filter=<?= urlencode($filter) ?>"><?= $i ?></a>
-              </li>
-            <?php endfor; ?>
-            <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=<?= urlencode($filter) ?>">Next</a>
-            </li>
-          </ul>
-        </nav>
-        <?php endif; ?>
+          <?php endfor; ?>
+          <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+            <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=<?= urlencode($filter) ?>">Next</a>
+          </li>
+        </ul>
+      </nav>
+      <?php endif; ?>
+    </div>
+  </main>
 
+  <!-- Modal Tambah -->
+  <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Tambah User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form method="post" id="formTambah">
+          <div class="modal-body row g-3">
+            <div class="col-md-12">
+              <label class="form-label">ID User</label>
+              <select name="id_user" id="id_user" class="form-select" required>
+                <option value="">-- Pilih --</option>
+                <?php foreach($options as $opt): ?>
+                  <option value="<?= htmlspecialchars($opt['id_user']) ?>"
+                          data-nama="<?= htmlspecialchars($opt['nama_user']) ?>"
+                          data-jabatan="<?= htmlspecialchars($opt['jabatan_user']) ?>">
+                    <?= htmlspecialchars($opt['id_user'].' - '.$opt['nama_user'].' ('.$opt['jabatan_user'].')') ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Nama User</label>
+              <input type="text" id="nama_user" class="form-control bg-danger text-white fw-bold" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Jabatan</label>
+              <input type="text" id="jabatan_user" class="form-control bg-danger text-white fw-bold" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="simpan" class="btn btn-success">💾 Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</main>
 
-<!-- Modal Tambah -->
-<div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title">Tambah User</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <form method="post" id="formTambah">
-        <div class="modal-body row g-3">
-          <div class="col-md-12">
-            <label class="form-label">ID User</label>
-            <select name="id_user" id="id_user" class="form-select" required>
-              <option value="">-- Pilih --</option>
-              <?php foreach($options as $opt): ?>
-                <option value="<?= htmlspecialchars($opt['id_user']) ?>"
-                        data-nama="<?= htmlspecialchars($opt['nama_user']) ?>"
-                        data-jabatan="<?= htmlspecialchars($opt['jabatan_user']) ?>">
-                  <?= htmlspecialchars($opt['id_user'].' - '.$opt['nama_user'].' ('.$opt['jabatan_user'].')') ?>
-                </option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Nama User</label>
-            <input type="text" id="nama_user" class="form-control bg-danger text-white fw-bold" readonly>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Jabatan</label>
-            <input type="text" id="jabatan_user" class="form-control bg-danger text-white fw-bold" readonly>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script>
-document.getElementById('id_user').addEventListener('change', function() {
-  var selected = this.options[this.selectedIndex];
-  document.getElementById('nama_user').value = selected.getAttribute('data-nama') || '';
-  document.getElementById('jabatan_user').value = selected.getAttribute('data-jabatan') || '';
-});
-
-document.querySelectorAll('.update-field').forEach(el => {
-  el.addEventListener('change', function() {
-    const id    = this.dataset.id;
-    const field = this.dataset.field;
-    const value = this.type === 'checkbox' ? (this.checked ? 'true' : 'false') : this.value;
-
-    fetch('update_user.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `id_user=${encodeURIComponent(id)}&field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
-    })
-    .then(res => res.text())
-    .then(msg => console.log(msg));
+  <script>
+  document.getElementById('id_user').addEventListener('change', function() {
+    var selected = this.options[this.selectedIndex];
+    document.getElementById('nama_user').value = selected.getAttribute('data-nama') || '';
+    document.getElementById('jabatan_user').value = selected.getAttribute('data-jabatan') || '';
   });
-});
 
-</script>
+  document.querySelectorAll('.update-field').forEach(el => {
+    el.addEventListener('change', function() {
+      const id    = this.dataset.id;
+      const field = this.dataset.field;
+      const value = this.type === 'checkbox' ? (this.checked ? 'true' : 'false') : this.value;
 
-<?php include __DIR__ . '/../../layout/footer.php'; ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+      fetch('update_user.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id_user=${encodeURIComponent(id)}&field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
+      })
+      .then(res => res.text())
+      .then(msg => console.log(msg));
+    });
+  });
+  </script>
+
+  <?php include __DIR__ . '/../../layout/footer.php'; ?>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -64,7 +64,7 @@ $result = mysqli_query($conn, $sql);
         <h5 class="mb-0 text-uppercase flex-grow-1 text-center">BPJS Kesehatan</h5>
         <div class="d-flex gap-2">
           <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
-          <a href="../keanggotaan.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+          <a href="../../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
         </div>
       </div>
 

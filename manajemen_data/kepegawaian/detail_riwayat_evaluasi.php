@@ -63,64 +63,63 @@ $dataPegawai = $riwayat[0] ?? null;
   <link rel="stylesheet" href="pegawai.css">
 </head>
 <body>
+  <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<?php include __DIR__ . '/../layout/header.php'; ?>
+  <main class="main-content container-fluid mt-4">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-uppercase text-center flex-grow-1">
+          Detail Riwayat Evaluasi - <?= htmlspecialchars($dataPegawai['nama'] ?? '') ?>
+        </h5>
+        <div class="d-flex gap-2">
+          <a href="riwayat_evaluasi.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+        </div>
+      </div>
+      <div class="card-body">
 
-<main class="main-content container-fluid mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0 text-uppercase text-center flex-grow-1">
-        Detail Riwayat Evaluasi - <?= htmlspecialchars($dataPegawai['nama'] ?? '') ?>
-      </h5>
-      <div class="d-flex gap-2">
-        <a href="riwayat_evaluasi.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+        <!-- Ringkasan Riwayat Evaluasi -->
+        <div class="table-wrapper">
+          <table class="table table-striped table-bordered table-riwayat_evaluasi align-middle">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>Tahun</th>
+                <th>Bulan</th>
+                <th>Hasil Evaluasi</th>
+                <th>Keterangan</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if(empty($riwayat)): ?>
+                <tr><td colspan="10" class="text-center text-muted">Tidak ada riwayat evaluasi</td></tr>
+              <?php else: ?>
+                <?php foreach($riwayat as $rj): ?>
+                  <tr>
+                    <td><?= $rj['tahun'] ?></td>
+                    <td><?= $rj['bulan'] ?></td>
+                    <td><?= $rj['nama_evaluasi'] ?></td>
+                    <td><?= $rj['keterangan'] ?></td>
+                    <td class="text-center">
+                      <form method="post" onsubmit="return confirm('Yakin hapus riwayat evaluasi ini?')">
+                        <input type="hidden" name="hapus_id" value="<?= $rj['id'] ?>">
+                        <input type="hidden" name="hapus_kode_evaluasi" value="<?= $rj['kode_evaluasi'] ?>">
+                        <input type="hidden" name="hapus_tahun" value="<?= $rj['tahun'] ?>">
+                        <input type="hidden" name="hapus_keterangan" value="<?= $rj['keterangan'] ?>">
+                        <button type="submit" class="btn btn-danger btn-sm">🗑️ Hapus</button>
+                      </form>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="card-body">
+  </main>
 
-      <!-- Ringkasan Riwayat Evaluasi -->
-      <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-riwayat_evaluasi align-middle">
-          <thead class="table-dark text-center">
-            <tr>
-              <th>Tahun</th>
-              <th>Bulan</th>
-              <th>Hasil Evaluasi</th>
-              <th>Keterangan</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if(empty($riwayat)): ?>
-              <tr><td colspan="10" class="text-center text-muted">Tidak ada riwayat evaluasi</td></tr>
-            <?php else: ?>
-              <?php foreach($riwayat as $rj): ?>
-                <tr>
-                  <td><?= $rj['tahun'] ?></td>
-                  <td><?= $rj['bulan'] ?></td>
-                  <td><?= $rj['nama_evaluasi'] ?></td>
-                  <td><?= $rj['keterangan'] ?></td>
-                  <td class="text-center">
-                    <form method="post" onsubmit="return confirm('Yakin hapus riwayat evaluasi ini?')">
-                      <input type="hidden" name="hapus_id" value="<?= $rj['id'] ?>">
-                      <input type="hidden" name="hapus_kode_evaluasi" value="<?= $rj['kode_evaluasi'] ?>">
-                      <input type="hidden" name="hapus_tahun" value="<?= $rj['tahun'] ?>">
-                      <input type="hidden" name="hapus_keterangan" value="<?= $rj['keterangan'] ?>">
-                      <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                    </form>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
+  <?php include __DIR__ . '/../layout/footer.php'; ?>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
-    </div>
-  </div>
-</main>
-
-<?php include __DIR__ . '/../layout/footer.php'; ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

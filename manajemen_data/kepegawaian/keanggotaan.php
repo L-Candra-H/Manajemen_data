@@ -119,86 +119,82 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
 <body>
   <?php include __DIR__ . '/../layout/header.php'; ?>
 
-  <main class="main-content">
-    <div class="container-fluid mt-4">
-      <div class="card shadow">
-        <!-- HEADER -->
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-          <h5 class="mb-0 text-uppercase text-center flex-grow-1">Keanggotaan Pegawai</h5>
-          <div class="d-flex gap-2">
-            <a href="master_data/bpjs.php" class="btn btn-outline-dark btn-sm">📄 Stts BPJS Kesehatan</a>
-            <a href="master_data/jamsostek.php" class="btn btn-outline-dark btn-sm">📄 Stts BPJS Ketenagakerjaan</a>
-            <a href="master_data/koperasi.php" class="btn btn-outline-dark btn-sm">📄 Stts Koperasi</a>
-            <a href="../index.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
-          </div>
+  <main class="container-fluid mt-4">
+    <div class="card shadow">
+      <!-- HEADER -->
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-uppercase text-center flex-grow-1">Keanggotaan Pegawai</h5>
+        <div class="d-flex gap-2">
+          <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
         </div>
+      </div>
+        
+      <div class="card-body p-3">
 
         <!-- FILTER -->
-        <div class="card-body">
-          <form method="get" class="mb-3">
-            <label for="filter" class="form-label">Filter Pegawai:</label>
-            <select name="filter" id="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
-              <option value="">-- Pilih Pegawai --</option>
-              <option value="ALL" <?= $filter==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
-              <?php while($peg = mysqli_fetch_assoc($listPegawai)): ?>
-                <option value="<?= $peg['nik'] ?>" <?= ($filter==$peg['nik'])?'selected':'' ?>>
-                  <?= htmlspecialchars($peg['nik']) ?> - <?= htmlspecialchars($peg['nama']) ?>
-                </option>
-              <?php endwhile; ?>
-            </select>
-            <button type="submit" class="btn btn-secondary btn-sm">Terapkan</button>
-          </form>
-        </div>
+        <form method="get" class="mb-3">
+          <label for="filter" class="form-label">Filter Pegawai:</label>
+          <select name="filter" id="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
+            <option value="">-- Pilih Pegawai --</option>
+            <option value="ALL" <?= $filter==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
+            <?php while($peg = mysqli_fetch_assoc($listPegawai)): ?>
+              <option value="<?= $peg['nik'] ?>" <?= ($filter==$peg['nik'])?'selected':'' ?>>
+                <?= htmlspecialchars($peg['nik']) ?> - <?= htmlspecialchars($peg['nama']) ?>
+              </option>
+            <?php endwhile; ?>
+          </select>
+          <button type="submit" class="btn btn-secondary btn-sm">Terapkan</button>
+        </form>
 
         <!-- TABEL -->
-        <div class="card-body p-3">
-          <div class="table-wrapper">
-            <table class="table table-bordered table-striped align-middle table-keanggotaan">
-              <thead class="table-dark text-center">
+        <div class="table-wrapper">
+          <table class="table table-bordered table-striped align-middle table-keanggotaan">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>NIP</th>
+                <th>Nama</th>
+                <th>Anggota Koperasi</th>
+                <th>Anggota BPJS Ketenagakerjaan</th>
+                <th>Anggota BPJS Kesehatan</th>
+                <th>Proses</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (mysqli_num_rows($result) === 0): ?>
+                <tr><td colspan="6" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
+              <?php else: ?>
+                <?php while($row = mysqli_fetch_assoc($result)): ?>
                 <tr>
-                  <th>NIP</th>
-                  <th>Nama</th>
-                  <th>Anggota Koperasi</th>
-                  <th>Anggota BPJS Ketenagakerjaan</th>
-                  <th>Anggota BPJS Kesehatan</th>
-                  <th>Proses</th>
+                  <td><?= htmlspecialchars($row['nik'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($row['nama'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($row['koperasi'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($row['jamsostek'] ?? '') ?></td>
+                  <td><?= htmlspecialchars($row['bpjs'] ?? '') ?></td>
+                  <td class="text-center">
+                    <button class="btn btn-warning btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEdit"
+                            data-id="<?= htmlspecialchars($row['id'] ?? '') ?>"
+                            data-nik="<?= htmlspecialchars($row['nik'] ?? '') ?>"
+                            data-nama="<?= htmlspecialchars($row['nama'] ?? '') ?>"
+                            data-koperasi="<?= htmlspecialchars($row['koperasi'] ?? '') ?>"
+                            data-jamsostek="<?= htmlspecialchars($row['jamsostek'] ?? '') ?>"
+                            data-bpjs="<?= htmlspecialchars($row['bpjs'] ?? '') ?>">
+                      ✏️ Update
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                <?php if (mysqli_num_rows($result) === 0): ?>
-                  <tr><td colspan="6" class="text-center text-muted">Silakan pilih pegawai untuk menampilkan data</td></tr>
-                <?php else: ?>
-                  <?php while($row = mysqli_fetch_assoc($result)): ?>
-                  <tr>
-                    <td><?= htmlspecialchars($row['nik'] ?? '') ?></td>
-                    <td><?= htmlspecialchars($row['nama'] ?? '') ?></td>
-                    <td><?= htmlspecialchars($row['koperasi'] ?? '') ?></td>
-                    <td><?= htmlspecialchars($row['jamsostek'] ?? '') ?></td>
-                    <td><?= htmlspecialchars($row['bpjs'] ?? '') ?></td>
-                    <td class="text-center">
-                      <button class="btn btn-warning btn-sm"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalEdit"
-                              data-id="<?= htmlspecialchars($row['id'] ?? '') ?>"
-                              data-nik="<?= htmlspecialchars($row['nik'] ?? '') ?>"
-                              data-nama="<?= htmlspecialchars($row['nama'] ?? '') ?>"
-                              data-koperasi="<?= htmlspecialchars($row['koperasi'] ?? '') ?>"
-                              data-jamsostek="<?= htmlspecialchars($row['jamsostek'] ?? '') ?>"
-                              data-bpjs="<?= htmlspecialchars($row['bpjs'] ?? '') ?>">
-                        ✏️ Update
-                      </button>
-                    </td>
-                  </tr>
-                  <?php endwhile; ?>
-                <?php endif; ?>
-              </tbody>
-            </table>
+              <?php endwhile; ?>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
 
-            <div class="mt-2 small text-start text-muted">
-              Data : <?= $jmlPegawai ?>,
-            </div>
-
+          <div class="mt-2 small text-start text-muted">
+            Data : <?= $jmlPegawai ?>,
           </div>
+
+        </div>
 
           <?php if ($totalPages >= 1): ?>
           <nav aria-label="Page navigation" class="mt-3">
@@ -222,8 +218,8 @@ while($row = mysqli_fetch_assoc($res)) { $bpjsArr[] = $row['stts']; }
               </li>
             </ul>
           </nav>
-          <?php endif; ?>
-        </div>
+        <?php endif; ?>
+
       </div>
     </div>
   </main>

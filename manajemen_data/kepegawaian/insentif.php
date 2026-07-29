@@ -102,173 +102,175 @@ $bulanArr = [
   <link rel="stylesheet" href="pegawai.css">
 </head>
 <body>
-<?php include __DIR__ . '/../layout/header.php'; ?>
-<main class="main-content container-fluid mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Pendapatan</h5>
-      <div class="d-flex gap-2">
-        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
-        <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
-      </div>
-    </div>
-    <div class="card-body p-3">
-      <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-setting align-middle">
-          <thead class="table-dark text-center">
-            <tr>
-              <th>Tahun</th>
-              <th>Bulan</th>
-              <th>Pendapatan</th>
-              <th>Prosentase</th>
-              <th>Total Insentif</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php while($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-              <td><?= htmlspecialchars($row['tahun']) ?></td>
-              <td><?= $bulanArr[(int)$row['bulan']] ?></td>
-              <td><?= "Rp. " . number_format($row['pendapatan'], 0, ',', '.') ?></td>
-              <td><?= htmlspecialchars($row['persen']) ?>%</td>
-              <td><?= "Rp. " . number_format($row['total_insentif'], 0, ',', '.') ?></td>
-              <td class="text-center">
-                <button class="btn btn-warning btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalEdit"
-                        data-tahun="<?= htmlspecialchars($row['tahun']) ?>"
-                        data-bulan="<?= htmlspecialchars($row['bulan']) ?>"
-                        data-bulantext="<?= $bulanArr[(int)$row['bulan']] ?>"
-                        data-pendapatan="<?= htmlspecialchars($row['pendapatan']) ?>"
-                        data-persen="<?= htmlspecialchars($row['persen']) ?>">
-                  ✏️ Edit
-                </button>
-                <a href="detail_insentif.php?tahun=<?= $row['tahun'] ?>&bulan=<?= $row['bulan'] ?>" class="btn btn-info btn-sm me-2">💰 Detail Pembagian</a>
-                <form action="" method="post" style="display:inline">
-                  <input type="hidden" name="mode" value="delete">
-                  <input type="hidden" name="tahun" value="<?= htmlspecialchars($row['tahun']) ?>">
-                  <input type="hidden" name="bulan" value="<?= htmlspecialchars($row['bulan']) ?>">
-                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</button>
-                </form>
-              </td>
-            </tr>
-            <?php endwhile; ?>
-          </tbody>
-        </table>
+  <?php include __DIR__ . '/../layout/header.php'; ?>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-3">
-          <ul class="pagination justify-content-center">
-            <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= max(1, $page - 1) ?>">Prev</a>
-            </li>
-            <?php
-              $start = max(1, $page - 1);
-              $end   = min($totalPages, $page + 1);
-              for ($i = $start; $i <= $end; $i++):
-            ?>
-              <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+  <main class="main-content container-fluid mt-4">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Pendapatan</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
+          <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+        </div>
+      </div>
+      <div class="card-body p-3">
+        <div class="table-wrapper">
+          <table class="table table-striped table-bordered table-setting align-middle">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>Tahun</th>
+                <th>Bulan</th>
+                <th>Pendapatan</th>
+                <th>Prosentase</th>
+                <th>Total Insentif</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while($row = mysqli_fetch_assoc($result)): ?>
+              <tr>
+                <td><?= htmlspecialchars($row['tahun']) ?></td>
+                <td><?= $bulanArr[(int)$row['bulan']] ?></td>
+                <td><?= "Rp. " . number_format($row['pendapatan'], 0, ',', '.') ?></td>
+                <td><?= htmlspecialchars($row['persen']) ?>%</td>
+                <td><?= "Rp. " . number_format($row['total_insentif'], 0, ',', '.') ?></td>
+                <td class="text-center">
+                  <button class="btn btn-warning btn-sm"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalEdit"
+                          data-tahun="<?= htmlspecialchars($row['tahun']) ?>"
+                          data-bulan="<?= htmlspecialchars($row['bulan']) ?>"
+                          data-bulantext="<?= $bulanArr[(int)$row['bulan']] ?>"
+                          data-pendapatan="<?= htmlspecialchars($row['pendapatan']) ?>"
+                          data-persen="<?= htmlspecialchars($row['persen']) ?>">
+                    ✏️ Edit
+                  </button>
+                  <a href="detail_insentif.php?tahun=<?= $row['tahun'] ?>&bulan=<?= $row['bulan'] ?>" class="btn btn-info btn-sm me-2">💰 Detail Pembagian</a>
+                  <form action="" method="post" style="display:inline">
+                    <input type="hidden" name="mode" value="delete">
+                    <input type="hidden" name="tahun" value="<?= htmlspecialchars($row['tahun']) ?>">
+                    <input type="hidden" name="bulan" value="<?= htmlspecialchars($row['bulan']) ?>">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</button>
+                  </form>
+                </td>
+              </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= max(1, $page - 1) ?>">Prev</a>
               </li>
-            <?php endfor; ?>
-            <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>">Next >></a>
-            </li>
-          </ul>
-        </nav>
+              <?php
+                $start = max(1, $page - 1);
+                $end   = min($totalPages, $page + 1);
+                for ($i = $start; $i <= $end; $i++):
+              ?>
+                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+              <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>">Next >></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
+  </main>
+
+  <?php include __DIR__ . '/../layout/footer.php'; ?>
+
+  <!-- Modal Tambah -->
+  <div class="modal fade" id="modalTambah" tabindex="-1">
+    <div class="modal-dialog">
+      <form action="" method="post" class="modal-content">
+        <input type="hidden" name="mode" value="insert">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Tambah Pendapatan</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Tahun - Bulan</label>
+            <select name="tahun_bulan" class="form-select" required>
+              <option value="">-- Pilih Tahun + Bulan --</option>
+              <?php while($t = $listTahun->fetch_assoc()): ?>
+                <option value="<?= $t['tahun'].'-'.$t['bulan'] ?>">
+                  <?= $t['tahun'].' - '.$bulanArr[(int)$t['bulan']] ?>
+                </option>
+              <?php endwhile; ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Pendapatan</label>
+            <input type="number" name="pendapatan" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Prosentase Insentif (%)</label>
+            <input type="number" name="persen" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">💾 Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
   </div>
-</main>
 
-<?php include __DIR__ . '/../layout/footer.php'; ?>
-
-<!-- Modal Tambah -->
-<div class="modal fade" id="modalTambah" tabindex="-1">
-  <div class="modal-dialog">
-    <form action="" method="post" class="modal-content">
-      <input type="hidden" name="mode" value="insert">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title">Tambah Pendapatan</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Tahun - Bulan</label>
-          <select name="tahun_bulan" class="form-select" required>
-            <option value="">-- Pilih Tahun + Bulan --</option>
-            <?php while($t = $listTahun->fetch_assoc()): ?>
-              <option value="<?= $t['tahun'].'-'.$t['bulan'] ?>">
-                <?= $t['tahun'].' - '.$bulanArr[(int)$t['bulan']] ?>
-              </option>
-            <?php endwhile; ?>
-          </select>
+  <!-- Modal Edit -->
+  <div class="modal fade" id="modalEdit" tabindex="-1">
+    <div class="modal-dialog">
+      <form action="" method="post" class="modal-content">
+        <input type="hidden" name="mode" value="update">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title">Edit Pendapatan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Pendapatan</label>
-          <input type="number" name="pendapatan" class="form-control" required>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Tahun</label>
+            <input type="text" name="tahun" id="editTahun" class="form-control bg-danger text-white fw-bold" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Bulan</label>
+            <input type="hidden" name="bulan" id="editBulanHidden">
+            <input type="text" id="editBulanText" class="form-control bg-danger text-white" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Pendapatan</label>
+            <input type="number" name="pendapatan" id="editPendapatan" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Prosentase Insentif (%)</label>
+            <input type="number" name="persen" id="editPersen" class="form-control" required>
+          </div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Prosentase Insentif (%)</label>
-          <input type="number" name="persen" class="form-control" required>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Simpan</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<!-- Modal Edit -->
-<div class="modal fade" id="modalEdit" tabindex="-1">
-  <div class="modal-dialog">
-    <form action="" method="post" class="modal-content">
-      <input type="hidden" name="mode" value="update">
-      <div class="modal-header bg-warning">
-        <h5 class="modal-title">Edit Pendapatan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Tahun</label>
-          <input type="text" name="tahun" id="editTahun" class="form-control bg-danger text-white fw-bold" readonly>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Bulan</label>
-          <input type="hidden" name="bulan" id="editBulanHidden">
-          <input type="text" id="editBulanText" class="form-control bg-danger text-white" readonly>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Pendapatan</label>
-          <input type="number" name="pendapatan" id="editPendapatan" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Prosentase Insentif (%)</label>
-          <input type="number" name="persen" id="editPersen" class="form-control" required>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Update</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-      </div>
-    </form>
-  </div>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    var modalEdit = document.getElementById('modalEdit');
+    modalEdit.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      document.getElementById('editTahun').value      = button.getAttribute('data-tahun');
+      document.getElementById('editBulanHidden').value = button.getAttribute('data-bulan');     // angka
+      document.getElementById('editBulanText').value   = button.getAttribute('data-bulantext'); // teks
+      document.getElementById('editPendapatan').value = button.getAttribute('data-pendapatan');
+      document.getElementById('editPersen').value     = button.getAttribute('data-persen');
+    });
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  var modalEdit = document.getElementById('modalEdit');
-  modalEdit.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget;
-    document.getElementById('editTahun').value      = button.getAttribute('data-tahun');
-    document.getElementById('editBulanHidden').value = button.getAttribute('data-bulan');     // angka
-    document.getElementById('editBulanText').value   = button.getAttribute('data-bulantext'); // teks
-    document.getElementById('editPendapatan').value = button.getAttribute('data-pendapatan');
-    document.getElementById('editPersen').value     = button.getAttribute('data-persen');
-  });
-</script>
 </body>
 </html>

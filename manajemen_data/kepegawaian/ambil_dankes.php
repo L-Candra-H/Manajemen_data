@@ -31,6 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tanggal'])) {
     mysqli_query($conn, $sqlInsert);
 }
 
+// handler hapus
+if (isset($_GET['hapus'])) {
+    $hapusId = $_GET['hapus'];
+    $nik     = $_GET['nik'] ?? '';
+
+    $stmt = $conn->prepare("DELETE FROM ambil_dankes WHERE id=?");
+    $stmt->bind_param("i", $hapusId);
+    $stmt->execute();
+
+    // redirect agar URL bersih dan tabel ter-update
+    header("Location: ambil_dankes.php?nik=" . urlencode($nik));
+    exit;
+}
+
 // pagination riwayat
 $limit = 6;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -94,8 +108,8 @@ $resRiwayat = mysqli_query($conn, $sqlRiwayat);
                       <td><?= htmlspecialchars($row['tanggal']) ?></td>
                       <td><?= htmlspecialchars($row['ktg']) ?></td>
                       <td><?= "Rp. " . number_format($row['dankes'], 0, ',', '.') ?></td>
-                      <td>
-                        <a href="hapus_dankes.php?id=<?= $row['id'] ?>&nik=<?= $nik ?>" 
+                      <td class="text-center">
+                        <a href="ambil_dankes.php?hapus=<?= $row['id'] ?>&nik=<?= $nik ?>" 
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
                       </td>

@@ -347,7 +347,7 @@ $bank        = mysqli_query($conn, "SELECT namabank FROM bank ORDER BY namabank"
   </div>
 
   <?php include __DIR__ . '/../layout/footer.php'; ?>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

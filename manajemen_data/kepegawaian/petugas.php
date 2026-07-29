@@ -569,5 +569,6 @@ $result = mysqli_query($conn, $sql);
       });
     }
   </script>
+  
 </body>
 </html>

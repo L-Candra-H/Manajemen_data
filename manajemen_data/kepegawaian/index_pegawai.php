@@ -18,17 +18,21 @@ $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;
 
-// filter pegawai
-$filter = isset($_GET['filter']) ? $conn->real_escape_string($_GET['filter']) : '';
-$listPegawai = $conn->query("SELECT nik, nama FROM pegawai WHERE stts_aktif='AKTIF' ORDER BY nik");
+// Ambil filter pegawai dan tahunHitung
+$filter      = isset($_GET['filter']) ? $_GET['filter'] : '';
+$tahunHitung = isset($_GET['tahunHitung']) ? $_GET['tahunHitung'] : '';
 
-// filter tahun
-$listTahun = $conn->query("SELECT tahun, bulan FROM set_tahun ORDER BY tahun DESC, bulan DESC");
+// Ambil list pegawai untuk dropdown
+$listPegawai = bukaquery("SELECT nik, nama FROM pegawai ORDER BY nama ASC");
 
-// array nama bulan
+// Ambil list tahun-bulan untuk dropdown
+$listTahun   = bukaquery("SELECT tahun, bulan FROM set_tahun ORDER BY tahun DESC, bulan DESC");
+
+// Array bulan untuk label
 $bulanArr = [
-    1=>"Januari", 2=>"Februari", 3=>"Maret", 4=>"April", 5=>"Mei", 6=>"Juni",
-    7=>"Juli", 8=>"Agustus", 9=>"September", 10=>"Oktober", 11=>"November", 12=>"Desember"
+  1=>"Januari", 2=>"Februari", 3=>"Maret", 4=>"April",
+  5=>"Mei", 6=>"Juni", 7=>"Juli", 8=>"Agustus",
+  9=>"September", 10=>"Oktober", 11=>"November", 12=>"Desember"
 ];
 
 // tentukan periode: default hari ini jika kosong
@@ -228,182 +232,183 @@ if ($result) {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Index Pegawai</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../layout/header.css">
-<link rel="stylesheet" href="pegawai.css">
+  <meta charset="UTF-8">
+  <title>Index Pegawai</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../layout/header.css">
+  <link rel="stylesheet" href="pegawai.css">
 </head>
 <body>
-<?php include __DIR__ . '/../layout/header.php'; ?>
+  <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<main class="main-content">
-<div class="container-fluid mt-4">
-<div class="card shadow">
+  <main class="container-fluid mt-4">
+    <div class="card shadow">
+    <!-- HEADER -->
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Index Pegawai</h5>
+        <div class="d-flex gap-2">
+          <a href="pegawai.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+        </div>
+       </div>
 
-  <!-- HEADER -->
-  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-    <h5 class="mb-0 text-uppercase text-center flex-grow-1">Index Pegawai</h5>
-    <a href="pegawai.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
-  </div>
+      <div class="card-body p-3">
 
-  <!-- FILTER -->
-  <div class="card-body">
-    <form method="get" class="mb-3">
-      <!-- Filter Pegawai -->
-      <label for="filter" class="form-label">Filter Pegawai:</label>
-      <select name="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
-        <option value="">-- Pilih Pegawai --</option>
-        <option value="ALL" <?= $filter === 'ALL' ? 'selected' : '' ?>>Pilih Semua</option>
-        <?php if ($listPegawai) { while ($p = $listPegawai->fetch_assoc()) { ?>
-          <option value="<?= $p['nik'] ?>" <?= ($filter == $p['nik']) ? 'selected' : '' ?>>
-            <?= $p['nik'].' - '.$p['nama'] ?>
-          </option>
-        <?php } } ?>
-      </select>
+        <!-- Filter Pegawai -->
+        <form method="get" class="mb-3">
+          <label for="filter" class="form-label">Filter Pegawai:</label>
+          <select name="filter" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
+            <option value="">-- Pilih Pegawai --</option>
+            <option value="ALL" <?= $filter === 'ALL' ? 'selected' : '' ?>>Pilih Semua</option>
+            <?php if ($listPegawai) { while ($p = $listPegawai->fetch_assoc()) { ?>
+              <option value="<?= $p['nik'] ?>" <?= ($filter == $p['nik']) ? 'selected' : '' ?>>
+                <?= $p['nik'].' - '.$p['nama'] ?>
+              </option>
+            <?php } } ?>
+          </select>
 
-      <!-- Filter Tahun Hitung -->
-      <label for="tahunHitung" class="form-label">Filter Tahun Hitung:</label>
-      <select name="tahunHitung" id="tahunHitung" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
-        <option value="">-- Pilih Tahun Hitung --</option>
-        <?php if ($listTahun) { while ($thn = $listTahun->fetch_assoc()) {
-          $val   = $thn['tahun'].'-'.$thn['bulan'];
-          $label = $thn['tahun'].' '.$bulanArr[(int)$thn['bulan']];
-          $selected = ($tahunHitung == $val) ? 'selected' : '';
-          echo "<option value='{$val}' {$selected}>{$label}</option>";
-        } } ?>
-      </select>
+        <!-- Filter Tahun Hitung -->
+          <label for="tahunHitung" class="form-label">Filter Tahun Hitung:</label>
+          <select name="tahunHitung" id="tahunHitung" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
+            <option value="">-- Pilih Tahun Hitung --</option>
+            <?php if ($listTahun) { while ($thn = $listTahun->fetch_assoc()) {
+              $val   = $thn['tahun'].'-'.$thn['bulan'];
+              $label = $thn['tahun'].' '.$bulanArr[(int)$thn['bulan']];
+              $selected = ($tahunHitung == $val) ? 'selected' : '';
+              echo "<option value='{$val}' {$selected}>{$label}</option>";
+            } } ?>
+          </select>
 
-      <!-- Tombol Terapkan -->
-      <button type="submit" class="btn btn-secondary btn-sm">Terapkan</button>
-    </form>
-  </div>
+        <!-- Tombol Terapkan -->
+          <button type="submit" class="btn btn-secondary btn-sm">Terapkan</button>
+        </form>
 
-  <!-- TABEL -->
-  <div class="table-wrapper">
-    <table class="table table-striped table-bordered table-index-pegawai align-middle">
-      <thead class="table-dark text-center">
-        <tr>
-          <th>NIP</th><th>Nama</th><th>Jabatan</th><th>Pendidikan</th>
-          <th>Mulai Kerja</th><th>Lama Kerja</th>
-          <th>Index Pendidikan</th><th>Index Masa Kerja</th><th>Index Status</th>
-          <th>Index Jenjang Jabatan</th><th>Index Kelompok Jabatan</th><th>Index Resiko Kerja</th>
-          <th>Index Tingkat Emergency</th><th>Index Evaluasi Kinerja</th><th>Index Pencapaian Kinerja</th>
-          <th>Index Struktural</th><th>Pengurang</th><th>Total Index</th>
-          <th>Mulai Kontrak</th><th>Lama Kontrak</th>
-          <th>Gaji Pokok</th><th>Hak Cuti</th><th>Cuti Diambil</th><th>Sisa Cuti</th>
-          <th>Dankes</th><th>Sisa Dankes</th><th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        if (empty($dataPegawai)) {
-          echo "<tr><td colspan='27' class='text-center text-muted'>
-                Silakan pilih pegawai dan tahun hitung untuk menampilkan data
-                </td></tr>";
-        } else {
-          foreach ($dataPegawai as $dp) {
-            $row = $dp['row'];
-            echo "<tr>
-              <td>{$row['nik']}</td>
-              <td>{$row['nama']}</td>
-              <td>{$row['jbtn']}</td>
-              <td>{$row['pendidikan']}</td>
-              <td>{$row['mulai_kerja']}</td>
-              <td>{$dp['lamaKerja']}</td>
-              <td>{$row['indek_pendidikan']}</td>
-              <td>{$dp['indexMasakerja']}</td>
-              <td>{$row['indek_status']}</td>
-              <td>{$row['indek_jenjang']}</td>
-              <td>{$row['indek_kelompok']}</td>
-              <td>{$row['indek_resiko']}</td>
-              <td>{$row['indek_emergency']}</td>
-              <td>".($row['indek_evaluasi'] ?? 0)."</td>
-              <td>".($row['indek_pencapaian'] ?? 0)."</td>
-              <td>{$row['indek_struktural']}</td>
-              <td>{$row['pengurang']}%</td>
-              <td>{$dp['totalIndex']}</td>
-              <td>{$row['mulai_kontrak']}</td>
-              <td>{$dp['lamaKontrak']}</td>
-              <td>".("Rp. ".number_format($row['gaji_pokok'],0,',','.'))."</td>
-              <td>{$row['hakcuti']}</td>
-              <td>{$dp['hariCuti']}</td>
-              <td>{$dp['sisaCuti']}</td>
-              <td>".("Rp. ".number_format($row['dankes'],0,',','.'))."</td>
-              <td>".("Rp. ".number_format($dp['sisaDankes'],0,',','.'))."</td>
-              <td>
-                <button type='button' class='btn btn-warning btn-sm'
-                        data-bs-toggle='modal' data-bs-target='#editModal'
-                        data-nik='{$row['nik']}'>Edit</button>
-                <a href='ambil_dankes.php?nik={$row['nik']}'
-                   class='btn btn-info btn-sm'>Ambil Dankes</a>
-              </td>
-            </tr>";
-          }
-        }
-        ?>
-      </tbody>
-    </table>
-    <div class="mt-2 small text-start text-muted">
-      Data : <?= $jmlPegawai ?>
+        <!-- TABEL -->
+        <div class="table-wrapper">
+          <table class="table table-striped table-bordered table-index-pegawai align-middle">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>NIP</th><th>Nama</th><th>Jabatan</th><th>Pendidikan</th>
+                <th>Mulai Kerja</th><th>Lama Kerja</th>
+                <th>Index Pendidikan</th><th>Index Masa Kerja</th><th>Index Status</th>
+                <th>Index Jenjang Jabatan</th><th>Index Kelompok Jabatan</th><th>Index Resiko Kerja</th>
+                <th>Index Tingkat Emergency</th><th>Index Evaluasi Kinerja</th><th>Index Pencapaian Kinerja</th>
+                <th>Index Struktural</th><th>Pengurang</th><th>Total Index</th>
+                <th>Mulai Kontrak</th><th>Lama Kontrak</th>
+                <th>Gaji Pokok</th><th>Hak Cuti</th><th>Cuti Diambil</th><th>Sisa Cuti</th>
+                <th>Dankes</th><th>Sisa Dankes</th><th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              if (empty($dataPegawai)) {
+                echo "<tr><td colspan='27' class='text-center text-muted'>
+                      Silakan pilih pegawai dan tahun hitung untuk menampilkan data
+                      </td></tr>";
+              } else {
+                foreach ($dataPegawai as $dp) {
+                  $row = $dp['row'];
+                  echo "<tr>
+                    <td>{$row['nik']}</td>
+                    <td>{$row['nama']}</td>
+                    <td>{$row['jbtn']}</td>
+                    <td>{$row['pendidikan']}</td>
+                    <td>{$row['mulai_kerja']}</td>
+                    <td>{$dp['lamaKerja']}</td>
+                    <td>{$row['indek_pendidikan']}</td>
+                    <td>{$dp['indexMasakerja']}</td>
+                    <td>{$row['indek_status']}</td>
+                    <td>{$row['indek_jenjang']}</td>
+                    <td>{$row['indek_kelompok']}</td>
+                    <td>{$row['indek_resiko']}</td>
+                    <td>{$row['indek_emergency']}</td>
+                    <td>".($row['indek_evaluasi'] ?? 0)."</td>
+                    <td>".($row['indek_pencapaian'] ?? 0)."</td>
+                    <td>{$row['indek_struktural']}</td>
+                    <td>{$row['pengurang']}%</td>
+                    <td>{$dp['totalIndex']}</td>
+                    <td>{$row['mulai_kontrak']}</td>
+                    <td>{$dp['lamaKontrak']}</td>
+                    <td>".("Rp. ".number_format($row['gaji_pokok'],0,',','.'))."</td>
+                    <td>{$row['hakcuti']}</td>
+                    <td>{$dp['hariCuti']}</td>
+                    <td>{$dp['sisaCuti']}</td>
+                    <td>".("Rp. ".number_format($row['dankes'],0,',','.'))."</td>
+                    <td>".("Rp. ".number_format($dp['sisaDankes'],0,',','.'))."</td>
+                    <td>
+                      <button type='button' class='btn btn-warning btn-sm'
+                              data-bs-toggle='modal' data-bs-target='#editModal'
+                              data-nik='{$row['nik']}'>✏️ Edit</button>
+                      <a href='ambil_dankes.php?nik={$row['nik']}'
+                         class='btn btn-info btn-sm'>Ambil Dankes</a>
+                    </td>
+                  </tr>";
+                }
+              }
+              ?>
+            </tbody>
+          </table>
+
+          <div class="mt-2 small text-start text-muted">
+            Data : <?= $jmlPegawai ?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal container -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" id="modalContent">
+        <!-- Isi modal akan di-load dari edit_index.php -->
+      </div>
     </div>
   </div>
-</div>
-</div>
-</main>
 
-<!-- Modal container -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" id="modalContent">
-      <!-- Isi modal akan di-load dari edit_index.php -->
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER Pagination -->
-<?php if ($totalPages >= 1): ?>
-<nav aria-label="Page navigation" class="mt-3">
-  <ul class="pagination justify-content-center">
-    <!-- Tombol Prev -->
-    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-      <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=ALL">« Prev</a>
-    </li>
-    <!-- Nomor Halaman -->
-    <?php
-    $start = max(1, $page - 1);
-    $end   = min($totalPages, $page + 1);
-    for ($i = $start; $i <= $end; $i++): ?>
-      <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-        <a class="page-link" href="?page=<?= $i ?>&filter=ALL"><?= $i ?></a>
+  <!-- FOOTER Pagination -->
+  <?php if ($totalPages >= 1): ?>
+  <nav aria-label="Page navigation" class="mt-3">
+    <ul class="pagination justify-content-center">
+      <!-- Tombol Prev -->
+      <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+        <a class="page-link" href="?page=<?= max(1, $page - 1) ?>&filter=ALL">« Prev</a>
       </li>
-    <?php endfor; ?>
-    <!-- Tombol Next -->
-    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-      <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=ALL">Next >></a>
-    </li>
-  </ul>
-</nav>
-<?php endif; ?>
+      <!-- Nomor Halaman -->
+      <?php
+      $start = max(1, $page - 1);
+      $end   = min($totalPages, $page + 1);
+      for ($i = $start; $i <= $end; $i++): ?>
+        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+          <a class="page-link" href="?page=<?= $i ?>&filter=ALL"><?= $i ?></a>
+        </li>
+      <?php endfor; ?>
+      <!-- Tombol Next -->
+      <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+        <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>&filter=ALL">Next >></a>
+      </li>
+    </ul>
+  </nav>
+  <?php endif; ?>
 
-<?php include __DIR__ . '/../layout/footer.php'; ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <?php include __DIR__ . '/../layout/footer.php'; ?>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
-<!-- Script Modal -->
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  var editModal = document.getElementById('editModal');
-  editModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget;
-    var nik = button.getAttribute('data-nik');
-    // load isi modal via AJAX
-    fetch('edit_index.php?nik=' + nik)
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('modalContent').innerHTML = html;
-      });
+  <!-- Script Modal -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var editModal = document.getElementById('editModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      var nik = button.getAttribute('data-nik');
+      // load isi modal via AJAX
+      fetch('edit_index.php?nik=' + nik)
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('modalContent').innerHTML = html;
+        });
+    });
   });
-});
-</script>
+  </script>
+
 </body>
 </html>

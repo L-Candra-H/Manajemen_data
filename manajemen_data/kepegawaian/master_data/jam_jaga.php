@@ -2,7 +2,6 @@
 include __DIR__ . '/../../conf/auth.php';
 include __DIR__ . '/../../conf/conf.php';
 
-// tampilkan error agar mudah debug
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -33,37 +32,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // pagination setup
-$limit = 6;
-$page  = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$limit  = 6;
+$page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $limit;
 
 // filter departemen
 $filterDep = $_GET['dep_id'] ?? '';
-$where = ($filterDep && $filterDep !== 'ALL') 
-    ? "WHERE j.dep_id = '".mysqli_real_escape_string($conn, $filterDep)."'" 
-    : '';
+$where = ($filterDep && $filterDep !== 'ALL')
+    ? "WHERE j.dep_id = '" . mysqli_real_escape_string($conn, $filterDep) . "'"
+    : "";
 
+// hitung total data
 if ($filterDep === '') {
-    // belum pilih departemen → tampilkan 0
     $totalData  = 0;
     $totalPages = 0;
     $totalRows  = 0;
     $result     = false;
 } else {
-    $totalSql   = "SELECT COUNT(*) AS total FROM jam_jaga j $where";
-    $totalResult= mysqli_query($conn, $totalSql);
-    $totalRow   = $totalResult ? mysqli_fetch_assoc($totalResult) : ['total'=>0];
-    $totalData  = $totalRow['total'] ?? 0;
-    $totalPages = $totalData > 0 ? ceil($totalData / $limit) : 0;
-    $totalRows  = $totalData;
+    $totalSql    = "SELECT COUNT(*) AS total FROM jam_jaga j $where";
+    $totalResult = mysqli_query($conn, $totalSql);
+    $totalRow    = $totalResult ? mysqli_fetch_assoc($totalResult) : ['total' => 0];
+    $totalData   = $totalRow['total'] ?? 0;
+    $totalPages  = $totalData > 0 ? ceil($totalData / $limit) : 0;
+    $totalRows   = $totalData;
 }
-
-// hitung total data jam_jaga sesuai filter
-$totalSql = "SELECT COUNT(*) AS total FROM jam_jaga j $where";
-$totalResult = mysqli_query($conn, $totalSql);
-$totalRow    = $totalResult ? mysqli_fetch_assoc($totalResult) : ['total'=>0];
-$totalData   = $totalRow['total'] ?? 0;
-$totalPages  = $totalData > 0 ? ceil($totalData / $limit) : 0;
 
 // ambil data sesuai halaman + filter
 $result = false;
@@ -77,18 +69,18 @@ if ($filterDep !== '') {
     $result = mysqli_query($conn, $sql);
 }
 
-// daftar departemen untuk dropdown filter/tambah
-$depList = $conn->query("SELECT dep_id, nama FROM departemen ORDER BY dep_id ASC");
+// daftar departemen untuk dropdown
+$depList      = $conn->query("SELECT dep_id, nama FROM departemen ORDER BY dep_id ASC");
 $depListArray = $depList->fetch_all(MYSQLI_ASSOC);
 
 // daftar shift
 $shiftArr = [
-  'Pagi','Pagi2','Pagi3','Pagi4','Pagi5','Pagi6','Pagi7','Pagi8','Pagi9','Pagi10',
-  'Siang','Siang2','Siang3','Siang4','Siang5','Siang6','Siang7','Siang8','Siang9','Siang10',
-  'Malam','Malam2','Malam3','Malam4','Malam5','Malam6','Malam7','Malam8','Malam9','Malam10',
-  'Midle Pagi1','Midle Pagi2','Midle Pagi3','Midle Pagi4','Midle Pagi5','Midle Pagi6','Midle Pagi7','Midle Pagi8','Midle Pagi9','Midle Pagi10',
-  'Midle Siang1','Midle Siang2','Midle Siang3','Midle Siang4','Midle Siang5','Midle Siang6','Midle Siang7','Midle Siang8','Midle Siang9','Midle Siang10',
-  'Midle Malam1','Midle Malam2','Midle Malam3','Midle Malam4','Midle Malam5','Midle Malam6','Midle Malam7','Midle Malam8','Midle Malam9','Midle Malam10'
+    'Pagi','Pagi2','Pagi3','Pagi4','Pagi5','Pagi6','Pagi7','Pagi8','Pagi9','Pagi10',
+    'Siang','Siang2','Siang3','Siang4','Siang5','Siang6','Siang7','Siang8','Siang9','Siang10',
+    'Malam','Malam2','Malam3','Malam4','Malam5','Malam6','Malam7','Malam8','Malam9','Malam10',
+    'Midle Pagi1','Midle Pagi2','Midle Pagi3','Midle Pagi4','Midle Pagi5','Midle Pagi6','Midle Pagi7','Midle Pagi8','Midle Pagi9','Midle Pagi10',
+    'Midle Siang1','Midle Siang2','Midle Siang3','Midle Siang4','Midle Siang5','Midle Siang6','Midle Siang7','Midle Siang8','Midle Siang9','Midle Siang10',
+    'Midle Malam1','Midle Malam2','Midle Malam3','Midle Malam4','Midle Malam5','Midle Malam6','Midle Malam7','Midle Malam8','Midle Malam9','Midle Malam10'
 ];
 ?>
 <!DOCTYPE html>
@@ -118,12 +110,12 @@ $shiftArr = [
       <div class="card-body p-3">
         <!-- Filter -->
         <form method="get" class="mb-3">
-          <label for="dep_id" class="form-label">Filter Departemen:</label>
-          <select name="dep_id" id="dep_id" class="form-select form-select-sm" style="max-width:220px;display:inline-block;">
+          <label for="dep_id" class="form-label">Filter Departemen :</label>
+          <select name="dep_id" id="dep_id" class="form-select form-select-sm" style="max-width:220px; display:inline-block;">
             <option value="">-- Pilih Departemen --</option>
-            <option value="ALL" <?= $filterDep==='ALL' ? 'selected' : '' ?>>Pilih Semua</option>
+            <option value="ALL" <?= $filterDep === 'ALL' ? 'selected' : '' ?>>Pilih Semua</option>
             <?php foreach($depListArray as $d): ?>
-              <option value="<?= htmlspecialchars($d['dep_id']) ?>" <?= $filterDep===$d['dep_id'] ? 'selected' : '' ?>>
+              <option value="<?= htmlspecialchars($d['dep_id']) ?>" <?= $filterDep === $d['dep_id'] ? 'selected' : '' ?>>
                 <?= htmlspecialchars($d['dep_id'].' - '.$d['nama']) ?>
               </option>
             <?php endforeach; ?>
@@ -169,11 +161,9 @@ $shiftArr = [
               <?php endif; ?>
             </tbody>
           </table>
-
           <div class="mt-2 small text-start text-muted">
-            Data : <?= $totalRows ?>,
+            Data : <?= $totalRows ?? 0 ?>,
           </div>
-
         </div>
 
         <!-- Pagination -->

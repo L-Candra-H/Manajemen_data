@@ -26,7 +26,7 @@ $tahunHitung = $_GET['tahunHitung'] ?? '';
 $listTahun = $conn->query("SELECT tahun, bulan FROM set_tahun ORDER BY tahun DESC, bulan DESC");
 
 // pagination setup
-$limit = 6;
+$limit = 5;
 $page  = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $limit;
 
@@ -88,7 +88,7 @@ if ($countRes) {
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0 text-uppercase text-center flex-grow-1">Lembur Pegawai</h5>
           <div class="d-flex gap-2">
-            <a href="../index.php" class="btn btn-light btn-sm">⬅️ Kembali</a>
+            <a href="../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
           </div>
         </div>
 
@@ -193,5 +193,6 @@ if ($countRes) {
 
   <?php include __DIR__ . '/../layout/footer.php'; ?>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

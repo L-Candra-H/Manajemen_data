@@ -2,15 +2,13 @@
 include __DIR__ . '/../../conf/auth.php';
 include __DIR__ . '/../../conf/conf.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
     echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Pendidikan.</div>";
     exit;
 }
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-
 
 $conn = bukakoneksi();
 
@@ -34,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // pagination setup
-$limit = 6;
-$page  = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$limit  = 6;
+$page   = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $limit;
 
 // hitung total data
@@ -48,10 +46,7 @@ $totalPages  = ceil($totalData / $limit);
 $jmlPendidikan = $totalData;
 
 // ambil data sesuai halaman
-$sql  = "SELECT tingkat, indek, gapok1, kenaikan, maksimal 
-         FROM pendidikan 
-         ORDER BY indek 
-         LIMIT $limit OFFSET $offset";
+$sql    = "SELECT tingkat, indek, gapok1, kenaikan, maksimal FROM pendidikan ORDER BY indek LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
@@ -77,73 +72,68 @@ $result = mysqli_query($conn, $sql);
       </div>
 
       <div class="card-body p-3">
-      <div class="table-wrapper">
-        <table class="table table-striped table-bordered table-master align-middle">
-          <thead class="table-dark text-center">
-            <tr>
-              <th>Tingkat</th>
-              <th>Indeks</th>
-              <th>Gapok Awal</th>
-              <th>Kenaikan</th>
-              <th>Maksimal</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php while($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-              <td><?= htmlspecialchars($row['tingkat']) ?></td>
-              <td><?= htmlspecialchars($row['indek']) ?></td>
-              <td><?= htmlspecialchars($row['gapok1']) ?></td>
-              <td><?= htmlspecialchars($row['kenaikan']) ?></td>
-              <td><?= htmlspecialchars($row['maksimal']) ?></td>
-              <td class="text-center">
-                <button class="btn btn-warning btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalEdit"
-                        data-tingkat="<?= htmlspecialchars($row['tingkat']) ?>"
-                        data-indek="<?= htmlspecialchars($row['indek']) ?>"
-                        data-gapok1="<?= htmlspecialchars($row['gapok1']) ?>"
-                        data-kenaikan="<?= htmlspecialchars($row['kenaikan']) ?>"
-                        data-maksimal="<?= htmlspecialchars($row['maksimal']) ?>">
-                  ✏️ Edit
-                </button>
-              </td>
-            </tr>
-            <?php endwhile; ?>
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table class="table table-striped table-bordered table-master align-middle">
+            <thead class="table-dark text-center">
+              <tr>
+                <th>Tingkat</th>
+                <th>Indeks</th>
+                <th>Gapok Awal</th>
+                <th>Kenaikan</th>
+                <th>Maksimal</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while($row = mysqli_fetch_assoc($result)): ?>
+              <tr>
+                <td><?= htmlspecialchars($row['tingkat']) ?></td>
+                <td><?= htmlspecialchars($row['indek']) ?></td>
+                <td><?= htmlspecialchars($row['gapok1']) ?></td>
+                <td><?= htmlspecialchars($row['kenaikan']) ?></td>
+                <td><?= htmlspecialchars($row['maksimal']) ?></td>
+                <td class="text-center">
+                  <button class="btn btn-warning btn-sm"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalEdit"
+                          data-tingkat="<?= htmlspecialchars($row['tingkat']) ?>"
+                          data-indek="<?= htmlspecialchars($row['indek']) ?>"
+                          data-gapok1="<?= htmlspecialchars($row['gapok1']) ?>"
+                          data-kenaikan="<?= htmlspecialchars($row['kenaikan']) ?>"
+                          data-maksimal="<?= htmlspecialchars($row['maksimal']) ?>">
+                    ✏️ Edit
+                  </button>
+                </td>
+              </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
 
-        <div class="mt-2 small text-start text-muted">
-          Data : <?= $jmlPendidikan ?>,
-        </div>
+          <div class="mt-2 small text-start text-muted">
+            Data : <?= $jmlPendidikan ?>,
+          </div>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-3">
-          <ul class="pagination justify-content-center">
-            <!-- Tombol Prev -->
-            <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= max(1, $page - 1) ?>">« Prev</a>
-            </li>
-
-            <!-- Nomor Halaman (batasi 3 sekitar aktif) -->
-            <?php
-              $start = max(1, $page - 1);
-              $end   = min($totalPages, $page + 1);
-              for ($i = $start; $i <= $end; $i++):
-            ?>
-              <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+          <!-- Pagination -->
+          <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= max(1, $page - 1) ?>">« Prev</a>
               </li>
-            <?php endfor; ?>
-
-            <!-- Tombol Next -->
-            <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-              <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>">Next »</a>
-            </li>
-          </ul>
-        </nav>
-
+              <?php
+                $start = max(1, $page - 1);
+                $end   = min($totalPages, $page + 1);
+                for ($i = $start; $i <= $end; $i++):
+              ?>
+                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                  <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+              <?php endfor; ?>
+              <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?= min($totalPages, $page + 1) ?>">Next »</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </main>
@@ -186,28 +176,23 @@ $result = mysqli_query($conn, $sql);
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Tingkat</label>
-            <input type="text" name="tingkat" id="editTingkat"
-                   class="form-control bg-danger text-white fw-bold" readonly>
+            <input type="text" name="tingkat" id="editTingkat" class="form-control bg-danger text-white fw-bold" readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Indeks</label>
-            <input type="number" min="0" name="indek" id="editIndek"
-                   class="form-control" required>
+            <input type="number" min="0" name="indek" id="editIndek" class="form-control" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Gapok Awal</label>
-            <input type="number" min="0" name="gapok1" id="editGapok1"
-                   class="form-control" required>
+            <input type="number" min="0" name="gapok1" id="editGapok1" class="form-control" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Kenaikan</label>
-            <input type="number" min="0" name="kenaikan" id="editKenaikan"
-                   class="form-control" required>
+            <input type="number" min="0" name="kenaikan" id="editKenaikan" class="form-control" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Maksimal</label>
-            <input type="number" min="0" name="maksimal" id="editMaksimal"
-                   class="form-control" required>
+            <input type="number" min="0" name="maksimal" id="editMaksimal" class="form-control" required>
           </div>
         </div>
         <div class="modal-footer">

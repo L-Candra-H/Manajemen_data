@@ -74,8 +74,19 @@ $modulB = (!empty($_SESSION["pegawai_admin"])
 
               <!-- Jabatan & Spesialis khusus admin -->
               <?php if ($_SESSION["hak_akses"]==="administrator"): ?>
+                <a href="kepegawaian/master_data/koperasi.php" class="btn btn-outline-dark btn-sm mt-3">📋 Stts Koperasi</a>
+                <a href="kepegawaian/master_data/jamsostek.php" class="btn btn-outline-dark btn-sm mt-3">📋 Stts BPJS Ketenagakerjaan</a>
+                <a href="kepegawaian/master_data/bpjs.php" class="btn btn-outline-dark btn-sm mt-3">📋 Stts BPJS Kesehatan</a>
+                <a href="kepegawaian/master_data/master_tunjangan_harian.php" class="btn btn-outline-dark btn-sm mt-3">📋 Tunjangan Harian</a>
+                <a href="kepegawaian/master_data/master_tunjangan_bulanan.php" class="btn btn-outline-dark btn-sm mt-3">📋 Tunjangan Bulanan</a>
+                <a href="kepegawaian/master_data/harian_kurangi_bulanan.php" class="btn btn-outline-dark btn-sm mt-3">📋 Harian - Bulanan</a>
                 <a href="kepegawaian/master_data/jabatan.php" class="btn btn-outline-dark btn-sm mt-3">📋 Jabatan</a>
                 <a href="kepegawaian/master_data/spesialis.php" class="btn btn-outline-dark btn-sm mt-3">📋 Spesialis</a>
+                <a href="kepegawaian/master_data/set_jgmlm.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Jaga Malam</a>
+                <a href="kepegawaian/master_data/set_jgtambah.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Tambah Jaga</a>
+                <a href="kepegawaian/master_data/set_hadir.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Tunjangan Hadir</a>
+                <a href="kepegawaian/master_data/set_lemburhb.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Lembur HB</a>
+                <a href="kepegawaian/master_data/set_lemburhr.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Lembur HR</a>
                 <a href="kepegawaian/master_data/user.php" class="btn btn-outline-danger btn-sm mt-3">👤 User Menu Kepegawaian</a>
               <?php endif; ?>
 
@@ -141,6 +152,11 @@ $modulB = (!empty($_SESSION["pegawai_admin"])
               <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
                 <a href="kepegawaian/lembur_pegawai.php" class="btn btn-outline-primary btn-sm mt-3">📋 Lembur Pegawai</a>
                 <a href="kepegawaian/keanggotaan.php" class="btn btn-outline-primary btn-sm mt-3">📋 Keanggotaan</a>
+                <a href="kepegawaian/potongan.php" class="btn btn-outline-primary btn-sm mt-3">📋 Potongan Gaji</a>
+                <a href="kepegawaian/tunjangan.php" class="btn btn-outline-primary btn-sm mt-3">📋 Tunjangan</a>
+                <a href="kepegawaian/jasa_lain.php" class="btn btn-outline-primary btn-sm mt-3">📋 Jasa Lain</a>
+                <a href="kepegawaian/kasift.php" class="btn btn-outline-primary btn-sm mt-3">📋 Kasift</a>
+                <a href="kepegawaian/peminjaman_koperasi.php" class="btn btn-outline-primary btn-sm mt-3">📋 Koperasi</a>
               <?php endif; ?>
 
               <?php if (!empty($_SESSION["berkas_kepegawaian"])): ?>
