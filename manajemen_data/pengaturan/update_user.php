@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/../../conf/conf.php';
+include __DIR__ . '/../conf/conf.php';
 $conn = bukakoneksi();
 
 $id_user = $_POST['id_user'];
@@ -24,10 +24,19 @@ $allowed = ['dokter','petugas','barcode','presensi_harian','presensi_bulanan',
             'skp_kriteria_penilaian','skp_penilaian','skp_rekapitulasi_penilaian','riwayat_surat_peringatan'];
 
 if (in_array($field, $allowed)) {
-    $sql = "UPDATE user SET $field='$value' WHERE CAST(AES_DECRYPT(id_user,'nur') AS CHAR)='$id_user'";
-    mysqli_query($conn, $sql);
-    echo "Updated $field to $value";
+    $sql = "UPDATE user 
+            SET $field='$value' 
+            WHERE CAST(AES_DECRYPT(id_user,'nur') AS CHAR)='$id_user'";
+
+    if (!mysqli_query($conn, $sql)) {
+        // kalau query gagal, tampilkan pesan error
+        echo "Error: " . mysqli_error($conn);
+    } else {
+        // kalau berhasil, tampilkan pesan sukses
+        echo "Updated $field to $value";
+    }
 } else {
     echo "Field not allowed";
 }
+
 ?>

@@ -2,8 +2,12 @@
 include __DIR__ . '/../conf/auth.php';
 include __DIR__ . '/../conf/conf.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $nik = $_GET['nik'] ?? '';
 $sql = "SELECT nik, nama, indek AS indek_struktural, pengurang, cuti_diambil, dankes 
@@ -68,8 +72,8 @@ $row = mysqli_fetch_assoc($result) ?? [];
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-primary">Simpan</button>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+      <button type="submit" class="btn btn-primary">💾 Simpan</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
     </div>
   </form>
 </div>

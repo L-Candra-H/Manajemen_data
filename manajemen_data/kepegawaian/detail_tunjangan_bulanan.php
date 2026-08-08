@@ -8,6 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 $nik  = $_GET['nik'] ?? '';
@@ -101,7 +108,7 @@ $resMaster = mysqli_query($conn, $sqlMaster);
           
           <div class="ms-auto d-flex gap-2">
             <button type="submit" name="tambah" class="btn btn-success">💾 Simpan</button>
-            <a href="tunjangan.php" class="btn btn-secondary">Batal</a>
+            <a href="tunjangan.php" class="btn btn-secondary">❌ Batal</a>
           </div>
         </form>
 

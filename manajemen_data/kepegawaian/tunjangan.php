@@ -8,8 +8,12 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -23,7 +27,7 @@ $filter = $_GET['filter'] ?? '';
 
 // query daftar pegawai untuk dropdown filter
 $listPegawai = mysqli_query($conn, "
-    SELECT nik, nama 
+    SELECT nik, nama, stts_aktif 
     FROM pegawai 
     ORDER BY nik ASC
 ");
@@ -31,7 +35,7 @@ $listPegawai = mysqli_query($conn, "
 // kondisi filter
 $where = "";
 if ($filter && $filter !== 'ALL') {
-    $where = "WHERE p.nik = '".mysqli_real_escape_string($conn, $filter)."'";
+    $where = "WHERE p.stts_aktif = 'AKTIF' AND p.nik = '".mysqli_real_escape_string($conn, $filter)."'";
 }
 
 // fungsi hitung jumlah data
@@ -61,7 +65,7 @@ $totalPages = $jmlData > 0 ? ceil($jmlData / $limit) : 1;
 // ambil data pegawai + tunjangan (gabung per pegawai)
 $result = null;
 if ($filter) {
-    $sql = "SELECT p.id, p.nik, p.nama, d.nama AS departemen,
+    $sql = "SELECT p.id, p.nik, p.nama, p.stts_aktif, d.nama AS departemen,
                    GROUP_CONCAT(DISTINCT mb.nama ORDER BY mb.nama ASC SEPARATOR '|') AS tnj_bulanan,
                    GROUP_CONCAT(DISTINCT mh.nama ORDER BY mh.nama ASC SEPARATOR '|') AS tnj_harian
             FROM pegawai p
@@ -70,6 +74,8 @@ if ($filter) {
             LEFT JOIN master_tunjangan_bulanan mb ON pb.id_tnj = mb.id
             LEFT JOIN pnm_tnj_harian ph ON ph.id = p.id
             LEFT JOIN master_tunjangan_harian mh ON ph.id_tnj = mh.id
+            WHERE p.stts_aktif = 'AKTIF';
+
             $where
             GROUP BY p.id, p.nik, p.nama, d.nama
             ORDER BY p.nik ASC

@@ -2,8 +2,12 @@
 include __DIR__ . '/../../conf/auth.php';
 include __DIR__ . '/../../conf/conf.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
     echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Bagian Warung.</div>";
@@ -177,7 +181,7 @@ $listDep = $conn->query("
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">💾 Simpan</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
         </div>
       </form>
     </div>
@@ -221,7 +225,7 @@ $listDep = $conn->query("
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">🔄 Update</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
         </div>
       </form>
     </div>

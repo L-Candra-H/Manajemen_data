@@ -8,8 +8,12 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -184,7 +188,7 @@ if (isset($_POST['BtnGenerate'])) {
                   <td>
                     <a href="rincian_angsuran.php?action=hapus&id=<?= $row['id'] ?>&tanggal_pinjam=<?= $row['tanggal_pinjam'] ?>&tanggal_angsur=<?= $row['tanggal_angsur'] ?>"
                        class="btn btn-danger btn-sm"
-                       onclick="return confirm('Yakin hapus angsuran ini?')">Hapus</a>
+                       onclick="return confirm('Yakin hapus angsuran ini?')">🗑️ Hapus</a>
                   </td>
                 </tr>
               <?php endwhile; ?>

@@ -1,0 +1,87 @@
+.table-wrapper {
+  display: block;
+  overflow-x: auto;   /* paksa horizontal scroll */
+  overflow-y: auto;   /* vertikal sesuai isi */
+  max-height: 75vh;
+  width: 100%;
+}
+
+.table-master_k3 {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 1300px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-master_k3 th,
+.table-master_k3 td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-master_k3 thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}
+
+.table-peristiwa {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 2400px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-peristiwa th,
+.table-peristiwa td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-peristiwa thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}
+
+body {
+  padding-bottom: 80px; /* beri ruang agar tombol tidak ketutup footer */
+}
+
+.label-inline {
+  display: flex;
+  align-items: center;   /* sejajarkan vertikal */
+  gap: 8px;              /* jarak antar label dan input */
+}
+
+.label-inline label {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;   /* pastikan teks rata tengah */
+  height: 100%;          /* ikut tinggi parent flex */
+}
+
+canvas {
+  max-height: 400px;
+}
+
+.chart-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}

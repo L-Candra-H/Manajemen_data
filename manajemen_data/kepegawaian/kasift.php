@@ -8,8 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 // proses simpan
@@ -51,6 +56,7 @@ if ($filterNik) {
                 JOIN pegawai p ON k.id = p.id
                 LEFT JOIN jnj_jabatan jj ON p.jnj_jabatan = jj.kode
                 LEFT JOIN departemen d ON p.departemen = d.dep_id
+                WHERE p.stts_aktif='AKTIF'
                 ORDER BY p.nik ASC";
     } else {
         $sql = "SELECT k.jmlks, k.bsr, p.nik, p.nama, 
@@ -64,6 +70,7 @@ if ($filterNik) {
                 LEFT JOIN jnj_jabatan jj ON p.jnj_jabatan = jj.kode
                 LEFT JOIN departemen d ON p.departemen = d.dep_id
                 WHERE p.nik='".mysqli_real_escape_string($conn,$filterNik)."'
+                  AND p.stts_aktif='AKTIF'
                 ORDER BY p.nik ASC";
     }
     $result = mysqli_query($conn,$sql);
@@ -71,11 +78,11 @@ if ($filterNik) {
 }
 
 // ambil daftar pegawai untuk dropdown filter (urut ASC NIK)
-$listPegawai = mysqli_query($conn,"SELECT nik,nama FROM pegawai ORDER BY nik ASC");
+$listPegawai = mysqli_query($conn,"SELECT nik,nama FROM pegawai WHERE stts_aktif='AKTIF' ORDER BY nik ASC");
 
 // ambil daftar pegawai untuk dropdown tambah (exclude yang sudah ada di kasift)
 $pegawaiList = [];
-$resPeg = mysqli_query($conn,"SELECT id, nik, nama FROM pegawai WHERE id NOT IN (SELECT id FROM kasift) ORDER BY nik ASC");
+$resPeg = mysqli_query($conn,"SELECT id, nik, nama FROM pegawai WHERE stts_aktif='AKTIF' AND id NOT IN (SELECT id FROM kasift) ORDER BY nik ASC");
 if ($resPeg) {
     while($row = mysqli_fetch_assoc($resPeg)){
         $pegawaiList[] = $row;
@@ -153,7 +160,7 @@ if ($resPeg) {
                     <td><?= htmlspecialchars($row['departemen']) ?></td>
                     <td><?= htmlspecialchars($row['bidang']) ?></td>
                     <td class="text-center">
-                      <a href="kasift.php?delete_id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
+                      <a href="kasift.php?delete_id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</a>
                     </td>
                   </tr>
                 <?php endwhile; ?>
@@ -206,8 +213,8 @@ if ($resPeg) {
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Simpan</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-success">💾 Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
           </div>
         </form>
       </div>

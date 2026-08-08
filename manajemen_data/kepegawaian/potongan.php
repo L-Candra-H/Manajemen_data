@@ -8,8 +8,12 @@ if(!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -49,7 +53,7 @@ if (!empty($tahunHitung)) {
 $keyword = isset($_GET['keyword']) ? validTeks($_GET['keyword']) : '';
 
 // Ambil list pegawai untuk dropdown
-$listPegawai = bukaquery("SELECT nik, nama FROM pegawai ORDER BY nik ASC");
+$listPegawai = bukaquery("SELECT nik, nama FROM pegawai WHERE stts_aktif='AKTIF' ORDER BY nik ASC");
 
 // Ambil list tahun-bulan untuk dropdown
 $listTahun   = bukaquery("SELECT tahun, bulan FROM set_tahun ORDER BY tahun DESC, bulan DESC");
@@ -95,6 +99,7 @@ $countSql = "SELECT COUNT(*) AS total
              WHERE (p.nik LIKE '%$keyword%'
                 OR p.nama LIKE '%$keyword%'
                 OR d.nama LIKE '%$keyword%')
+                AND p.stts_aktif='AKTIF'
              ".($filter && $filter!=='ALL' ? " AND p.nik='".mysqli_real_escape_string($conn,$filter)."'" : "");
 $countRes = mysqli_query($conn, $countSql);
 $totalRows = (int) mysqli_fetch_assoc($countRes)['total'];
@@ -129,6 +134,7 @@ if ($filter || $tahunHitung) {
             WHERE (p.nik LIKE '%$keyword%'
                 OR p.nama LIKE '%$keyword%'
                 OR d.nama LIKE '%$keyword%')
+                AND p.stts_aktif='AKTIF'
             ".($filter && $filter!=='ALL' ? " AND p.nik='".mysqli_real_escape_string($conn,$filter)."'" : "")."
             ORDER BY p.nik ASC
             LIMIT $limit OFFSET $offset";
@@ -263,7 +269,7 @@ if ($filter || $tahunHitung) {
                                     data-lain='{$row['lain']}'
                                     data-ktg='{$row['ktg']}'
                                     onclick=\"isiUpdateModal(this)\">
-                                    Update
+                                    🔄 Update
                                   </button>
                                 </td>
                             </tr>";
@@ -409,8 +415,8 @@ if ($filter || $tahunHitung) {
             </div>
 
             <div class="modal-footer">
-              <button type="submit" class="btn btn-warning">Update</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-warning">🔄 Update</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
             </div>
           </form>
         </div>

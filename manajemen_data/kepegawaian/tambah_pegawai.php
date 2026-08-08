@@ -339,7 +339,7 @@ $bank        = mysqli_query($conn, "SELECT namabank FROM bank ORDER BY namabank"
 
           <div class="mt-4 text-center">
             <button type="submit" class="btn btn-success">➕ Tambah Pegawai</button>
-            <a href="pegawai.php" class="btn btn-secondary">Batal</a>
+            <a href="pegawai.php" class="btn btn-secondary">❌ Batal</a>
           </div>
         </form>
       </div>

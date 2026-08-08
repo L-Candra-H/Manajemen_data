@@ -1,6 +1,7 @@
 <?php
 session_start();
 include __DIR__ . '/conf/conf.php';
+include __DIR__ . '/conf/auth.php';
 
 if(!isset($_SESSION['user_login'])) {
     header("Location: login.php");
@@ -12,18 +13,10 @@ $modulA = (!empty($_SESSION["pegawai_admin"])
            || !empty($_SESSION["master_berkas_pegawai"]) 
            || $_SESSION["hak_akses"]==="administrator");
 
-$modulB = (!empty($_SESSION["pegawai_admin"]) 
-           || !empty($_SESSION["pegawai_user"]) 
-           || !empty($_SESSION["petugas"]) 
-           || !empty($_SESSION["dokter"])
-           || !empty($_SESSION["berkas_kepegawaian"]) 
-           || !empty($_SESSION["riwayat_jabatan"]) 
-           || !empty($_SESSION["riwayat_pendidikan"])
-           || !empty($_SESSION["riwayat_naik_gaji"]) 
-           || !empty($_SESSION["kegiatan_ilmiah"]) 
-           || !empty($_SESSION["riwayat_penghargaan"])
-           || !empty($_SESSION["riwayat_penelitian"]) 
-           || !empty($_SESSION["riwayat_surat_peringatan"]) 
+$modulB = (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"]) || !empty($_SESSION["petugas"]) 
+           || !empty($_SESSION["dokter"]) || !empty($_SESSION["berkas_kepegawaian"]) || !empty($_SESSION["riwayat_jabatan"]) 
+           || !empty($_SESSION["riwayat_pendidikan"]) || !empty($_SESSION["riwayat_naik_gaji"]) || !empty($_SESSION["kegiatan_ilmiah"]) 
+           || !empty($_SESSION["riwayat_penghargaan"]) || !empty($_SESSION["riwayat_penelitian"]) || !empty($_SESSION["riwayat_surat_peringatan"]) 
            || !empty($_SESSION["pengajuan_cuti"]));
 
 ?>
@@ -41,7 +34,7 @@ $modulB = (!empty($_SESSION["pegawai_admin"])
 <body>
   <?php include __DIR__ . '/layout/header.php'; ?>
 
-  <main class="main-content container-fluid mt-4">
+  <main class="main-content container-fluid mt-2 menu-index">  
     <div class="row justify-content-center">
 
       <!-- Modul Master Data Pegawai -->
@@ -50,7 +43,7 @@ $modulB = (!empty($_SESSION["pegawai_admin"])
           <div class="card shadow h-100 text-center">
             <div class="card-body">
               <h5 class="card-title fw-bold">Master Data Pegawai</h5>
-              <p class="text-muted mb-0">Referensi & Master Data</p>
+              <p class="text-muted mb-0 small">Referensi & Master Data</p>
 
               <?php if (!empty($_SESSION["master_berkas_pegawai"])): ?>
                 <a href="kepegawaian/master_data/master_berkas_pegawai.php" class="btn btn-primary btn-sm mt-3">📋 Master Berkas Pegawai</a>
@@ -87,7 +80,6 @@ $modulB = (!empty($_SESSION["pegawai_admin"])
                 <a href="kepegawaian/master_data/set_hadir.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Tunjangan Hadir</a>
                 <a href="kepegawaian/master_data/set_lemburhb.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Lembur HB</a>
                 <a href="kepegawaian/master_data/set_lemburhr.php" class="btn btn-outline-dark btn-sm mt-3">📋 Set Lembur HR</a>
-                <a href="kepegawaian/master_data/user.php" class="btn btn-outline-danger btn-sm mt-3">👤 User Menu Kepegawaian</a>
               <?php endif; ?>
 
             </div>
@@ -105,7 +97,7 @@ $modulB = (!empty($_SESSION["pegawai_admin"])
           <div class="card shadow h-100 text-center">
             <div class="card-body">
               <h5 class="card-title fw-bold">Manajemen Data Pegawai</h5>
-              <p class="text-muted mb-0">Pengelolaan Data Pegawai</p>
+              <p class="text-muted mb-0 small">Pengelolaan Data Pegawai</p>
 
               <?php if (!empty($_SESSION["petugas"])): ?>
                 <a href="kepegawaian/petugas.php" class="btn btn-primary btn-sm mt-3">📋 Petugas</a>

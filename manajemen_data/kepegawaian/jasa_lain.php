@@ -8,8 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 // pagination setup
@@ -29,7 +34,7 @@ if (!empty($tahunHitung)) {
 }
 
 // query daftar pegawai untuk dropdown filter
-$listPegawai = mysqli_query($conn, "SELECT nik, nama FROM pegawai ORDER BY nik ASC");
+$listPegawai = mysqli_query($conn, "SELECT nik, nama FROM pegawai WHERE stts_aktif='AKTIF' ORDER BY nik ASC");
 
 // query daftar tahun-bulan dari set_tahun
 $listTahun = mysqli_query($conn, "
@@ -70,6 +75,7 @@ if ($filterPegawai || $tahunHitung) {
                  FROM pegawai p
                  LEFT JOIN departemen d ON p.departemen = d.dep_id
                  WHERE 1=1
+                   AND p.stts_aktif='AKTIF'
                  ".($filterPegawai && $filterPegawai!=='ALL' ? " AND p.nik='".mysqli_real_escape_string($conn,$filterPegawai)."'" : "");
     $resCount = mysqli_query($conn, $sqlCount);
     $rowCount = mysqli_fetch_assoc($resCount);
@@ -97,6 +103,7 @@ if ($filterPegawai || $tahunHitung) {
                   AND jl.thn = '".mysqli_real_escape_string($conn,$tahunFilter)."'
                   AND jl.bln = '".mysqli_real_escape_string($conn,$bulanFilter)."'
             WHERE 1=1
+              AND p.stts_aktif='AKTIF'
             ".($filterPegawai && $filterPegawai!=='ALL' ? " AND p.nik='".mysqli_real_escape_string($conn,$filterPegawai)."'" : "")."
             GROUP BY p.id, p.nik, p.nama, d.nama
             ORDER BY p.nik ASC

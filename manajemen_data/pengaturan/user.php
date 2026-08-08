@@ -1,14 +1,18 @@
 <?php
 session_start();
-include __DIR__ . '/../../conf/auth.php';
-include __DIR__ . '/../../conf/conf.php';
+include __DIR__ . '/../conf/auth.php';
+include __DIR__ . '/../conf/conf.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
 
-// cek hak akses
-if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
-    echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu User.</div>";
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
+// cek hak akses khusus administrator
+if ($_SESSION["hak_akses"] !== "administrator") {
+    echo "<div class='alert alert-danger'>Akses ditolak. Hanya administrator yang bisa membuka menu User.</div>";
     exit;
 }
 
@@ -122,12 +126,12 @@ $result = mysqli_query($conn, "
         CAST(AES_DECRYPT(u.id_user,'nur') AS CHAR) AS id_user,
         CAST(AES_DECRYPT(u.password,'windi') AS CHAR) AS password,
         pg.nama AS nama_user,
-        CONCAT(IFNULL(j.nm_jbtn,''), IFNULL(s.nm_sps,'')) AS jabatan_user,
+        COALESCE(s.nm_sps, j.nm_jbtn) AS jabatan_user,
         u.dokter, u.petugas, u.barcode, u.presensi_harian, u.presensi_bulanan, u.pegawai_admin, u.pegawai_user, u.sms, 
 	      u.sidikjari, u.jam_masuk, u.jadwal_pegawai, u.temporary_presensi, u.master_berkas_pegawai, u.berkas_kepegawaian,
 	      u.riwayat_jabatan, u.riwayat_pendidikan, u.riwayat_naik_gaji, u.kegiatan_ilmiah, u.riwayat_penghargaan, u.riwayat_penelitian,
 	      u.jenis_cidera_k3rs, u.penyebab_k3rs, u.jenis_luka_k3rs, u.lokasi_kejadian_k3rs, u.dampak_cidera_k3rs, u.jenis_pekerjaan_k3rs,
-	      u.bagian_tubuh_k3rs, u.peristiwa_k3rs, u.jenis_cidera_k3rstahun, u.penyebab_k3rstahun, u.jenis_luka_k3rstahun, u.lokasi_kejadian_k3rstahun,
+        u.bagian_tubuh_k3rs, u.peristiwa_k3rs, u.jenis_cidera_k3rstahun, u.penyebab_k3rstahun, u.jenis_luka_k3rstahun, u.lokasi_kejadian_k3rstahun,
 	      u.dampak_cidera_k3rstahun, u.jenis_pekerjaan_k3rstahun, u.bagian_tubuh_k3rstahun, u.pengajuan_cuti, u.audit_kepatuhan_apd, u.audit_cuci_tangan_medis,
 	      u.audit_pembuangan_limbah, u.ruang_audit_kepatuhan, u.audit_pembuangan_benda_tajam, u.audit_penanganan_darah, u.audit_pengelolaan_linen_kotor,
 	      u.audit_penempatan_pasien, u.audit_kamar_jenazah, u.audit_bundle_iadp, u.audit_bundle_ido, u.audit_fasilitas_kebersihan_tangan, u.audit_fasilitas_apd,
@@ -189,11 +193,11 @@ function badgeBool($val) {
   <meta charset="UTF-8">
   <title>Manajemen User Kepegawaian</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../../layout/header.css">
+  <link rel="stylesheet" href="../layout/header.css">
   <link rel="stylesheet" href="master.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../../layout/header.php'; ?>
+  <?php include __DIR__ . '/../layout/header.php'; ?>
 
   <main class="container-fluid mt-4">
     <div class="card shadow">
@@ -201,7 +205,7 @@ function badgeBool($val) {
         <h5 class="mb-0 text-uppercase flex-grow-1 text-center">Manajemen User Kepegawaian</h5>
         <div class="d-flex gap-2">
           <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">➕ Tambah</button>
-          <a href="../../index.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
+          <a href="../index_administrator.php" class="btn btn-secondary btn-sm">⬅️ Kembali</a>
         </div>
       </div>
 
@@ -459,6 +463,7 @@ function badgeBool($val) {
                   <td class="text-center">
                     <input type="checkbox" class="update-field"
                            data-id="<?= $row['id_user'] ?>"
+                           data-field="jenis_pekerjaan_k3rs"
                            <?= $row['jenis_pekerjaan_k3rs']==='true'?'checked':'' ?>>
                   </td>
                   <td class="text-center">
@@ -728,7 +733,7 @@ function badgeBool($val) {
           </div>
           <div class="modal-footer">
             <button type="submit" name="simpan" class="btn btn-success">💾 Simpan</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
           </div>
         </form>
       </div>
@@ -759,7 +764,7 @@ function badgeBool($val) {
   });
   </script>
 
-  <?php include __DIR__ . '/../../layout/footer.php'; ?>
+  <?php include __DIR__ . '/../layout/footer.php'; ?>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
 </body>

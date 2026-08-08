@@ -8,8 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 // pagination
@@ -23,7 +28,7 @@ $filter      = isset($_GET['filter']) ? $_GET['filter'] : '';
 $tahunHitung = isset($_GET['tahunHitung']) ? $_GET['tahunHitung'] : '';
 
 // Ambil list pegawai untuk dropdown
-$listPegawai = bukaquery("SELECT nik, nama FROM pegawai ORDER BY nama ASC");
+$listPegawai = bukaquery("SELECT nik, nama FROM pegawai WHERE stts_aktif='AKTIF' ORDER BY nik ASC ");
 
 // Ambil list tahun-bulan untuk dropdown
 $listTahun   = bukaquery("SELECT tahun, bulan FROM set_tahun ORDER BY tahun DESC, bulan DESC");
@@ -160,6 +165,7 @@ if ($filter == 'ALL') {
                 GROUP BY nik
             ) cu ON cu.nik = p.nik
             WHERE p.nik = '$filter'
+              AND p.stts_aktif='AKTIF'
             ORDER BY p.nik";
 }
 

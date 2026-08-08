@@ -8,8 +8,12 @@ if(!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -418,7 +422,7 @@ while($peg = mysqli_fetch_assoc($resPeg)){
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">💾 Simpan</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
           </div>
         </form>
       </div>
@@ -536,8 +540,8 @@ while($peg = mysqli_fetch_assoc($resPeg)){
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-warning">Update</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-warning">🔄 Update</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
           </div>
         </form>
       </div>

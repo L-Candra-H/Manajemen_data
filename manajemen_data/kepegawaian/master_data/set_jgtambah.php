@@ -6,8 +6,12 @@ if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
     echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Set Tambah Jaga.</div>";
     exit;
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -113,7 +117,7 @@ if ($resPend) {
               <td class="text-center">
                 <a href="set_jgtambah.php?delete_tnj=<?= urlencode($row['tnj']) ?>" 
                    class="btn btn-sm btn-danger" 
-                   onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
+                   onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</a>
               </td>
             </tr>
             <?php endwhile; ?>
@@ -179,7 +183,7 @@ if ($resPend) {
         
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">💾 Simpan</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
         </div>
       </form>
     </div>

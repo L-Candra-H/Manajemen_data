@@ -8,8 +8,12 @@ if(!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -37,13 +41,13 @@ if ($tahunHitung !== '') {
     [$tahun,$bulan] = explode('-', $tahunHitung);
 
     // hitung total pegawai
-    $countSql = "SELECT COUNT(*) AS total FROM pegawai";
+    $countSql = "SELECT COUNT(*) AS total FROM pegawai WHERE stts_aktif='AKTIF'";
     $countRes = $conn->query($countSql);
     $countRow = $countRes->fetch_assoc();
     $totalData = $countRow['total'] ?? 0;
     $totalPages = $totalData > 0 ? ceil($totalData / $limit) : 0;
 
-    $sql = "SELECT p.id, p.nik, p.nama,
+    $sql = "SELECT p.id, p.nik, p.nama, 
                    SUM(CASE WHEN pr.jns='HB' THEN 1 ELSE 0 END) AS hadir_hb,
                    SUM(CASE WHEN pr.jns='HB' THEN pr.lembur ELSE 0 END) AS lembur_hb,
                    SUM(CASE WHEN pr.jns='HR' THEN 1 ELSE 0 END) AS hadir_hr,
@@ -51,6 +55,7 @@ if ($tahunHitung !== '') {
             FROM pegawai p
             LEFT JOIN presensi pr ON p.id = pr.id 
                  AND YEAR(pr.tgl)=? AND MONTH(pr.tgl)=?
+            WHERE p.stts_aktif='AKTIF'
             GROUP BY p.id, p.nik, p.nama
             ORDER BY p.nik
             LIMIT ? OFFSET ?";

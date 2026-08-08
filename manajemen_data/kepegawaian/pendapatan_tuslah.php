@@ -8,8 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 // handler insert/update/delete
@@ -48,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($ada > 0) {
             echo "<script>alert('Data tahun-bulan ini sudah ada!');</script>";
         } else {
-            $total = $pendapatan * $persen / 100;
             $stmt = $conn->prepare("INSERT INTO set_tuslah (tahun, bulan, pendapatan_tuslah, persen_rs, bagian_rs, persen_kry, bagian_kry) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("iiiiiii", $tahun, $bulan, $pendapatan, $persen_rs, $bagian_rs, $persen_kry, $bagian_kry);
             $stmt->execute();
@@ -230,7 +234,7 @@ $bulanArr = [
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">💾 Simpan</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
         </div>
       </form>
     </div>
@@ -271,7 +275,7 @@ $bulanArr = [
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">🔄 Update</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
         </div>
       </form>
     </div>

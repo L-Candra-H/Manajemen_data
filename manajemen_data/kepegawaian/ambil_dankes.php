@@ -8,8 +8,12 @@ if(!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 $conn = bukakoneksi();
 
@@ -111,7 +115,7 @@ $resRiwayat = mysqli_query($conn, $sqlRiwayat);
                       <td class="text-center">
                         <a href="ambil_dankes.php?hapus=<?= $row['id'] ?>&nik=<?= $nik ?>" 
                            class="btn btn-danger btn-sm"
-                           onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
+                           onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</a>
                       </td>
                     </tr>
                   <?php endwhile; ?>
@@ -179,8 +183,8 @@ $resRiwayat = mysqli_query($conn, $sqlRiwayat);
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Simpan</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-primary">💾 Simpan</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
             </div>
           </form>
         </div>

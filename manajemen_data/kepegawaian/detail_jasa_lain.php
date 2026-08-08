@@ -8,8 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 $nik = $_GET['nik'] ?? '';
@@ -129,7 +134,7 @@ if ($resTahun) {
                     <td><?= htmlspecialchars($row['ktg']) ?></td>
                     <td class="text-center">
                       <a href="detail_jasa_lain.php?nik=<?= urlencode($nik) ?>&thn=<?= $row['thn'] ?>&bln=<?= $row['bln'] ?>&bsr_jasa=<?= $row['bsr_jasa'] ?>&ktg=<?= urlencode($row['ktg']) ?>" 
-                         class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
+                         class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data ini?')">🗑️ Hapus</a>
                     </td>
                   </tr>
                 <?php endwhile; ?>
@@ -191,8 +196,8 @@ if ($resTahun) {
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Simpan</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-success">💾 Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">❌ Batal</button>
           </div>
         </form>
       </div>

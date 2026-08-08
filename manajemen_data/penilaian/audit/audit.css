@@ -1,0 +1,55 @@
+.table-wrapper {
+  display: block;
+  overflow-x: auto;   /* paksa horizontal scroll */
+  overflow-y: auto;   /* vertikal sesuai isi */
+  max-height: 75vh;
+  width: 100%;
+}
+
+.table-master_audit {
+  width: max-content;   /* tabel mengikuti konten, tidak dipaksa 100% */
+  min-width: 1300px;    /* paksa lebar minimal */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table-master_audit th,
+.table-master td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  white-space: nowrap; /* cegah teks membungkus */
+}
+
+.table-master_audit thead th {
+  position: sticky;
+  top: 0;             /* kunci header di atas */
+  background: #343a40; /* warna gelap */
+  color: #fff;
+  z-index: 2;         /* pastikan header di atas isi tabel */
+}
+
+body {
+  padding-bottom: 80px; /* beri ruang agar tombol tidak ketutup footer */
+}
+
+/* Aturan khusus untuk semua label di dalam section Item  */
+.item-audit label {
+  font-size: 0.85rem;   /* huruf lebih kecil */
+  white-space: nowrap;  /* cegah turun ke baris baru */
+}
+
+.item-audit select {
+  font-size: 0.85rem;
+}
+
+.modal-dialog.modal-lg-custom {
+  max-width: 65%; /* atur sesuai kebutuhan, misalnya 70% layar */
+}
+
+.modal-dialog.modal-lg-custom2 {
+  max-width: 70%; /* atur sesuai kebutuhan, misalnya 70% layar */
+}
+
+.modal-dialog.modal-lg-custom3 {
+  max-width: 75%; /* atur sesuai kebutuhan, misalnya 70% layar */
+}

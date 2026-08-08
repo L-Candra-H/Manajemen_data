@@ -1,10 +1,15 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
 
 session_start();
 include __DIR__ . '/conf/conf.php';
 
+// Ambil data setting instansi
 $q = mysqli_query($conn, "SELECT * FROM setting LIMIT 1");
 if (!$q) {
     die("Query gagal: " . mysqli_error($conn));
@@ -21,10 +26,9 @@ $propinsi      = $setting['propinsi'];
 $kontak        = $setting['kontak'];
 $email         = $setting['email'];
 
-$wallpaper = null;
-if (!empty($setting['wallpaper'])) {
-    $wallpaper = 'data:image/jpeg;base64,' . base64_encode($setting['wallpaper']);
-}
+$wallpaper = !empty($setting['wallpaper']) 
+    ? 'data:image/jpeg;base64,' . base64_encode($setting['wallpaper']) 
+    : null;
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -43,6 +47,7 @@ if (!empty($setting['wallpaper'])) {
         </label>
         <select name="role" id="role" class="form-control"
                 style="width:50%; margin:0 auto; font-size:1.05em; padding:8px;" required>
+          <option value="">-- Pilih --</option>
           <option value="user">User</option>
           <option value="admin">Administrator</option>
         </select>
@@ -76,22 +81,23 @@ if (!empty($setting['wallpaper'])) {
     </form>
   </div>
 
+  <!-- Info Instansi -->
   <div class="instansi-info">
     <p><?= htmlspecialchars($nama_instansi) ?></p>
     <p><?= htmlspecialchars($alamat) ?> - <?= htmlspecialchars($kabupaten) ?> - <?= htmlspecialchars($propinsi) ?></p>
     <p><?= htmlspecialchars($kontak) ?> | <?= htmlspecialchars($email) ?></p>
   </div>
 
-  <!-- Popup error -->
-  <?php if(isset($_GET['error'])): ?>
+  <!-- Popup error hanya untuk login gagal -->
+  <?php if(isset($_GET['error']) && ($_GET['error']==1 || $_GET['error']==2)): ?>
     <div class="popup" style="display:flex;">
-      <div class="popup-content">
+      <div class="popup-content" style="background:#ffe0e0; color:#2c3e50;">
         <?php if($_GET['error']==1): ?>
           <p>⚠️ Login gagal! Username atau password salah.</p>
         <?php elseif($_GET['error']==2): ?>
           <p>⚠️ Verifikasi tanggal lahir tidak sesuai.</p>
         <?php endif; ?>
-        <button onclick="this.closest('.popup').style.display='none'">Tutup</button>
+        <button onclick="this.closest('.popup').style.display='none'" style="background:#c0392b; color:white;">Tutup</button>
       </div>
     </div>
   <?php endif; ?>
@@ -111,27 +117,23 @@ if (!empty($setting['wallpaper'])) {
     document.querySelectorAll('.popup').forEach(p => {
       setTimeout(() => { p.style.display = 'none'; }, 5000);
     });
-  </script>
 
-  <!-- Script untuk autoformat tanggal lahir & sembunyikan captcha jika admin -->
-  <script>
+    // Script untuk autoformat tanggal lahir & sembunyikan captcha jika admin
     const roleSelect = document.getElementById('role');
     const captchaBox = document.getElementById('captchaBox');
     const tglInput   = document.getElementById('tgl_lahir');
 
-    // sembunyikan captcha jika pilih admin
     roleSelect.addEventListener('change', function() {
       if (this.value === 'admin') {
         captchaBox.style.display = 'none';
-        tglInput.value = ''; // kosongkan
+        tglInput.value = '';
       } else {
         captchaBox.style.display = 'block';
       }
     });
 
-    // autoformat tanggal lahir dd-mm-yyyy
     tglInput.addEventListener('input', function(e) {
-      let val = e.target.value.replace(/\D/g, ''); // hanya angka
+      let val = e.target.value.replace(/\D/g, '');
       if (val.length >= 8) {
         let dd = val.substring(0,2);
         let mm = val.substring(2,4);
@@ -140,6 +142,5 @@ if (!empty($setting['wallpaper'])) {
       }
     });
   </script>
-
 </body>
 </html>

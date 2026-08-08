@@ -2,6 +2,13 @@
 include __DIR__ . '/../conf/auth.php';
 include __DIR__ . '/../conf/conf.php';
 
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 if (!cekAkses('pegawai_admin') && !cekAkses('pegawai_user')) {
     echo "<div class='alert alert-danger'>Akses ditolak. Anda tidak memiliki hak ke menu Pegawai.</div>";
     exit;

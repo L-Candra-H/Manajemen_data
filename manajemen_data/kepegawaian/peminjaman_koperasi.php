@@ -8,8 +8,13 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+ini_set('display_errors', 0);
+
+$role = $_POST['role'] ?? '';
+$usere = $_POST['usere'] ?? '';
+$passworde = $_POST['passworde'] ?? '';
+
 $conn = bukakoneksi();
 
 // pagination setup
@@ -34,6 +39,7 @@ $listPegawai = mysqli_query($conn, "
     FROM pegawai p
     JOIN keanggotaan k ON k.id = p.id
     WHERE k.koperasi='Y'
+      AND p.stts_aktif='AKTIF'
     ORDER BY p.nik ASC
 ");
 
@@ -58,7 +64,7 @@ $totalPages = 0;
 
 // hanya jalankan query kalau filter aktif
 if ($filterPegawai) {
-    $where = "WHERE k.koperasi='Y'";
+    $where = "WHERE k.koperasi='Y' AND p.stts_aktif='AKTIF'";
     if ($filterPegawai && $filterPegawai !== 'ALL') {
         $where .= " AND p.nik='".mysqli_real_escape_string($conn,$filterPegawai)."'";
     }
@@ -85,6 +91,7 @@ if ($filterPegawai) {
             JOIN keanggotaan k ON k.id = p.id
             LEFT JOIN peminjaman_koperasi pk ON pk.id = p.id
             WHERE k.koperasi='Y'
+              AND p.stts_aktif='AKTIF'
             ".($filterPegawai && $filterPegawai!=='ALL' ? " AND p.nik='".mysqli_real_escape_string($conn,$filterPegawai)."'" : "")."
             GROUP BY p.id, p.nik, p.nama
             ORDER BY p.nik ASC

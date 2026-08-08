@@ -1,9 +1,11 @@
-/* Header */
+/* ===========================
+   Header
+   =========================== */
 .header {
   display: flex;
-  align-items: center;   /* rata tengah vertikal */
+  align-items: center;        /* rata tengah vertikal */
   gap: 8px;
-  padding: 6px 10px;     /* lebih tipis */
+  padding: 6px 10px;          /* lebih tipis */
   background: #fff;
   border-bottom: 2px solid #000; /* garis lebih tipis */
   position: sticky;
@@ -12,19 +14,19 @@
 }
 
 .header .logo {
-  width: 60px;           /* logo lebih kecil */
+  width: 60px;                /* logo lebih kecil */
   height: 60px;
   object-fit: contain;
 }
 
 .header .instansi {
-  font-size: 11px;       /* teks lebih kecil */
+  font-size: 11px;            /* teks lebih kecil */
   line-height: 1.4;
   text-align: left;
 }
 
 .header .instansi h1 {
-  font-size: 14px;       /* judul lebih kecil */
+  font-size: 14px;            /* judul lebih kecil */
   margin: 0;
   font-weight: bold;
 }
@@ -34,7 +36,9 @@
   color: #444;
 }
 
-/* Footer */
+/* ===========================
+   Footer
+   =========================== */
 .footer {
   position: fixed;
   bottom: 0;
@@ -53,12 +57,15 @@
   justify-content: space-between; /* kiri & kanan */
   align-items: center;
 }
+
 .footer-left { text-align: left; }
 .footer-right { text-align: right; }
 .footer-user { margin-right: 20px; }
 .footer-ip   { color: #555; }
 
-/* Responsive header */
+/* ===========================
+   Responsive
+   =========================== */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
