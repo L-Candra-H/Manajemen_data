@@ -8,7 +8,7 @@ if(!isset($_SESSION['user_login'])) {
     exit;
 }
 
-eerror_reporting(0);
+error_reporting(0);
 ini_set('display_errors', 0);
 
 $role = $_POST['role'] ?? '';
