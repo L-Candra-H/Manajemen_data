@@ -35,7 +35,7 @@ if ($_SESSION["hak_akses"] !== "administrator") {
     <div class="col-md-6 mb-3">
       <div class="card shadow h-100 text-center border-danger">
         <div class="card-body">
-          <h5 class="card-title fw-bold text-danger">⚙️ Modul Administrator</h5>
+          <h5 class="card-title fw-bold text-danger">⚙️ ADMINISTRATOR</h5>
           <p class="text-muted mb-0 small">Menu khusus administrator</p>
           <a href="pengaturan/user.php" class="btn btn-outline-danger btn-sm mt-3">👤 User Menu Kepegawaian</a>
           <a href="pengaturan/tracker.php" class="btn btn-outline-danger btn-sm mt-3">📊 Tracker Aktivitas</a>

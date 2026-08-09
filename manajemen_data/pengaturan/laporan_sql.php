@@ -130,7 +130,15 @@ if ($resJenis) {
                 responsive: true,
                 maintainAspectRatio: false,
                 aspectRatio: 1,
-                plugins: { legend: { display: false } }
+                plugins: {
+                  legend: { display: false },
+                  title: {
+                    display: true,
+                    text: 'Jumlah Query per User',
+                    font: { size: 14, weight: 'bold' },
+                    padding: { top: 0, bottom: 10 }
+                  }
+                }
               }
             });
 
@@ -153,7 +161,15 @@ if ($resJenis) {
               options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                aspectRatio: 2
+                aspectRatio: 2,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Proporsi Jenis Query',
+                    font: { size: 14, weight: 'bold' },
+                    padding: { top: 0, bottom: 10 }
+                  }
+                }
               }
             });
           </script>

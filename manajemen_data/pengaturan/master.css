@@ -33,10 +33,11 @@
   max-height: 300px;
 }
 
-/* Grafik laporan SQL */
-#sqlUserChart,
-#sqlJenisChart {
-  max-height: 600px;
+/* Label judul kecil untuk laporan LOGIN */
+.chart-title-login {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 body {

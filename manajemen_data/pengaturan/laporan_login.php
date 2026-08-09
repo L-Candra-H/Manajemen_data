@@ -100,7 +100,13 @@ if ($res) {
                 maintainAspectRatio: false,
                 aspectRatio: 2, // grafik lebih ramping
                 plugins: {
-                  legend: { display: false }
+                  legend: { display: false },
+                  title: {
+                    display: true,
+                    text: 'Jumlah Login per Pegawai',
+                    font: { size: 14, weight: 'bold' },
+                    padding: { top: 0, bottom: 10 }
+                  }
                 }
               }
             });
