@@ -27,3 +27,18 @@
   color: #fff;
   z-index: 2;         /* pastikan header di atas isi tabel */
 }
+
+/* Grafik laporan LOGIN */
+#loginChart {
+  max-height: 300px;
+}
+
+/* Grafik laporan SQL */
+#sqlUserChart,
+#sqlJenisChart {
+  max-height: 600px;
+}
+
+body {
+  padding-bottom: 80px; /* beri ruang agar tombol tidak ketutup footer */
+}

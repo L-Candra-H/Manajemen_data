@@ -37,9 +37,10 @@ if ($_SESSION["hak_akses"] !== "administrator") {
         <div class="card-body">
           <h5 class="card-title fw-bold text-danger">⚙️ Modul Administrator</h5>
           <p class="text-muted mb-0 small">Menu khusus administrator</p>
-
-          <!-- Isi sementara -->
           <a href="pengaturan/user.php" class="btn btn-outline-danger btn-sm mt-3">👤 User Menu Kepegawaian</a>
+          <a href="pengaturan/tracker.php" class="btn btn-outline-danger btn-sm mt-3">📊 Tracker Aktivitas</a>
+          <a href="pengaturan/laporan_login.php" class="btn btn-outline-danger btn-sm mt-3">📈 Laporan Login</a>
+          <a href="pengaturan/laporan_sql.php" class="btn btn-outline-danger btn-sm mt-3">📉 Laporan SQL</a>
         </div>
       </div>
     </div>

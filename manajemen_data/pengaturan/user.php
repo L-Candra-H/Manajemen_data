@@ -101,7 +101,6 @@ if (!empty($filter) && $filter !== "ALL") {
     $where = "WHERE CAST(AES_DECRYPT(u.id_user,'nur') AS CHAR) = '$nikFilter'";
 }
 
-
 // hitung total data untuk pagination
 $countQuery = "
     SELECT COUNT(*) AS total
