@@ -156,7 +156,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['aksi']) && $_POST['aksi'
           <div class="row mb-3">
             <div class="col-md-12 d-flex gap-2">
               <label class="me-2">Keterangan</label>
-              <input type="text" name="keterangan" class="form-control">
+              <input type="text" name="keterangan" class="form-control" required>
             </div>
           </div>
 
