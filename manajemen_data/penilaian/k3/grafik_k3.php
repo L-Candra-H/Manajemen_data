@@ -27,11 +27,43 @@ $bulan = !empty($_GET['bulan'])?(int)$_GET['bulan']:null;
 $awal  = !empty($_GET['awal'])?$_GET['awal']:null;
 $akhir = !empty($_GET['akhir'])?$_GET['akhir']:null;
 
-$validChartTypes=['bar','pie','line', 'doughnut', 'polarArea', 'bubble', 'scatter' ];
+$validChartTypes=['bar','pie','line','doughnut','polarArea','bubble','scatter'];
 $chartParam=$_GET['chartType']??'';
 $chartType=in_array($chartParam,$validChartTypes,true)?$chartParam:'';
 
+// Nama bulan Indonesia
 $namaBulan=[1=>"Januari",2=>"Februari",3=>"Maret",4=>"April",5=>"Mei",6=>"Juni",7=>"Juli",8=>"Agustus",9=>"September",10=>"Oktober",11=>"November",12=>"Desember"];
+
+// Tambahan logika bulan & tanggal
+$currentYear  = date('Y');
+$currentMonth = date('n');
+$today        = date('Y-m-d');
+
+// default bulan terakhir
+$bulanTerakhir = 12;
+
+if ($mode==='bulan') {
+    if ($tahun) {
+        if ($tahun == $currentYear) {
+            $bulanTerakhir = $currentMonth; // batasi sampai bulan aktif
+        } else {
+            $bulanTerakhir = 12; // tahun sebelumnya penuh
+        }
+    } else {
+        // kalau tahun belum dipilih, default pakai bulan aktif tahun berjalan
+        $bulanTerakhir = $currentMonth;
+    }
+
+    if (!$bulan) {
+        $bulan = $bulanTerakhir; // otomatis pakai bulan terakhir
+    }
+}
+
+if ($mode==='tanggal' && $awal && $akhir) {
+    if ($akhir > $today) {
+        $akhir = $today; // batasi akhir maksimal hari ini
+    }
+}
 
 // Fungsi ambil data detail
 function getData($conn,$field,$joinTable,$joinKey,$labelField,$mode,$tahun=null,$bulan=null,$awal=null,$akhir=null){
@@ -39,7 +71,10 @@ function getData($conn,$field,$joinTable,$joinKey,$labelField,$mode,$tahun=null,
   if($mode=='tahun' && $tahun){ $where.=" AND YEAR(p.tgl_insiden)=?"; $params[]=$tahun; $types.="i"; }
   if($mode=='bulan' && $tahun && $bulan){ $where.=" AND YEAR(p.tgl_insiden)=? AND MONTH(p.tgl_insiden)=?"; $params[]=$tahun; $params[]=$bulan; $types.="ii"; }
   if($mode=='tanggal' && $awal && $akhir){ $where.=" AND p.tgl_insiden BETWEEN ? AND ?"; $params[]=$awal; $params[]=$akhir; $types.="ss"; }
-  $sql="SELECT $labelField AS label, COUNT(*) AS jumlah FROM k3rs_peristiwa p JOIN $joinTable t ON p.$field=t.$joinKey $where GROUP BY $labelField";
+  $sql="SELECT $labelField AS label, COUNT(*) AS jumlah 
+        FROM k3rs_peristiwa p 
+        JOIN $joinTable t ON p.$field=t.$joinKey 
+        $where GROUP BY $labelField";
   $stmt=$conn->prepare($sql);
   if(!empty($params)){ $stmt->bind_param($types,...$params); }
   $stmt->execute(); $res=$stmt->get_result();
@@ -51,15 +86,27 @@ function getData($conn,$field,$joinTable,$joinKey,$labelField,$mode,$tahun=null,
 // Grafik utama
 $peristiwaLabels=[]; $peristiwaData=[];
 if($mode=='tahun' && $tahun){
-  $sql="SELECT YEAR(tgl_insiden) AS label, COUNT(*) AS jumlah FROM k3rs_peristiwa WHERE YEAR(tgl_insiden)=? GROUP BY YEAR(tgl_insiden)";
+  $sql="SELECT YEAR(tgl_insiden) AS label, COUNT(*) AS jumlah 
+        FROM k3rs_peristiwa 
+        WHERE YEAR(tgl_insiden)=? 
+        GROUP BY YEAR(tgl_insiden)";
   $stmt=$conn->prepare($sql); $stmt->bind_param("i",$tahun); $stmt->execute(); $res=$stmt->get_result();
   while($row=$res->fetch_assoc()){ $peristiwaLabels[]=$row['label']; $peristiwaData[]=$row['jumlah']; }
 }elseif($mode=='bulan' && $tahun && $bulan){
-  $sql="SELECT DAY(tgl_insiden) AS hari, COUNT(*) AS jumlah FROM k3rs_peristiwa WHERE YEAR(tgl_insiden)=? AND MONTH(tgl_insiden)=? GROUP BY DAY(tgl_insiden)";
+  $sql="SELECT DAY(tgl_insiden) AS hari, COUNT(*) AS jumlah 
+        FROM k3rs_peristiwa 
+        WHERE YEAR(tgl_insiden)=? AND MONTH(tgl_insiden)=? 
+        GROUP BY DAY(tgl_insiden)";
   $stmt=$conn->prepare($sql); $stmt->bind_param("ii",$tahun,$bulan); $stmt->execute(); $res=$stmt->get_result();
-  while($row=$res->fetch_assoc()){ $peristiwaLabels[]=$row['hari']." ".$namaBulan[$bulan]." ".$tahun; $peristiwaData[]=$row['jumlah']; }
+  while($row=$res->fetch_assoc()){ 
+      $peristiwaLabels[]=$row['hari']." ".$namaBulan[$bulan]." ".$tahun; 
+      $peristiwaData[]=$row['jumlah']; 
+  }
 }elseif($mode=='tanggal' && $awal && $akhir){
-  $sql="SELECT DATE(tgl_insiden) AS label, COUNT(*) AS jumlah FROM k3rs_peristiwa WHERE tgl_insiden BETWEEN ? AND ? GROUP BY DATE(tgl_insiden)";
+  $sql="SELECT DATE(tgl_insiden) AS label, COUNT(*) AS jumlah 
+        FROM k3rs_peristiwa 
+        WHERE tgl_insiden BETWEEN ? AND ? 
+        GROUP BY DATE(tgl_insiden)";
   $stmt=$conn->prepare($sql); $stmt->bind_param("ss",$awal,$akhir); $stmt->execute(); $res=$stmt->get_result();
   while($row=$res->fetch_assoc()){ $peristiwaLabels[]=$row['label']; $peristiwaData[]=$row['jumlah']; }
 }
@@ -76,6 +123,7 @@ if($mode){
   list($bagianLabels,$bagianData)=getData($conn,'kode_bagian','k3rs_bagian_tubuh','kode_bagian','bagian_tubuh',$mode,$tahun,$bulan,$awal,$akhir);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -139,11 +187,14 @@ if($mode){
                 <label class="mb-0">Bulan:</label>
                 <select name="bulan" class="form-select">
                   <option value="">--pilih--</option>
-                  <?php foreach($namaBulan as $num=>$nama): ?>
-                    <option value="<?=$num?>" <?=($bulan==$num?'selected':'')?>><?=$nama?></option>
-                  <?php endforeach; ?>
+                  <?php for($m=1; $m<=$bulanTerakhir; $m++): ?>
+                    <option value="<?=$m?>" <?=($bulan==$m?'selected':'')?>>
+                      <?=$namaBulan[$m]?>
+                    </option>
+                  <?php endfor; ?>
                 </select>
               </div>
+
 
             <?php elseif($mode=='tanggal'): ?>
               <div class="d-flex align-items-center gap-2">
@@ -152,7 +203,7 @@ if($mode){
               </div>
               <div class="d-flex align-items-center gap-2">
                 <label class="mb-0">Akhir:</label>
-                <input type="date" name="akhir" value="<?=htmlspecialchars($akhir??'')?>" class="form-control">
+                <input type="date" name="akhir" value="<?=htmlspecialchars($akhir??'')?>" class="form-control" max="<?=date('Y-m-d')?>">
               </div>
             <?php endif; ?>
 
@@ -171,6 +222,7 @@ if($mode){
             </div>
 
             <button type="submit" class="btn btn-success">Terapkan</button>
+            <a href="?" class="btn btn-secondary">Reset</a>
           </form>
 
             <!-- Judul sesuai filter -->
