@@ -183,6 +183,10 @@ $modulB = (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"
                 <a href="kepegawaian/riwayat_penelitian.php" class="btn btn-primary btn-sm mt-3">📋 Riwayat Penelitian</a>
               <?php endif; ?>
 
+              <?php if (!empty($_SESSION["pegawai_admin"]) || !empty($_SESSION["pegawai_user"])): ?>
+                <a href="kepegawaian/grafik_pegawai.php" class="btn btn-outline-primary btn-sm mt-3">📋 Grafik Pegawai</a>
+              <?php endif; ?>
+
             </div>
           </div>
         </div>
