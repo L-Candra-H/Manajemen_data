@@ -8,8 +8,8 @@ if (!isset($_SESSION['user_login'])) {
     exit;
 }
 
-error_reporting(0);
-ini_set('display_errors', 0);
+error_reporting(1);
+ini_set('display_errors', 1);
 
 $role = $_POST['role'] ?? '';
 $usere = $_POST['usere'] ?? '';
@@ -26,12 +26,35 @@ $where = "WHERE p.stts_aktif='AKTIF'";
 $validFilter   = false;
 $filterMessage = 'Silakan pilih Tahun untuk menampilkan grafik.';
 
+// Hitung bulan terakhir aktif
+$currentYear  = date('Y');
+$currentMonth = date('n'); // bulan sekarang (1–12)
+$bulanTerakhir = 12;
+$namaBulan = [
+  1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+  5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+  9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+];
+
+if ($mode==='bulan' && $tahun !== '') {
+    if (intval($tahun) == $currentYear) {
+        // kalau tahun yang dipilih adalah tahun sekarang → batasi sampai bulan berjalan
+        $bulanTerakhir = $currentMonth;
+    } else {
+        // tahun sebelumnya → selalu sampai Desember
+        $bulanTerakhir = 12;
+    }
+}
+
 // Logika filter
 if ($mode === 'tahun' && $tahun !== '') {
     $where .= " AND YEAR(p.mulai_kerja) <= " . intval($tahun);
     $validFilter   = true;
     $filterMessage = "Pegawai aktif sampai tahun $tahun.";
-} elseif ($mode === 'bulan' && $tahun !== '' && $bulan !== '') {
+} elseif ($mode === 'bulan' && $tahun !== '') {
+    if ($bulan === '') {
+        $bulan = $bulanTerakhir; // otomatis pakai bulan terakhir
+    }
     $where .= " AND (
         YEAR(p.mulai_kerja) < " . intval($tahun) . "
         OR (YEAR(p.mulai_kerja) = " . intval($tahun) . " 
@@ -39,11 +62,9 @@ if ($mode === 'tahun' && $tahun !== '') {
     )";
     $validFilter   = true;
     $filterMessage = "Pegawai aktif sampai bulan $bulan-$tahun.";
-} elseif ($mode === 'bulan' && ($tahun==='' || $bulan==='')) {
-    $filterMessage = 'Silakan pilih Tahun dan Bulan.';
 }
 
-// Query khusus Pendidikan (pakai tingkat sebagai label, indek untuk urutan)
+// Query khusus Pendidikan
 $queryPendidikan = "
 SELECT pd.tingkat AS pendidikan_tingkat, COUNT(*) AS jumlah
 FROM pegawai p
@@ -53,7 +74,7 @@ GROUP BY pd.tingkat, pd.indek
 ORDER BY pd.indek ASC;
 ";
 
-// Query gabungan lain (Resiko + Emergency + Departemen + Bagian + Jabatan + Status)
+// Query gabungan lain
 $queryGabungan = "
 SELECT p.*, 
        kj.nama_kelompok, 
@@ -195,17 +216,17 @@ if ($validFilter) {
           </div>
 
           <?php if ($mode==='bulan'): ?>
-          <div class="d-flex align-items-center gap-2">
-            <label class="mb-0">Bulan:</label>
-            <select name="bulan" class="form-select" onchange="this.form.submit()">
-              <option value="">--pilih--</option>
-              <?php for($m=1;$m<=12;$m++): ?>
-                <option value="<?=$m?>" <?=($bulan==$m?'selected':'')?>>
-                  <?=date('F', mktime(0,0,0,$m,1))?>
-                </option>
-              <?php endfor; ?>
-            </select>
-          </div>
+            <div class="d-flex align-items-center gap-2">
+              <label class="mb-0">Bulan:</label>
+              <select name="bulan" class="form-select" onchange="this.form.submit()">
+                <option value="">--pilih--</option>
+                <?php for($m=1; $m<=$bulanTerakhir; $m++): ?>
+                  <option value="<?=$m?>" <?=($bulan==$m?'selected':'')?>>
+                    <?=$namaBulan[$m]?>
+                  </option>
+                <?php endfor; ?>
+              </select>
+            </div>
           <?php endif; ?>
 
           <a href="?" class="btn btn-secondary">Reset</a>
