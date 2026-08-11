@@ -200,14 +200,54 @@ if ($validFilter && $result instanceof mysqli_result) {
         <?php if ($validFilter && $rowCount > 0): ?>
           <!-- Grafik -->
           <div class="row">
-            <div class="col-md-6 mb-3"><canvas id="genderChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="jabatanChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="departemenChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="bagianChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="resikoChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="emergencyChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="statusChart"></canvas></div>
-            <div class="col-md-6 mb-3"><canvas id="lamaChart"></canvas></div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Jenis Kelamin</div>
+                <div class="card-body"><canvas id="genderChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Kelompok Jabatan</div>
+                <div class="card-body"><canvas id="jabatanChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Departemen</div>
+                <div class="card-body"><canvas id="departemenChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Bagian</div>
+                <div class="card-body"><canvas id="bagianChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Resiko Kerja</div>
+                <div class="card-body"><canvas id="resikoChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Tingkat Emergency</div>
+                <div class="card-body"><canvas id="emergencyChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Status Karyawan</div>
+                <div class="card-body"><canvas id="statusChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Lama Kerja</div>
+                <div class="card-body"><canvas id="lamaChart"></canvas></div>
+              </div>
+            </div>
           </div>
         <?php else: ?>
           <div class="alert alert-warning text-center">
@@ -245,7 +285,7 @@ if ($validFilter && $result instanceof mysqli_result) {
           plugins: {
             legend: { display: type==='bar'?false:true },
             title: {
-              display: true,
+              display: false,
               text: title,
               font: { size: 14, weight: 'bold' }
             }
