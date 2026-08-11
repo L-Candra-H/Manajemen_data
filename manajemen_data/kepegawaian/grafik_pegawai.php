@@ -43,7 +43,18 @@ if ($mode === 'tahun' && $tahun !== '') {
     $filterMessage = 'Silakan pilih Tahun dan Bulan.';
 }
 
-$query = "
+// Query khusus Pendidikan (pakai tingkat sebagai label, indek untuk urutan)
+$queryPendidikan = "
+SELECT pd.tingkat AS pendidikan_tingkat, COUNT(*) AS jumlah
+FROM pegawai p
+INNER JOIN pendidikan pd ON p.pendidikan = pd.tingkat
+$where
+GROUP BY pd.tingkat, pd.indek
+ORDER BY pd.indek ASC;
+";
+
+// Query gabungan lain (Resiko + Emergency + Departemen + Bagian + Jabatan + Status)
+$queryGabungan = "
 SELECT p.*, 
        kj.nama_kelompok, 
        d.nama AS departemen_nama, 
@@ -62,21 +73,6 @@ $where
 ORDER BY r.kode_resiko ASC, e.kode_emergency ASC
 ";
 
-$result   = false;
-$rowCount = 0;
-$dbError  = '';
-if ($validFilter) {
-    $result = mysqli_query($conn, $query);
-    if ($result === false) {
-        $dbError = mysqli_error($conn);
-    } else {
-        $rowCount = mysqli_num_rows($result);
-    }
-}
-if ($dbError !== '') {
-    echo "<div class='alert alert-danger'>Query error: $dbError</div>";
-}
-
 // Inisialisasi array kategori
 $dataGender     = ['Pria'=>0,'Wanita'=>0];
 $dataJabatan    = [];
@@ -85,6 +81,7 @@ $dataBagian     = [];
 $dataResiko     = [];
 $dataEmergency  = [];
 $dataStatus     = [];
+$dataPendidikan = [];
 $dataLamaKerja  = [
     'Index 0 (<1 thn)' => 0,
     'Index 2 (1 thn)'  => 0,
@@ -96,46 +93,63 @@ $dataLamaKerja  = [
     'Index 14 (>=7 thn)' => 0
 ];
 
-// Loop data hasil query
-if ($validFilter && $result instanceof mysqli_result) {
-    while($row = mysqli_fetch_assoc($result)){
-        if($row['jk']=='Pria') $dataGender['Pria']++; else $dataGender['Wanita']++;
+// Eksekusi query
+if ($validFilter) {
+    // Pendidikan
+    $resultPendidikan = mysqli_query($conn, $queryPendidikan);
+    if ($resultPendidikan === false) {
+        echo "<div class='alert alert-danger'>Query Pendidikan error: " . mysqli_error($conn) . "</div>";
+    } else {
+        while($row = mysqli_fetch_assoc($resultPendidikan)){
+            $tingkat = $row['pendidikan_tingkat'] ?: 'Tidak Diketahui';
+            $dataPendidikan[$tingkat] = (int)$row['jumlah'];
+        }
+    }
 
-        $jab = $row['nama_kelompok'] ?: 'Tidak Diketahui';
-        $dataJabatan[$jab] = ($dataJabatan[$jab]??0)+1;
+    // Gabungan lain
+    $resultGabungan = mysqli_query($conn, $queryGabungan);
+    if ($resultGabungan === false) {
+        echo "<div class='alert alert-danger'>Query Gabungan error: " . mysqli_error($conn) . "</div>";
+    } else {
+        while($row = mysqli_fetch_assoc($resultGabungan)){
+            if($row['jk']=='Pria') $dataGender['Pria']++; else $dataGender['Wanita']++;
 
-        $dep = $row['departemen_nama'] ?: 'Tidak Diketahui';
-        $dataDepartemen[$dep] = ($dataDepartemen[$dep]??0)+1;
+            $jab = $row['nama_kelompok'] ?: 'Tidak Diketahui';
+            $dataJabatan[$jab] = ($dataJabatan[$jab]??0)+1;
 
-        $bag = $row['nama_bagian'] ?: 'Tidak Diketahui';
-        $dataBagian[$bag] = ($dataBagian[$bag]??0)+1;
+            $dep = $row['departemen_nama'] ?: 'Tidak Diketahui';
+            $dataDepartemen[$dep] = ($dataDepartemen[$dep]??0)+1;
 
-        $res = $row['nama_resiko'] ?: 'Tidak Diketahui';
-        $dataResiko[$res] = ($dataResiko[$res]??0)+1;
+            $bag = $row['nama_bagian'] ?: 'Tidak Diketahui';
+            $dataBagian[$bag] = ($dataBagian[$bag]??0)+1;
 
-        $emg = $row['nama_emergency'] ?: 'Tidak Diketahui';
-        $dataEmergency[$emg] = ($dataEmergency[$emg]??0)+1;
+            $res = $row['nama_resiko'] ?: 'Tidak Diketahui';
+            $dataResiko[$res] = ($dataResiko[$res]??0)+1;
 
-        $st = $row['status_karyawan'] ?: 'Tidak Diketahui';
-        $dataStatus[$st] = ($dataStatus[$st]??0)+1;
+            $emg = $row['nama_emergency'] ?: 'Tidak Diketahui';
+            $dataEmergency[$emg] = ($dataEmergency[$emg]??0)+1;
 
-        // Lama kerja dihitung dari mulai_kerja
-        $mulai = new DateTime($row['mulai_kerja']);
-        $now   = new DateTime();
-        $diffKerja = $mulai->diff($now);
+            $st = $row['status_karyawan'] ?: 'Tidak Diketahui';
+            $dataStatus[$st] = ($dataStatus[$st]??0)+1;
 
-        if ($diffKerja->y == 0) $dataLamaKerja['Index 0 (<1 thn)']++;
-        elseif ($diffKerja->y == 1) $dataLamaKerja['Index 2 (1 thn)']++;
-        elseif ($diffKerja->y == 2) $dataLamaKerja['Index 4 (2 thn)']++;
-        elseif ($diffKerja->y == 3) $dataLamaKerja['Index 6 (3 thn)']++;
-        elseif ($diffKerja->y == 4) $dataLamaKerja['Index 8 (4 thn)']++;
-        elseif ($diffKerja->y == 5) $dataLamaKerja['Index 10 (5 thn)']++;
-        elseif ($diffKerja->y == 6) $dataLamaKerja['Index 12 (6 thn)']++;
-        elseif ($diffKerja->y >= 7) $dataLamaKerja['Index 14 (>=7 thn)']++;
+            // Lama kerja dihitung dari mulai_kerja
+            $mulai = new DateTime($row['mulai_kerja']);
+            $now   = new DateTime();
+            $diffKerja = $mulai->diff($now);
+
+            if ($diffKerja->y == 0) $dataLamaKerja['Index 0 (<1 thn)']++;
+            elseif ($diffKerja->y == 1) $dataLamaKerja['Index 2 (1 thn)']++;
+            elseif ($diffKerja->y == 2) $dataLamaKerja['Index 4 (2 thn)']++;
+            elseif ($diffKerja->y == 3) $dataLamaKerja['Index 6 (3 thn)']++;
+            elseif ($diffKerja->y == 4) $dataLamaKerja['Index 8 (4 thn)']++;
+            elseif ($diffKerja->y == 5) $dataLamaKerja['Index 10 (5 thn)']++;
+            elseif ($diffKerja->y == 6) $dataLamaKerja['Index 12 (6 thn)']++;
+            elseif ($diffKerja->y >= 7) $dataLamaKerja['Index 14 (>=7 thn)']++;
+        }
     }
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -197,7 +211,17 @@ if ($validFilter && $result instanceof mysqli_result) {
           <a href="?" class="btn btn-secondary">Reset</a>
         </form>
 
-        <?php if ($validFilter && $rowCount > 0): ?>
+        <?php if ($validFilter && (
+          !empty($dataGender) || 
+          !empty($dataJabatan) || 
+          !empty($dataDepartemen) || 
+          !empty($dataBagian) || 
+          !empty($dataResiko) || 
+          !empty($dataEmergency) || 
+          !empty($dataStatus) || 
+          !empty($dataLamaKerja) || 
+          !empty($dataPendidikan)
+        )): ?>
           <!-- Grafik -->
           <div class="row">
             <div class="col-md-6 mb-3">
@@ -248,6 +272,12 @@ if ($validFilter && $result instanceof mysqli_result) {
                 <div class="card-body"><canvas id="lamaChart"></canvas></div>
               </div>
             </div>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 shadow-sm">
+                <div class="card-header text-center fw-bold">Pendidikan</div>
+                <div class="card-body"><canvas id="pendidikanChart"></canvas></div>
+              </div>
+            </div>
           </div>
         <?php else: ?>
           <div class="alert alert-warning text-center">
@@ -295,14 +325,59 @@ if ($validFilter && $result instanceof mysqli_result) {
     }
 
     // Render semua grafik
-    makeChart('genderChart','bar',<?=json_encode(array_keys($dataGender))?>,<?=json_encode(array_values($dataGender))?>,'Jenis Kelamin');
-    makeChart('jabatanChart','bar',<?=json_encode(array_keys($dataJabatan))?>,<?=json_encode(array_values($dataJabatan))?>,'Kelompok Jabatan');
-    makeChart('departemenChart','bar',<?=json_encode(array_keys($dataDepartemen))?>,<?=json_encode(array_values($dataDepartemen))?>,'Departemen');
-    makeChart('bagianChart','bar',<?=json_encode(array_keys($dataBagian))?>,<?=json_encode(array_values($dataBagian))?>,'Bagian');
-    makeChart('resikoChart','pie',<?=json_encode(array_keys($dataResiko))?>,<?=json_encode(array_values($dataResiko))?>,'Resiko Kerja');
-    makeChart('emergencyChart','pie',<?=json_encode(array_keys($dataEmergency))?>,<?=json_encode(array_values($dataEmergency))?>,'Tingkat Emergency');
-    makeChart('statusChart','bar',<?=json_encode(array_keys($dataStatus))?>,<?=json_encode(array_values($dataStatus))?>,'Status Karyawan');
-    makeChart('lamaChart','pie',<?=json_encode(array_keys($dataLamaKerja))?>,<?=json_encode(array_values($dataLamaKerja))?>,'Lama Kerja');
+    makeChart('genderChart','bar',
+      <?=json_encode(array_keys($dataGender))?>,
+      <?=json_encode(array_values($dataGender))?>,
+      'Jenis Kelamin'
+    );
+
+    makeChart('jabatanChart','bar',
+      <?=json_encode(array_keys($dataJabatan))?>,
+      <?=json_encode(array_values($dataJabatan))?>,
+      'Kelompok Jabatan'
+    );
+
+    makeChart('departemenChart','bar',
+      <?=json_encode(array_keys($dataDepartemen))?>,
+      <?=json_encode(array_values($dataDepartemen))?>,
+      'Departemen'
+    );
+
+    makeChart('bagianChart','bar',
+      <?=json_encode(array_keys($dataBagian))?>,
+      <?=json_encode(array_values($dataBagian))?>,
+      'Bagian'
+    );
+
+    makeChart('resikoChart','pie',
+      <?=json_encode(array_keys($dataResiko))?>,
+      <?=json_encode(array_values($dataResiko))?>,
+      'Resiko Kerja'
+    );
+
+    makeChart('emergencyChart','pie',
+      <?=json_encode(array_keys($dataEmergency))?>,
+      <?=json_encode(array_values($dataEmergency))?>,
+      'Tingkat Emergency'
+    );
+
+    makeChart('statusChart','bar',
+      <?=json_encode(array_keys($dataStatus))?>,
+      <?=json_encode(array_values($dataStatus))?>,
+      'Status Karyawan'
+    );
+
+    makeChart('lamaChart','pie',
+      <?=json_encode(array_keys($dataLamaKerja))?>,
+      <?=json_encode(array_values($dataLamaKerja))?>,
+      'Lama Kerja'
+    );
+
+    makeChart('pendidikanChart','bar',
+      <?=json_encode(array_keys($dataPendidikan))?>,
+      <?=json_encode(array_values($dataPendidikan))?>,
+      'Pendidikan'
+    );
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
