@@ -74,7 +74,7 @@ if ($filterActive) {
     $sql .= " WHERE 1=0";
 }
 
-$sql .= " ORDER BY p.tanggal DESC";
+$sql .= " ORDER BY p.nomor_penilaian ASC";
 $qPenilaian = $conn->query($sql);
 
 // Ambil semua detail sekaligus

@@ -84,6 +84,23 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['aksi']) && $_POST['aksi'
     echo "<script>alert('Data penilaian berhasil disimpan');window.location='penilaian.php';</script>";
 }
 
+// === AJAX handler untuk generate nomor berdasarkan tanggal ===
+if(isset($_GET['get_nomor']) && !empty($_GET['get_nomor'])){
+    $tanggalInput = $_GET['get_nomor'];
+    $tanggalFormat = date('Ymd', strtotime($tanggalInput));
+
+    $qLast = $conn->query("SELECT nomor_penilaian 
+                           FROM skp_penilaian 
+                           WHERE nomor_penilaian LIKE 'SKP".$tanggalFormat."%' 
+                           ORDER BY nomor_penilaian DESC LIMIT 1");
+    $lastKode = $qLast->num_rows>0 ? $qLast->fetch_assoc()['nomor_penilaian'] : 'SKP'.$tanggalFormat.'0000';
+    $lastNum = intval(substr($lastKode,-4))+1;
+    $newKode = 'SKP'.$tanggalFormat.str_pad($lastNum,4,'0',STR_PAD_LEFT);
+
+    echo $newKode;
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -227,17 +244,15 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['aksi']) && $_POST['aksi'
     var nomorField = document.getElementById("nomor_penilaian");
 
     tanggalInput.addEventListener("change", function(){
-      var tgl = new Date(this.value);
-      if(!isNaN(tgl)){
-        var y = tgl.getFullYear();
-        var m = String(tgl.getMonth()+1).padStart(2,'0');
-        var d = String(tgl.getDate()).padStart(2,'0');
-        // preview nomor, urutan default 0001
-        nomorField.value = "SKP" + y + m + d + "0001";
+      if(this.value){
+        fetch("?get_nomor="+this.value)
+          .then(res=>res.text())
+          .then(kode=>{
+            nomorField.value = kode;
+          });
       }
     });
   });
-
   </script>
 
   <?php include __DIR__ . '/../../layout/footer.php'; ?>
