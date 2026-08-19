@@ -10,7 +10,16 @@
   </div>
   <div class="footer-right" id="clock">
     <!-- isi awal dari PHP -->
-    <?= strftime("%A, %d %B %Y %H:%M:%S") ?>
+    <?php
+    $fmt = new IntlDateFormatter(
+        'id_ID',
+        IntlDateFormatter::FULL,
+        IntlDateFormatter::MEDIUM,
+        'Asia/Jakarta',
+        IntlDateFormatter::GREGORIAN
+    );
+    echo $fmt->format(new DateTime());
+    ?>
   </div>
 </footer>
 

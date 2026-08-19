@@ -11,11 +11,12 @@ if(!isset($_SESSION['user_login'])) {
 // Flag modul
 $modulK3 = (!empty($_SESSION["jenis_cidera_k3rs"]) || !empty($_SESSION["penyebab_k3rs"]) || !empty($_SESSION["jenis_luka_k3rs"]) 
            || !empty($_SESSION["lokasi_kejadian_k3rs"]) || !empty($_SESSION["dampak_cidera_k3rs"]) || !empty($_SESSION["jenis_pekerjaan_k3rs"])
-           || !empty($_SESSION["bagian_tubuh_k3rs"]) || !empty($_SESSION["jenis_cidera_k3rstahun"]) || !empty($_SESSION["penyebab_k3rstahun"])
-           || !empty($_SESSION["jenis_luka_k3rstahun"]) || !empty($_SESSION["lokasi_kejadian_k3rstahun"]) || !empty($_SESSION["dampak_cidera_k3rstahun"]) 
-           || !empty($_SESSION["jenis_pekerjaan_k3rstahun"]) || !empty($_SESSION["bagian_tubuh_k3rstahun"]) || $_SESSION["hak_akses"]==="administrator");
+           || !empty($_SESSION["bagian_tubuh_k3rs"]) || !empty($_SESSION["peristiwa_k3rs"]) || !empty($_SESSION["jenis_cidera_k3rstahun"]) 
+           || !empty($_SESSION["penyebab_k3rstahun"]) || !empty($_SESSION["jenis_luka_k3rstahun"]) || !empty($_SESSION["lokasi_kejadian_k3rstahun"]) 
+           || !empty($_SESSION["dampak_cidera_k3rstahun"]) || !empty($_SESSION["jenis_pekerjaan_k3rstahun"]) || !empty($_SESSION["bagian_tubuh_k3rstahun"]) 
+           || $_SESSION["hak_akses"]==="administrator");
 
-$modulAudit = (!empty($_SESSION["peristiwa_k3rs"]) || !empty($_SESSION["audit_kepatuhan_apd"]) || !empty($_SESSION["audit_cuci_tangan_medis"])
+$modulAudit = (!empty($_SESSION["audit_kepatuhan_apd"]) || !empty($_SESSION["audit_cuci_tangan_medis"])
            || !empty($_SESSION["audit_pembuangan_limbah"]) || !empty($_SESSION["audit_pembuangan_benda_tajam"]) || !empty($_SESSION["audit_penanganan_darah"])
            || !empty($_SESSION["audit_pengelolaan_linen_kotor"]) || !empty($_SESSION["audit_penempatan_pasien"]) || !empty($_SESSION["audit_kamar_jenazah"])
            || !empty($_SESSION["audit_bundle_iadp"]) || !empty($_SESSION["audit_bundle_ido"]) || !empty($_SESSION["audit_fasilitas_kebersihan_tangan"])
