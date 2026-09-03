@@ -238,10 +238,13 @@ $modulSKP = (!empty($_SESSION["skp_kategori_penilaian"]) || !empty($_SESSION["sk
     <div class="col-12 mb-5">
       <div class="card shadow mt-4 no-access-card">
         <div class="card-body text-center">
-          <img src="https://copilot.microsoft.com/th/id/BCO.284a7b6c-bdbd-4b6f-ae95-895b2fdc344e.png" 
-               alt="Ikon akses ditolak" 
-               class="mb-3" 
-               style="max-width:250px;">
+          <!-- Ikon STOP berbentuk lingkaran merah dengan teks putih -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" class="mb-3">
+            <circle cx="60" cy="60" r="55" fill="#cc0000" stroke="#990000" stroke-width="5"/>
+            <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="32" font-family="Arial, sans-serif" fill="#ffffff" font-weight="bold">
+              STOP
+            </text>
+          </svg>
           <h5 class="card-title fw-bold">⚠️ Tidak ada menu tersedia</h5>
           <p class="card-text" style="color:#cfcfcf;">
             Akun Anda belum memiliki akses ke menu apa pun.<br>
